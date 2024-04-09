@@ -43,7 +43,7 @@ class FirstTest extends TestCase
                             'description' => 'Describe what this person is like.',
                         ],
                         'constraints' => [
-                            new Length(['min' => 50]),
+                            new Length(['min' => 75]),
                         ],
                     ])
                 ;
