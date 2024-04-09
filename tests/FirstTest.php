@@ -87,11 +87,12 @@ class FirstTest extends TestCase
             flags: JSON_PARTIAL_OUTPUT_ON_ERROR
         );
 
-        dump($data);
-
         $form->submit($data);
 
-        $this->assertFalse($form->isValid()); // expecting min length error
+        dump([
+            'isvalid' => $form->isValid(),
+            'errors' => $this->getFormSerializer()->normalize($form),
+        ]);
 
         $this->assertFalse($form->isValid()); // expecting min length error
 
@@ -119,6 +120,11 @@ class FirstTest extends TestCase
 
         $form = $this->getForm($peopleType);
         $form->submit($data);
+
+        dump([
+            'isvalid' => $form->isValid(),
+            'errors' => $this->getFormSerializer()->normalize($form),
+        ]);
 
         $this->assertTrue($form->isValid()); // now it should have worked.
     }
