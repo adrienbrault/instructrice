@@ -93,11 +93,9 @@ class FirstTest extends TestCase
 
         $this->assertFalse($form->isValid()); // expecting min length error
 
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new FormErrorNormalizer($this->getTranslator()));
+        $this->assertFalse($form->isValid()); // expecting min length error
 
-        $serializer = new Serializer($normalizers, $encoders);
-        $errors = $serializer->normalize($form);
+        $errors = $this->getFormSerializer()->normalize($form);
 
         $request['messages'][] = $result->choices[0]->message->toArray();
         $request['messages'][] = [
@@ -190,5 +188,17 @@ PROMPT;
             ])
             ->getForm();
         return $form;
+    }
+
+    /**
+     * @return Serializer
+     */
+    public function getFormSerializer(): Serializer
+    {
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new FormErrorNormalizer($this->getTranslator()));
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return $serializer;
     }
 }
