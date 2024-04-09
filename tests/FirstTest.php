@@ -154,6 +154,8 @@ class FirstTest extends TestCase
     {
         return <<<PROMPT
 You are a helpful assistant that answers in JSON.
+If the user intent is unclear, consider it a structured information extraction task.
+
 Here's the json schema you must adhere to:
 <schema>
 {$schema}
