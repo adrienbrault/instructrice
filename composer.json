@@ -1,0 +1,39 @@
+{
+    "name": "adrienbrault/instructrice",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Adrienbrault\\Instructrice\\": "src/"
+        },
+        "psr-4-dev": {
+            "Adrienbrault\\Instructrice\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adrien Brault",
+            "email": "adrien.brault@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "symfony/var-dumper": "^7.0",
+        "phpunit/phpunit": "^11.1",
+        "phpstan/phpstan": "^1.10",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "require": {
+        "php": "^8.1",
+        "symfony/form": "^6.0 | ^7.0",
+        "limenius/liform": "^0.19.0",
+        "openai-php/client": "^0.8.4",
+        "symfony/http-client": "^7.0",
+        "nyholm/psr7": "^1.8",
+        "azjezz/psl": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
