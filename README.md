@@ -17,6 +17,19 @@ It should support LLM APIs streaming modes, and stream partially submitted/hydra
 
 This should focus on supporting OpenAI's chat completion API, although I'd like to support Claude, Groq.
 
+Since this library relies on Symfony Forms, there's an opportunity to provide features for other symfony forms.
+For example allowing a user to provide files, + a prompt.
+So maybe when I am creating a product, I can upload the supplier documentation PDF.
+Things to look into:
+- [Unstructured][unstructured_docker]
+- [Llama Parse][llama_parse]
+- [EMLs][eml] 
+
+DPSY is very interesting. There are great ideas to be inspired by.
+
 [liform]: https://github.com/Limenius/Liform
 [instructor-php]: https://github.com/cognesy/instructor-php/
 [sf_form]: https://symfony.com/doc/current/components/form.html
+[unstructured_docker]: https://unstructured-io.github.io/unstructured/installation/docker.html
+[llama_parse]: https://github.com/run-llama/llama_parse
+[eml]: https://en.wikipedia.org/wiki/Email#Filename_extensions
