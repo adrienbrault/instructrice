@@ -119,7 +119,7 @@ class Instructrice
                 ->getForm(),
             $retries,
             $form
-        );
+        )->get('list');
     }
 
     /**
