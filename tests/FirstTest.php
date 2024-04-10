@@ -49,7 +49,7 @@ class FirstTest extends TestCase
                     ->add('name', TextType::class)
                     ->add('biography', TextareaType::class, [
                         'liform' => [
-                            'description' => 'Succintly describe the person.',
+                            'description' => 'Succintly describe the person\'s life.',
                         ],
                         'constraints' => [
                             new Length([
@@ -60,9 +60,8 @@ class FirstTest extends TestCase
                                 message: 'The sentences must be written in french, not english.'
                             ),
                             new Regex(
-                                '/[a-z]/',
-                                message: 'ONLY USE UPPERCASE LETTERS.',
-                                match: false
+                                '/DAMN/',
+                                message: 'You must include "DAMN".',
                             ),
                         ],
                     ])
