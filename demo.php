@@ -17,9 +17,10 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 
 $logger = createConsoleLogger();
+
 $instructrice = InstructriceFactory::create(
-    logger: $logger,
     llm: (new OllamaFactory(logger: $logger))->hermes2pro(),
+    logger: $logger,
 );
 
 $form = $instructrice->fillCollection(
