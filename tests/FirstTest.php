@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Forms;
@@ -28,37 +29,56 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validation;
 use function Psl\Json\encode;
+use function Psl\Regex\replace;
+use function Psl\Vec\map;
 
 class FirstTest extends TestCase
 {
     public function test(): void
     {
+        // This form could be mapped to a class/model, have its own type class etc
         $peopleType = new class() extends AbstractType {
             public function buildForm(FormBuilderInterface $builder, array $options): void
             {
                 $builder
                     ->add('name', TextType::class)
-                    ->add('personality', TextareaType::class, [
+                    ->add('biography', TextareaType::class, [
                         'liform' => [
-                            'description' => 'Describe what this person is like.',
+                            'description' => 'Succintly describe the person.',
                         ],
                         'constraints' => [
                             new Length([
                                 'min' => 75,
                             ]),
+                            new Regex(
+                                '/ (et|de|pour|est|connu) /i',
+                                message: 'The sentences must be written in french, not english.'
+                            ),
+                            new Regex(
+                                '/[a-z]/',
+                                message: 'ONLY USE UPPERCASE LETTERS.',
+                                match: false
+                            ),
                         ],
                     ])
                 ;
             }
         };
 
-        $data = $this->handleFormLLMSubmit(
-            context: 'Harry potter, emanuel macron',
+        $form = $this->handleFormLLMSubmit(
+            context: 'Jason fried, david cramer',
             newForm: fn() => $this->getArrayForm($peopleType),
-            retries: 1
+            retries: 3
         );
+
+        dump('final result', $form->getData());
+
+        $this->assertTrue($form->isValid());
     }
 
     public function getFormFactory(array $types): FormFactoryInterface
@@ -129,6 +149,9 @@ PROMPT;
         return $serializer;
     }
 
+    /**
+     * @param callable(): FormInterface $newForm
+     */
     private function handleFormLLMSubmit(
         string $context,
         callable $newForm,
@@ -159,8 +182,6 @@ PROMPT;
         if ($form->isSubmitted()
             && !$form->isValid()
         ) {
-            $errors = $this->getFormSerializer()->normalize($form);
-
             $messages[] = [
                 'role' => 'assistant',
                 'content' => encode($form->getViewData(), true), // hopefully this is good enough
@@ -169,7 +190,9 @@ PROMPT;
                 'role' => 'user',
                 'content' => sprintf(
                     'Try again, fixing the following errors: <validator-errors>%s</validator-errors>',
-                    encode($errors)
+                    encode(
+                        $this->formatErrors($form)
+                    )
                 ),
             ];
         }
@@ -182,12 +205,15 @@ PROMPT;
             ],
             'max_tokens' => 4000,
         ];
-        $result = $client->chat()->create(dump($request));
+        dump('request', $request);
+        $result = $client->chat()->create($request);
 
-        dump($result);
+        $content = $result->choices[0]->message->content;
+
+        dump('response content', $content);
 
         $data = json_decode(
-            $result->choices[0]->message->content,
+            $content,
             true,
             flags: JSON_PARTIAL_OUTPUT_ON_ERROR
         );
@@ -195,9 +221,9 @@ PROMPT;
         $form = $newForm();
         $form->submit($data);
 
-        dump([
+        dump('form state', [
             'isvalid' => $form->isValid(),
-            'errors' => $this->getFormSerializer()->normalize($form),
+            'errors' => !$form->isValid() ? $this->formatErrors($form) : [],
         ]);
 
         if ($retries > 0
@@ -212,5 +238,29 @@ PROMPT;
         }
 
         return $form;
+    }
+
+    /**
+     * @param FormInterface $form
+     * @return array
+     */
+    public function formatErrors(FormInterface $form): array
+    {
+        return map(
+            $form->getErrors(true),
+            function (FormError $error) {
+                $cause = $error->getCause();
+                assert($cause instanceof ConstraintViolationInterface);
+
+                return [
+                    'message' => $error->getMessage(),
+                    'path' => replace(
+                        $cause->getPropertyPath(),
+                        '#([.]?children|[.]data$)#',
+                        ''
+                    ),
+                ];
+            }
+        );
     }
 }
