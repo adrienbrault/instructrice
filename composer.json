@@ -20,15 +20,16 @@
         "symfony/var-dumper": "^7.0",
         "phpunit/phpunit": "^11.1",
         "phpstan/phpstan": "^1.10",
-        "guzzlehttp/guzzle": "^7.8"
+        "guzzlehttp/guzzle": "^7.0",
+        "symplify/easy-coding-standard": "*"
     },
     "require": {
         "php": "^8.1",
         "symfony/form": "^6.0 | ^7.0",
         "limenius/liform": "^0.19.0",
-        "openai-php/client": "^0.8.4",
-        "symfony/http-client": "^7.0",
-        "nyholm/psr7": "^1.8",
+        "openai-php/client": "^0.8.0",
+        "symfony/http-client": "^6.0 | ^7.0",
+        "nyholm/psr7": "^1.0",
         "azjezz/psl": "^2.0"
     },
     "config": {
