@@ -23,9 +23,12 @@ So maybe when I am creating a product, I can upload the supplier documentation P
 Things to look into:
 - [Unstructured][unstructured_docker]
 - [Llama Parse][llama_parse]
-- [EMLs][eml] 
+- [EMLs][eml]
 
 [DSPy][dspy] is very interesting. There are great ideas to be inspired by.
+
+Ideally this library is good to prototype with, but can support more advanced extraction workflows
+with few short learning, some sort of eval system, generating samples/output like DSPy, etc
 
 [liform]: https://github.com/Limenius/Liform
 [instructor-php]: https://github.com/cognesy/instructor-php/
