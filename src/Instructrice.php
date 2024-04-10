@@ -31,7 +31,7 @@ class Instructrice
      * @param callable(): FormInterface $newForm
      * @param FormInterface|null        $form A previously submitted forms with validation errors
      */
-    public function handleFormLLMSubmit(
+    public function fillForm(
         string $context,
         callable $newForm,
         int $retries = 0,
@@ -113,7 +113,7 @@ class Instructrice
         if ($retries > 0
             && ! $form->isValid()
         ) {
-            return $this->handleFormLLMSubmit(
+            return $this->fillForm(
                 context: $context,
                 newForm: $newForm,
                 retries: $retries - 1,

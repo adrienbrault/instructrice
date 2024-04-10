@@ -62,7 +62,7 @@ class FirstTest extends TestCase
             ])
         );
 
-        $form = $instructrice->handleFormLLMSubmit(
+        $form = $instructrice->fillForm(
             context: 'Jason fried, david cramer',
             newForm: fn () => $this->getArrayForm($peopleType),
             retries: 3
