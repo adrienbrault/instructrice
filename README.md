@@ -14,6 +14,7 @@ I want this library to support well both Class based models, to dynamically gene
 Symfony Form is also great for validation, because it's easy to add validation constraints.
 
 It should support LLM APIs streaming modes, and stream partially submitted/hydrated form data.
+Maybe it could even only target providers that support streaming, json/function modes.
 
 This should focus on supporting OpenAI's chat completion API, although I'd like to support Claude, Groq.
 

@@ -5,68 +5,68 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\Tests;
 
 use AdrienBrault\Instructrice\Instructrice;
-use Limenius\Liform\Form\Extension\AddLiformExtension;
+use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\LLMInterface;
 use Limenius\Liform\LiformInterface;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Responses\Meta\MetaInformation;
-use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Validator\Validation;
-use function Psl\Json\encode;
 
 #[CoversClass(Instructrice::class)]
 class InstructriceTest extends TestCase
 {
     public function testRequiresLiform(): void
     {
-        $openAiClient = new ClientFake();
-        $liform = $this->createStub(LiformInterface::class);
-
         $instructrice = new Instructrice(
-            $liform,
-            $openAiClient,
+            Forms::createFormFactory(),
+            $this->createStub(LiformInterface::class),
+            $this->createStub(LLMInterface::class),
             new NullLogger()
         );
-
-        $formFactory = Forms::createFormFactory();
 
         $this->expectExceptionMessage('The form must have the Liform extension registered.');
 
         $form = $instructrice->fillForm(
             context: 'context',
-            newForm: fn () => $formFactory->createBuilder()->getForm(),
+            newForm: fn (FormFactoryInterface $ff) => $ff->createBuilder()->getForm(),
         );
     }
 
     public function test(): void
     {
-        $openAiClient = new ClientFake([
-            $this->mockOpenAiResponse(
-                encode([
-                    'name' => 'John',
-                ])
-            ),
-        ]);
-        $liform = $this->createStub(LiformInterface::class);
+        $llm = $this->createMock(LLMInterface::class);
+        $llm
+            ->method('get')
+            ->willReturn([
+                'name' => 'John',
+            ]);
+        $liform = $this->createMock(LiformInterface::class);
+        $liform
+            ->method('transform')
+            ->willReturn($fakeSchema = [
+                'type' => 'object',
+                'properties' => [
+                    'name' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ]);
 
         $instructrice = new Instructrice(
+            InstructriceFactory::createFormFactory(),
             $liform,
-            $openAiClient,
+            $llm,
             new NullLogger()
         );
 
-        $formFactory = $this->createFormFactory([]);
-
         $form = $instructrice->fillForm(
             context: 'context',
-            newForm: fn () => $formFactory->createBuilder()
+            newForm: fn (FormFactoryInterface $ff) => $ff->createBuilder()
                 ->add('name', TextType::class)
                 ->getForm(),
         );
@@ -116,17 +116,5 @@ class InstructriceTest extends TestCase
                 'x-ratelimit-reset-tokens' => ['x-ratelimit-reset-tokens'],
             ])
         );
-    }
-
-    /**
-     * @param list<FormTypeInterface> $types
-     */
-    private function createFormFactory(array $types): FormFactoryInterface
-    {
-        return Forms::createFormFactoryBuilder()
-            ->addTypeExtension(new AddLiformExtension())
-            ->addExtension(new ValidatorExtension(Validation::createValidator()))
-            ->addTypes($types)
-            ->getFormFactory();
     }
 }
