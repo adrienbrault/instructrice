@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-set -ex
+set -x
 
-#vendor/bin/ecs --fix
+vendor/bin/ecs --fix
 vendor/bin/phpstan analyse
 vendor/bin/phpunit

@@ -4,10 +4,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Adrienbrault\\Instructrice\\": "src/"
-        },
-        "psr-4-dev": {
-            "Adrienbrault\\Instructrice\\Tests\\": "tests/"
+            "AdrienBrault\\Instructrice\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AdrienBrault\\Instructrice\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -17,11 +19,14 @@
         }
     ],
     "require-dev": {
-        "symfony/var-dumper": "^7.0",
+        "symfony/var-dumper": "^6.0 | ^7.0",
+        "symfony/console": "^6.0 | 7.0",
         "phpunit/phpunit": "^11.1",
         "phpstan/phpstan": "^1.10",
         "guzzlehttp/guzzle": "^7.0",
-        "symplify/easy-coding-standard": "*"
+        "symplify/easy-coding-standard": "*",
+        "monolog/monolog": "^3.5",
+        "symfony/monolog-bridge": "^7.0"
     },
     "require": {
         "php": "^8.1",
