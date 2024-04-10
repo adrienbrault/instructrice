@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice;
 
+use Limenius\Liform\Form\Extension\AddLiformExtension;
 use Limenius\Liform\LiformInterface;
-use OpenAI;
+use OpenAI\Contracts\ClientContract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
@@ -22,7 +23,7 @@ class Instructrice
 {
     public function __construct(
         private readonly LiformInterface $liform,
-        private readonly OpenAI\Client $openAiClient,
+        private readonly ClientContract $openAiClient,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -38,6 +39,8 @@ class Instructrice
         ?FormInterface $form = null
     ): FormInterface {
         $form ??= $newForm();
+
+        $this->assertLiformExtensionRegistered($form);
 
         $messages = [
             [
@@ -69,6 +72,7 @@ class Instructrice
                 ),
             ];
         }
+
         $request = [
             'model' => 'adrienbrault/nous-hermes2pro:q4_K_M',
             // 'model' => 'command-r:35b-v0.1-q5_K_M',
@@ -140,13 +144,20 @@ class Instructrice
                     $cause = $error->getCause();
                     assert($cause instanceof ConstraintViolationInterface);
 
+                    $cleanPropertyPath = replace(
+                        $cause->getPropertyPath(),
+                        '#([.]?children|[.]data$)#',
+                        ''
+                    );
+                    $cleanPropertyPath = replace(
+                        $cleanPropertyPath,
+                        '#\[([a-z]\w*)\]#i',
+                        '.$1'
+                    );
+
                     return [
                         'message' => $error->getMessage(),
-                        'path' => replace(
-                            $cause->getPropertyPath(),
-                            '#([.]?children|[.]data$)#',
-                            ''
-                        ),
+                        'path' => $cleanPropertyPath,
                     ];
                 }
             )
@@ -164,5 +175,20 @@ Here's the json schema you must adhere to:
 {$schema}
 </schema>
 PROMPT;
+    }
+
+    private function assertLiformExtensionRegistered(FormInterface $form): void
+    {
+        $typeExtensions = $form->getConfig()->getType()->getTypeExtensions();
+
+        foreach ($typeExtensions as $typeExtension) {
+            if ($typeExtension instanceof AddLiformExtension) {
+                return;
+            }
+        }
+
+        throw new \InvalidArgumentException(
+            'The form must have the Liform extension registered.'
+        );
     }
 }

@@ -24,7 +24,7 @@ class InstructriceFactory
     ): Instructrice {
         if ($openAiClient === null) {
             $openAiClient = OpenAI::factory()
-                ->withBaseUri(getenv('OLLAMA_HOST') . '/v1')
+                ->withBaseUri((getenv('OLLAMA_HOST') ?: 'http://localhost:11434') . '/v1')
                 ->make();
         }
 
