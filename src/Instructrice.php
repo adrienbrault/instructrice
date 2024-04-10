@@ -62,7 +62,7 @@ class Instructrice
             $messages[] = [
                 'role' => 'user',
                 'content' => sprintf(
-                    'Try again, fixing the following errors: <validator-errors>%s</validator-errors>',
+                    'Try again, fixing the following errors: %s',
                     encode(
                         $this->formatErrors($form)
                     )
