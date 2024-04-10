@@ -25,7 +25,7 @@ Things to look into:
 - [Llama Parse][llama_parse]
 - [EMLs][eml] 
 
-DPSY is very interesting. There are great ideas to be inspired by.
+[DSPy][dspy] is very interesting. There are great ideas to be inspired by.
 
 [liform]: https://github.com/Limenius/Liform
 [instructor-php]: https://github.com/cognesy/instructor-php/
@@ -33,3 +33,4 @@ DPSY is very interesting. There are great ideas to be inspired by.
 [unstructured_docker]: https://unstructured-io.github.io/unstructured/installation/docker.html
 [llama_parse]: https://github.com/run-llama/llama_parse
 [eml]: https://en.wikipedia.org/wiki/Email#Filename_extensions
+[dspy]: https://github.com/stanfordnlp/dspy
