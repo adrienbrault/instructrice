@@ -40,7 +40,11 @@ $llmRegistry = [
     'Mistral Large' => fn () => (new MistralFactory(logger: $logger))->mistralLarge(),
     'Fireworks Firefunction V1' => fn () => (new FireworksFactory(logger: $logger))->firefunctionV1(),
     'Fireworks Mixtral' => fn () => (new FireworksFactory(logger: $logger))->mixtral(),
+    'Fireworks Big Mixtral' => fn () => (new FireworksFactory(logger: $logger))->bigMixtral(),
+    'Fireworks DBRX' => fn () => (new FireworksFactory(logger: $logger))->dbrx(),
+    'Fireworks Hermes 2 Pro' => fn () => (new FireworksFactory(logger: $logger))->hermes2pro(),
     'Groq Mixtral' => fn () => (new GroqFactory(logger: $logger))->mixtral(),
+    'Groq Gemma 7B' => fn () => (new GroqFactory(logger: $logger))->gemma7b(),
     'Together Mixtral' => fn () => (new TogetherFactory(logger: $logger))->mixtral(),
     'Together Mistral 7B' => fn () => (new TogetherFactory(logger: $logger))->mistral7B(),
 ];

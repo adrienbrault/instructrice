@@ -84,4 +84,43 @@ PROMPT;
             'json_mode_with_schema'
         );
     }
+
+    public function bigMixtral(): LLMInterface
+    {
+        return new OpenAiLLM(
+            'https://api.fireworks.ai/inference/v1',
+            $this->guzzleClient,
+            $this->logger,
+            'fireworks/mixtral-8x22b-instruct-preview',
+            $this->jsonSystemPrompt,
+            null,
+            'json_mode_with_schema'
+        );
+    }
+
+    public function dbrx(): LLMInterface
+    {
+        return new OpenAiLLM(
+            'https://api.fireworks.ai/inference/v1',
+            $this->guzzleClient,
+            $this->logger,
+            'fireworks/dbrx-instruct',
+            $this->jsonSystemPrompt,
+            null,
+            'json_mode_with_schema'
+        );
+    }
+
+    public function hermes2pro(): LLMInterface
+    {
+        return new OpenAiLLM(
+            'https://api.fireworks.ai/inference/v1',
+            $this->guzzleClient,
+            $this->logger,
+            'fireworks/hermes-2-pro-mistral-7b',
+            $this->jsonSystemPrompt,
+            null,
+            'json_mode_with_schema'
+        );
+    }
 }

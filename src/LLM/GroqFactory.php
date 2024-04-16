@@ -66,4 +66,17 @@ PROMPT;
             null
         );
     }
+
+    public function gemma7b()
+    {
+        return new OpenAiLLM(
+            'https://api.groq.com/openai/v1',
+            $this->guzzleClient,
+            $this->logger,
+            'gemma-7b-it',
+            $this->systemPrompt,
+            null,
+            null
+        );
+    }
 }
