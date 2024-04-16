@@ -70,7 +70,16 @@ class Person
     #[NotBlank]
     #[Regex(
         '/ /',
-        message: 'Please include both the first and last name.'
+        message: 'Include both the first and last name.'
+    )]
+    #[Regex(
+        '/@/',
+        message: 'Only include the first and last name.',
+        match: false,
+    )]
+    #[Regex(
+        '/^([A-Z][^A-Z]* ?)+$/',
+        message: 'Format like this: First Last',
     )]
     public ?string $name = null;
 
@@ -97,7 +106,7 @@ $table->setColumnWidths([20, 50]);
 $table->render();
 
 $form = $instructrice->fillCollection(
-    context: 'Jason fried, david cramer',
+    context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
     entryOptions: [
         'data_class' => Person::class,
     ],
