@@ -30,7 +30,6 @@ class OpenAiLLM implements LLMInterface
         private $systemPrompt,
         private ?string $toolMode = null,
         private ?string $jsonMode = 'json_mode'
-        // 'command-r:35b-v0.1-q5_K_M',
     ) {
         $this->jsonParser = new JsonParser();
     }
@@ -206,6 +205,7 @@ class OpenAiLLM implements LLMInterface
             ) {
                 $content = substr($content, strpos($content, '```json') + strlen('```json'));
                 $content = replace($content, '#(.+)```.+$#m', '\1');
+                $content = trim($content);
             }
 
             if (str_starts_with($content, '{') || str_starts_with($content, '[')) {

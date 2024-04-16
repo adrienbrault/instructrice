@@ -99,4 +99,59 @@ PROMPT;
             $this->systemPrompt,
         );
     }
+
+    public function commandR(string $quantization = 'q4_K_M'): LLMInterface
+    {
+        return new OpenAiLLM(
+            $this->baseUri,
+            $this->guzzleClient,
+            $this->logger,
+            'command-r:35b-v0.1-' . $quantization,
+            $this->getCommandRSystem(),
+            null,
+            null
+        );
+    }
+
+    public function commandRPlus(string $quantization = 'q2_K'): LLMInterface
+    {
+        return new OpenAiLLM(
+            $this->baseUri,
+            $this->guzzleClient,
+            $this->logger,
+            'command-r-plus:104b-' . $quantization,
+            $this->getCommandRSystem(),
+            null,
+            null
+        );
+    }
+
+    /**
+     * @return callable(mixed): string
+     */
+    private function getCommandRSystem()
+    {
+        return function ($schema): string {
+            $encodedSchema = encode($schema);
+
+            return <<<PROMPT
+You are a helpful assistant that answers in JSON.
+If the user intent is unclear, consider it a structured information extraction task.
+
+## Available Tools
+
+A single tool is available with the following schema:
+```json
+{$encodedSchema}
+```
+
+Here is an example invocation:
+```json
+{"firstProperty":...}
+```
+
+Strictly follow the schema.
+PROMPT;
+        };
+    }
 }
