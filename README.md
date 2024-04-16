@@ -31,6 +31,11 @@ Things to look into:
 Ideally this library is good to prototype with, but can support more advanced extraction workflows
 with few short learning, some sort of eval system, generating samples/output like DSPy, etc
 
+Would be cool to have a CLI, that accepts a FQCN and a context.
+```
+instructrice get "App\Entity\Customer" "$(cat some_email_body.md)" 
+```
+
 [liform]: https://github.com/Limenius/Liform
 [instructor-php]: https://github.com/cognesy/instructor-php/
 [sf_form]: https://symfony.com/doc/current/components/form.html
