@@ -6,6 +6,7 @@ namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
+use GuzzleHttp\Exception\RequestException;
 use Limenius\Liform\Form\Extension\AddLiformExtension;
 use Limenius\Liform\LiformInterface;
 use Psr\Log\LoggerInterface;
@@ -75,7 +76,12 @@ class Instructrice
                 $llmOnChunk,
             );
         } catch (\Throwable $e) {
-            dump($e, @$e->getResponse()->getBody()->getContents(true));
+            dump($e);
+
+            if ($e instanceof RequestException) {
+                dump($e->getResponse()->getBody()->getContents(true));
+            }
+
             throw $e;
         }
 
