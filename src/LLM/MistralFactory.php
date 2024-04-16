@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use function Psl\Json\encode;
 
-class OllamaFactory
+class MistralFactory
 {
     private ClientInterface $guzzleClient;
 
@@ -22,8 +22,6 @@ class OllamaFactory
      */
     private $systemPrompt = null;
 
-    private string $baseUri;
-
     /**
      * @param callable(mixed): string $systemPrompt
      */
@@ -31,14 +29,12 @@ class OllamaFactory
         ?ClientInterface $guzzleClient = null,
         ?LoggerInterface $logger = null,
         ?callable $systemPrompt = null,
-        ?string $baseUri = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
             RequestOptions::HEADERS => [
-                'Authorization' => 'Bearer ' . getenv('TOGETHER_API_KEY'),
+                'Authorization' => 'Bearer ' . getenv('MISTRAL_API_KEY'),
             ],
         ]);
-        $this->baseUri = $baseUri ?? (getenv('OLLAMA_HOST') ?: 'http://localhost:11434') . '/v1';
 
         $this->logger = $logger ?? new NullLogger();
 
@@ -48,7 +44,6 @@ class OllamaFactory
 You are a helpful assistant that answers in JSON.
 If the user intent is unclear, consider it a structured information extraction task.
 
-Here's the json schema you must adhere to:
 <schema>
 {$encodedSchema}
 </schema>
@@ -56,46 +51,24 @@ PROMPT;
         };
     }
 
-    public function hermes2pro(string $quantization = 'Q4_K_M'): LLMInterface
+    public function mistralSmall(string $version = 'latest'): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.mistral.ai/v1',
             $this->guzzleClient,
             $this->logger,
-            'adrienbrault/nous-hermes2pro:' . $quantization,
+            'mistral-small-' . $version,
             $this->systemPrompt,
         );
     }
 
-    public function dolphincoder7B(string $quantization = 'q4_K_M'): LLMInterface
+    public function mistralLarge(string $version = 'latest'): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.mistral.ai/v1',
             $this->guzzleClient,
             $this->logger,
-            'dolphincoder:7b-starcoder2-' . $quantization,
-            $this->systemPrompt,
-        );
-    }
-
-    public function dolphincoder15B(string $quantization = 'q4_K_M'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'dolphincoder:15b-starcoder2-' . $quantization,
-            $this->systemPrompt,
-        );
-    }
-
-    public function stablelm2(string $quantization = 'q8_0'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'stablelm2:1.6b-chat-' . $quantization,
+            'mistral-large-' . $version,
             $this->systemPrompt,
         );
     }

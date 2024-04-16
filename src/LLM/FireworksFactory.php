@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use function Psl\Json\encode;
 
-class OllamaFactory
+class FireworksFactory
 {
     private ClientInterface $guzzleClient;
 
@@ -22,7 +22,10 @@ class OllamaFactory
      */
     private $systemPrompt = null;
 
-    private string $baseUri;
+    /**
+     * @var callable(mixed): string
+     */
+    private $jsonSystemPrompt = null;
 
     /**
      * @param callable(mixed): string $systemPrompt
@@ -31,18 +34,19 @@ class OllamaFactory
         ?ClientInterface $guzzleClient = null,
         ?LoggerInterface $logger = null,
         ?callable $systemPrompt = null,
-        ?string $baseUri = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
             RequestOptions::HEADERS => [
-                'Authorization' => 'Bearer ' . getenv('TOGETHER_API_KEY'),
+                'Authorization' => 'Bearer ' . getenv('FIREWORKS_API_KEY'),
             ],
         ]);
-        $this->baseUri = $baseUri ?? (getenv('OLLAMA_HOST') ?: 'http://localhost:11434') . '/v1';
 
         $this->logger = $logger ?? new NullLogger();
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
+            return 'You are a helpful assistant with access to functions. If the user intent is unclear, consider it a structured information extraction task.';
+        };
+        $this->jsonSystemPrompt = $systemPrompt ?? function ($schema): string {
             $encodedSchema = encode($schema);
             return <<<PROMPT
 You are a helpful assistant that answers in JSON.
@@ -56,47 +60,28 @@ PROMPT;
         };
     }
 
-    public function hermes2pro(string $quantization = 'Q4_K_M'): LLMInterface
+    public function firefunctionV1(): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.fireworks.ai/inference/v1',
             $this->guzzleClient,
             $this->logger,
-            'adrienbrault/nous-hermes2pro:' . $quantization,
+            'accounts/fireworks/models/firefunction-v1',
             $this->systemPrompt,
+            'function'
         );
     }
 
-    public function dolphincoder7B(string $quantization = 'q4_K_M'): LLMInterface
+    public function mixtral(): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.fireworks.ai/inference/v1',
             $this->guzzleClient,
             $this->logger,
-            'dolphincoder:7b-starcoder2-' . $quantization,
-            $this->systemPrompt,
-        );
-    }
-
-    public function dolphincoder15B(string $quantization = 'q4_K_M'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'dolphincoder:15b-starcoder2-' . $quantization,
-            $this->systemPrompt,
-        );
-    }
-
-    public function stablelm2(string $quantization = 'q8_0'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'stablelm2:1.6b-chat-' . $quantization,
-            $this->systemPrompt,
+            'accounts/fireworks/models/mixtral-8x7b-instruct',
+            $this->jsonSystemPrompt,
+            null,
+            'json_mode_with_schema'
         );
     }
 }

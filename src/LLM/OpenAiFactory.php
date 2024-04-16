@@ -9,9 +9,8 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use function Psl\Json\encode;
 
-class OllamaFactory
+class OpenAiFactory
 {
     private ClientInterface $guzzleClient;
 
@@ -22,7 +21,7 @@ class OllamaFactory
      */
     private $systemPrompt = null;
 
-    private string $baseUri;
+    private string $baseUri = 'https://api.openai.com/v1';
 
     /**
      * @param callable(mixed): string $systemPrompt
@@ -31,72 +30,54 @@ class OllamaFactory
         ?ClientInterface $guzzleClient = null,
         ?LoggerInterface $logger = null,
         ?callable $systemPrompt = null,
-        ?string $baseUri = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
             RequestOptions::HEADERS => [
-                'Authorization' => 'Bearer ' . getenv('TOGETHER_API_KEY'),
+                'Authorization' => 'Bearer ' . getenv('OPENAI_API_KEY'),
             ],
         ]);
-        $this->baseUri = $baseUri ?? (getenv('OLLAMA_HOST') ?: 'http://localhost:11434') . '/v1';
 
         $this->logger = $logger ?? new NullLogger();
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
-            $encodedSchema = encode($schema);
             return <<<PROMPT
 You are a helpful assistant that answers in JSON.
 If the user intent is unclear, consider it a structured information extraction task.
-
-Here's the json schema you must adhere to:
-<schema>
-{$encodedSchema}
-</schema>
 PROMPT;
         };
     }
 
-    public function hermes2pro(string $quantization = 'Q4_K_M'): LLMInterface
+    public function gpt35(string $version = ''): LLMInterface
     {
+        $model = 'gpt-3.5-turbo';
+        if ($version !== '') {
+            $model .= '-' . $version;
+        }
+
         return new OpenAiLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
-            'adrienbrault/nous-hermes2pro:' . $quantization,
+            $model,
             $this->systemPrompt,
+            'function'
         );
     }
 
-    public function dolphincoder7B(string $quantization = 'q4_K_M'): LLMInterface
+    public function gpt4(string $version = ''): LLMInterface
     {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'dolphincoder:7b-starcoder2-' . $quantization,
-            $this->systemPrompt,
-        );
-    }
+        $model = 'gpt-4-turbo';
+        if ($version !== '') {
+            $model .= '-' . $version;
+        }
 
-    public function dolphincoder15B(string $quantization = 'q4_K_M'): LLMInterface
-    {
         return new OpenAiLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
-            'dolphincoder:15b-starcoder2-' . $quantization,
+            $model,
             $this->systemPrompt,
-        );
-    }
-
-    public function stablelm2(string $quantization = 'q8_0'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'stablelm2:1.6b-chat-' . $quantization,
-            $this->systemPrompt,
+            'function'
         );
     }
 }

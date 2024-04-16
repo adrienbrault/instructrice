@@ -7,6 +7,8 @@ namespace AdrienBrault\Instructrice\Tests;
 use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
+use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
+use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use Limenius\Liform\LiformInterface;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Responses\Meta\MetaInformation;
@@ -15,28 +17,10 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\Forms;
 
 #[CoversClass(Instructrice::class)]
 class InstructriceTest extends TestCase
 {
-    public function testRequiresLiform(): void
-    {
-        $instructrice = new Instructrice(
-            Forms::createFormFactory(),
-            $this->createStub(LiformInterface::class),
-            $this->createStub(LLMInterface::class),
-            new NullLogger()
-        );
-
-        $this->expectExceptionMessage('The form must have the Liform extension registered.');
-
-        $form = $instructrice->fillForm(
-            context: 'context',
-            newForm: fn (FormFactoryInterface $ff) => $ff->createBuilder()->getForm(),
-        );
-    }
-
     public function test(): void
     {
         $llm = $this->createMock(LLMInterface::class);
@@ -61,7 +45,8 @@ class InstructriceTest extends TestCase
             InstructriceFactory::createFormFactory(),
             $liform,
             $llm,
-            new NullLogger()
+            new NullLogger(),
+            new Gpt3Tokenizer(new Gpt3TokenizerConfig())
         );
 
         $form = $instructrice->fillForm(

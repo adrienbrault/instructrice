@@ -9,9 +9,8 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use function Psl\Json\encode;
 
-class OllamaFactory
+class TogetherFactory
 {
     private ClientInterface $guzzleClient;
 
@@ -22,8 +21,6 @@ class OllamaFactory
      */
     private $systemPrompt = null;
 
-    private string $baseUri;
-
     /**
      * @param callable(mixed): string $systemPrompt
      */
@@ -31,72 +28,53 @@ class OllamaFactory
         ?ClientInterface $guzzleClient = null,
         ?LoggerInterface $logger = null,
         ?callable $systemPrompt = null,
-        ?string $baseUri = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
             RequestOptions::HEADERS => [
                 'Authorization' => 'Bearer ' . getenv('TOGETHER_API_KEY'),
             ],
         ]);
-        $this->baseUri = $baseUri ?? (getenv('OLLAMA_HOST') ?: 'http://localhost:11434') . '/v1';
 
         $this->logger = $logger ?? new NullLogger();
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
-            $encodedSchema = encode($schema);
-            return <<<PROMPT
-You are a helpful assistant that answers in JSON.
-If the user intent is unclear, consider it a structured information extraction task.
-
-Here's the json schema you must adhere to:
-<schema>
-{$encodedSchema}
-</schema>
-PROMPT;
+            return 'You are a helpful assistant that can access external functions. The responses from these function calls will be appended to this dialogue. Please provide responses based on the information from these function calls. If the user intent is unclear, consider it a structured information extraction task.';
         };
     }
 
-    public function hermes2pro(string $quantization = 'Q4_K_M'): LLMInterface
+    public function mixtral(): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.together.xyz/v1',
             $this->guzzleClient,
             $this->logger,
-            'adrienbrault/nous-hermes2pro:' . $quantization,
+            'mistralai/Mixtral-8x7B-Instruct-v0.1',
             $this->systemPrompt,
+            'function'
         );
     }
 
-    public function dolphincoder7B(string $quantization = 'q4_K_M'): LLMInterface
+    public function mistral7B(): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.together.xyz/v1',
             $this->guzzleClient,
             $this->logger,
-            'dolphincoder:7b-starcoder2-' . $quantization,
+            'mistralai/Mistral-7B-Instruct-v0.1',
             $this->systemPrompt,
+            'function'
         );
     }
 
-    public function dolphincoder15B(string $quantization = 'q4_K_M'): LLMInterface
+    public function codeLLama34b(): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.together.xyz/v1',
             $this->guzzleClient,
             $this->logger,
-            'dolphincoder:15b-starcoder2-' . $quantization,
+            'togethercomputer/CodeLlama-34b-Instruct',
             $this->systemPrompt,
-        );
-    }
-
-    public function stablelm2(string $quantization = 'q8_0'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'stablelm2:1.6b-chat-' . $quantization,
-            $this->systemPrompt,
+            'function'
         );
     }
 }

@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use function Psl\Json\encode;
 
-class OllamaFactory
+class GroqFactory
 {
     private ClientInterface $guzzleClient;
 
@@ -22,8 +22,6 @@ class OllamaFactory
      */
     private $systemPrompt = null;
 
-    private string $baseUri;
-
     /**
      * @param callable(mixed): string $systemPrompt
      */
@@ -31,14 +29,12 @@ class OllamaFactory
         ?ClientInterface $guzzleClient = null,
         ?LoggerInterface $logger = null,
         ?callable $systemPrompt = null,
-        ?string $baseUri = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
             RequestOptions::HEADERS => [
-                'Authorization' => 'Bearer ' . getenv('TOGETHER_API_KEY'),
+                'Authorization' => 'Bearer ' . getenv('GROQ_API_KEY'),
             ],
         ]);
-        $this->baseUri = $baseUri ?? (getenv('OLLAMA_HOST') ?: 'http://localhost:11434') . '/v1';
 
         $this->logger = $logger ?? new NullLogger();
 
@@ -52,51 +48,22 @@ Here's the json schema you must adhere to:
 <schema>
 {$encodedSchema}
 </schema>
+
+ONLY OUTPUT JSON.
 PROMPT;
         };
     }
 
-    public function hermes2pro(string $quantization = 'Q4_K_M'): LLMInterface
+    public function mixtral(): LLMInterface
     {
         return new OpenAiLLM(
-            $this->baseUri,
+            'https://api.groq.com/openai/v1',
             $this->guzzleClient,
             $this->logger,
-            'adrienbrault/nous-hermes2pro:' . $quantization,
+            'mixtral-8x7b-32768',
             $this->systemPrompt,
-        );
-    }
-
-    public function dolphincoder7B(string $quantization = 'q4_K_M'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'dolphincoder:7b-starcoder2-' . $quantization,
-            $this->systemPrompt,
-        );
-    }
-
-    public function dolphincoder15B(string $quantization = 'q4_K_M'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'dolphincoder:15b-starcoder2-' . $quantization,
-            $this->systemPrompt,
-        );
-    }
-
-    public function stablelm2(string $quantization = 'q8_0'): LLMInterface
-    {
-        return new OpenAiLLM(
-            $this->baseUri,
-            $this->guzzleClient,
-            $this->logger,
-            'stablelm2:1.6b-chat-' . $quantization,
-            $this->systemPrompt,
+            null,
+            null
         );
     }
 }

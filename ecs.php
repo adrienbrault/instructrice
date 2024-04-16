@@ -9,7 +9,7 @@ return ECSConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
-        __DIR__ . '/demo.php',
+        __DIR__ . '/demo',
     ])
 
     ->withRules([

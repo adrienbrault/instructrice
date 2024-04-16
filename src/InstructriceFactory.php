@@ -6,6 +6,8 @@ namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use AdrienBrault\Instructrice\LLM\OllamaFactory;
+use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
+use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use Limenius\Liform\Form\Extension\AddLiformExtension;
 use Limenius\Liform\Liform;
 use Limenius\Liform\LiformInterface;
@@ -50,6 +52,7 @@ class InstructriceFactory
             $liform,
             $llm,
             $logger,
+            new Gpt3Tokenizer(new Gpt3TokenizerConfig())
         );
     }
 
@@ -58,9 +61,13 @@ class InstructriceFactory
      */
     public static function createFormFactory(?array $formFactoryTypes = null): FormFactoryInterface
     {
+        $validator = Validation::createValidatorBuilder()
+            ->enableAttributeMapping()
+            ->getValidator()
+        ;
         $formFactoryBuilder = Forms::createFormFactoryBuilder()
             ->addTypeExtension(new AddLiformExtension())
-            ->addExtension(new ValidatorExtension(Validation::createValidator()));
+            ->addExtension(new ValidatorExtension($validator));
 
         if ($formFactoryTypes !== null) {
             $formFactoryBuilder->addTypes($formFactoryTypes);
