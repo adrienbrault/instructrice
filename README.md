@@ -8,6 +8,7 @@ With Symfony projects I've often had the same use case with user forms and api i
 > Liform is a library for serializing Symfony Forms into JSON schema.
 
 [Liform][liform] looks like a great way to convert a Symfony form into a JSON schema.
+Also explore https://github.com/api-platform/json-schema .
 
 I want this library to support well both Class based models, to dynamically generated forms.
 
@@ -25,6 +26,7 @@ Things to look into:
 - [Unstructured][unstructured_docker]
 - [Llama Parse][llama_parse]
 - [EMLs][eml]
+- [jina-ai/reader][jina_reader]
 
 [DSPy][dspy] is very interesting. There are great ideas to be inspired by.
 
@@ -43,3 +45,4 @@ instructrice get "App\Entity\Customer" "$(cat some_email_body.md)"
 [llama_parse]: https://github.com/run-llama/llama_parse
 [eml]: https://en.wikipedia.org/wiki/Email#Filename_extensions
 [dspy]: https://github.com/stanfordnlp/dspy
+[jina_reader]: https://github.com/jina-ai/reader
