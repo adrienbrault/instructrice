@@ -38,6 +38,11 @@ Would be cool to have a CLI, that accepts a FQCN and a context.
 instructrice get "App\Entity\Customer" "$(cat some_email_body.md)" 
 ```
 
+Autosave all input/schema/output in sqlite db. Like llm?
+Leverage that to test examples, add few shots, evals?
+
+Use this lib to generate a table of provider/model prices by scraping!
+
 [liform]: https://github.com/Limenius/Liform
 [instructor-php]: https://github.com/cognesy/instructor-php/
 [sf_form]: https://symfony.com/doc/current/components/form.html
