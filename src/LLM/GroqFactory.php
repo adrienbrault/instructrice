@@ -67,7 +67,7 @@ PROMPT;
         );
     }
 
-    public function gemma7b()
+    public function gemma7b(): LLMInterface
     {
         return new OpenAiLLM(
             'https://api.groq.com/openai/v1',
