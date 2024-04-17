@@ -21,7 +21,7 @@ use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
@@ -63,17 +63,15 @@ class InstructriceFactory
         );
     }
 
-    public static function createOnChunkDump(ConsoleOutputInterface $output): callable
+    public static function createOnChunkDump(ConsoleSectionOutput $section): callable
     {
-        $dumpSection = $output->section();
-
         $cloner = new VarCloner();
         $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
-        $dumper = new \Symfony\Component\VarDumper\Dumper\CliDumper(function (string $line, int $depth, string $indentPad) use ($dumpSection): void {
+        $dumper = new \Symfony\Component\VarDumper\Dumper\CliDumper(function (string $line, int $depth, string $indentPad) use ($section): void {
             if ($depth > 0) {
                 $line = str_repeat($indentPad, $depth) . $line;
             }
-            $dumpSection->writeln($line);
+            $section->writeln($line);
         });
         $dumper->setColors(true);
         \Symfony\Component\VarDumper\VarDumper::setHandler(function ($var, ?string $label = null) use ($cloner, $dumper) {
@@ -88,8 +86,8 @@ class InstructriceFactory
             $dumper->dump($var);
         });
 
-        return function (array $data, float $tokensPerSecond) use ($dumpSection) {
-            $dumpSection->clear();
+        return function (array $data, float $tokensPerSecond) use ($section) {
+            $section->clear();
             dump($data, sprintf('%.1f tokens/s', $tokensPerSecond));
         };
     }

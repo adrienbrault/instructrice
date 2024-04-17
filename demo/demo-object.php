@@ -54,6 +54,8 @@ $llmToUse = $questionHelper->ask($input, $questionSection, new ChoiceQuestion(
     0,
 ));
 $questionSection->clear();
+$output->writeln(sprintf('Using LLM: <info>%s</info>', $llmToUse));
+$output->writeln('');
 
 class Interest
 {
@@ -80,7 +82,7 @@ $instructrice = InstructriceFactory::create(
 $persons = $instructrice->deserializeList(
     context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
     type: Person::class,
-    onChunk: InstructriceFactory::createOnChunkDump($output),
+    onChunk: InstructriceFactory::createOnChunkDump($output->section()),
 );
 
 function createConsoleLogger(OutputInterface $output): LoggerInterface
