@@ -241,12 +241,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         return $responseData['choices'][0]['delta']['content'] ?? '';
     }
 
-    /**
-     * @return array|mixed|string
-     *
-     * @throws Exception
-     */
-    private function parseData(string $content): mixed
+    private function parseData(?string $content): mixed
     {
         $data = null;
         if ($content !== null) {
@@ -273,9 +268,6 @@ class OpenAiCompatibleLLM implements LLMInterface
         return $data;
     }
 
-    /**
-     * Read a line from the stream.
-     */
     private function readLine(StreamInterface $stream): string
     {
         $buffer = '';
