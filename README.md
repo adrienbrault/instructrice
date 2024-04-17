@@ -65,13 +65,14 @@ https://github.com/adrienbrault/instructrice/assets/611271/0fc554f7-090d-46c3-bd
 | [Fireworks AI][fireworks_pricing] | [hermes-2-pro-mistral-7b][fireworks_models]          |
 | [Groq][groq_pricing]              | [mixtral-8x7b-32768][groq_models]                    |
 | [Groq][groq_pricing]              | [gemma-7b-it][groq_models]                           |
-| [Together AI][together_pricing]   | [Mixtral-8x7B-Instruct-v0.1][together_models]        |
 | [Together AI][together_pricing]   | [Mistral-7B-Instruct-v0.1][together_models]          |
+| [Together AI][together_pricing]   | [Mixtral-8x7B-Instruct-v0.1][together_models]        |
+| [Together AI][together_pricing]   | [Mixtral-8x22B-Instruct-v0.1][together_models]       |
 | [Together AI][together_pricing]   | [CodeLlama-34b-Instruct][together_models]            |
 | [Deepinfra][deepinfra_pricing]    | [Mixtral-8x22B-Instruct][deepinfra_mixtral]          |
 | [Deepinfra][deepinfra_pricing]    | [microsoft/WizardLM-2-8x22B][deepinfra_wizardlm2_22] |
 | [Deepinfra][deepinfra_pricing]    | [microsoft/WizardLM-2-8x7B][deepinfra_wizardlm2_7]   |
-| [Deepinfra][deepinfra_pricing]    | [databricks/dbrx-instruct][deepinfra_dbrx]   |
+| [Deepinfra][deepinfra_pricing]    | [databricks/dbrx-instruct][deepinfra_dbrx]           |
 
 ## Acknowledgements
 

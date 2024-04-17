@@ -52,6 +52,19 @@ class Together
         );
     }
 
+    public function mixtral22(): LLMInterface
+    {
+        return new OpenAiCompatibleLLM(
+            'https://api.together.xyz/v1',
+            $this->guzzleClient,
+            $this->logger,
+            'mistralai/Mixtral-8x22B-Instruct-v0.1',
+            Mistral::getMixtralJsonSystem(),
+            null,
+            null
+        );
+    }
+
     public function mistral7(): LLMInterface
     {
         return new OpenAiCompatibleLLM(
