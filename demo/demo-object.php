@@ -6,8 +6,6 @@ use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\InstructriceFactory;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 class Interest
 {
     public ?string $name = null;
