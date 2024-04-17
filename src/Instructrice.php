@@ -13,10 +13,13 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use function Psl\Vec\filter;
 
+/**
+ * @phpstan-type InstructriceOptions array{
+ *     all_required?: bool
+ * }
+ */
 class Instructrice
 {
-    public const OPT_ALL_REQUIRED = 'all_required';
-
     public function __construct(
         private readonly LLMInterface $llm,
         private readonly LoggerInterface $logger,
@@ -30,7 +33,7 @@ class Instructrice
      * @template T
      * @param class-string<T> $type
      * @param callable(array<T>, float): void $onChunk
-     * @param array<self::OPT_*, mixed> $options
+     * @param InstructriceOptions $options
      * @return list<T>
      */
     public function deserializeList(
@@ -43,7 +46,7 @@ class Instructrice
         $schema = $this->mapSchema(
             $schema->getArrayCopy(),
             $schema,
-            $options[self::OPT_ALL_REQUIRED] ?? true
+            $options['all_required'] ?? true
         );
         $schema = [
             'type' => 'object',
