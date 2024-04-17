@@ -9,6 +9,13 @@ use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\JsonSchema\SchemaFactoryInterface;
 use ArrayObject;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
+use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
+use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\TypeNode;
+use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\Parser\TokenIterator;
+use PHPStan\PhpDocParser\Parser\TypeParser;
+use Psl\Type\TypeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -35,30 +42,24 @@ class Instructrice
     /**
      * @template T
      *
-     * @param class-string<T>                 $type
-     * @param callable(array<T>, float): void $onChunk
-     * @param InstructriceOptions             $options
+     * @param class-string<T>|TypeInterface<T> $type
+     * @param callable(array<T>, float): void  $onChunk
+     * @param InstructriceOptions              $options
      *
      * @return list<T>
      */
     public function deserializeList(
         string $context,
-        string $type,
+        string|TypeInterface $type,
         array $options = [],
         ?callable $onChunk = null,
     ): array {
-        $schema = $this->schemaFactory->buildSchema($type);
-        $schema = $this->mapSchema(
-            $schema->getArrayCopy(),
-            $schema,
-            $options['all_required'] ?? true
-        );
         $schema = [
             'type' => 'object',
             'properties' => [
                 'list' => [
                     'type' => 'array',
-                    'items' => $schema,
+                    'items' => $this->createSchema($type, $options),
                 ],
             ],
             'required' => ['list'],
@@ -108,11 +109,11 @@ class Instructrice
     /**
      * @template T
      *
-     * @param class-string<T> $type
+     * @param class-string<T>|TypeInterface<T> $type
      *
      * @return list<T>|null
      */
-    private function denormalizeList(mixed $data, string $type): ?array
+    private function denormalizeList(mixed $data, string|TypeInterface $type): ?array
     {
         if (! \is_array($data)) {
             return null;
@@ -122,6 +123,10 @@ class Instructrice
 
         if ($list === null) {
             return null;
+        }
+
+        if (! \is_string($type)) {
+            return $list;
         }
 
         return $this->serializer->denormalize(
@@ -197,5 +202,60 @@ class Instructrice
         }
 
         return $node;
+    }
+
+    /**
+     * @template T
+     *
+     * @param TypeNode|TypeInterface<T>|class-string<T> $type
+     * @param InstructriceOptions                       $options
+     */
+    public function createSchema(TypeNode|TypeInterface|string $type, array $options): mixed
+    {
+        if (\is_string($type)) {
+            $schema = $this->schemaFactory->buildSchema($type);
+
+            return $this->mapSchema(
+                $schema->getArrayCopy(),
+                $schema,
+                $options['all_required'] ?? true
+            );
+        }
+
+        if ($type instanceof TypeNode) {
+            $phpstanType = $type;
+        } else {
+            $phpstanType = (new TypeParser())->parse(
+                new TokenIterator((new Lexer())->tokenize($type->toString()))
+            );
+        }
+
+        if ($phpstanType instanceof ArrayShapeNode) {
+            $schema = [
+                'type' => 'object',
+                'properties' => [],
+            ];
+
+            foreach ($phpstanType->items as $item) {
+                if ($item->keyName === null) {
+                    continue;
+                }
+
+                $schema['properties'][(string) $item->keyName] = $this->createSchema($item->valueType, $options);
+
+                if (! $item->optional) {
+                    $schema['required'][] = (string) $item->keyName;
+                }
+            }
+
+            return $schema;
+        }
+
+        \assert($phpstanType instanceof IdentifierTypeNode);
+
+        // todo support more complex types
+        return [
+            'type' => $phpstanType->name,
+        ];
     }
 }
