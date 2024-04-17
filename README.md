@@ -156,6 +156,7 @@ Use this lib to generate a table of provider/model prices by scraping!
 [oooas]: https://github.com/goldspecdigital/oooas
 [anthropic_pricing]: https://www.anthropic.com/api
 [anthropic_models]: https://docs.anthropic.com/claude/docs/models-overview
+[deepinfra_pricing]: https://deepinfra.com/pricing
 [deepinfra_mixtral]: https://deepinfra.com/mistralai/Mixtral-8x22B-Instruct-v0.1
 [deepinfra_wizardlm2_22]: https://deepinfra.com/microsoft/WizardLM-2-8x22B
 [deepinfra_wizardlm2_7]: https://deepinfra.com/microsoft/WizardLM-2-8x7B
