@@ -138,8 +138,8 @@ class Instructrice
         if (\is_array($node)) {
             if (\array_key_exists('$ref', $node)) {
                 $ref = $node['$ref'];
-                if (str_starts_with($ref, '#/definitions/')) {
-                    $ref = substr($ref, \strlen('#/definitions/'));
+                if (str_starts_with((string) $ref, '#/definitions/')) {
+                    $ref = substr((string) $ref, \strlen('#/definitions/'));
                     $node = $schema->getDefinitions()[$ref];
                     if ($node instanceof \ArrayObject) {
                         $node = $node->getArrayCopy();

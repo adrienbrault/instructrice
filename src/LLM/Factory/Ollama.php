@@ -16,23 +16,21 @@ use function Psl\Json\encode;
 
 class Ollama
 {
-    private ClientInterface $guzzleClient;
-
-    private LoggerInterface $logger;
+    private readonly ClientInterface $guzzleClient;
 
     /**
      * @var callable(mixed): string
      */
     private $systemPrompt;
 
-    private string $baseUri;
+    private readonly string $baseUri;
 
     /**
      * @param callable(mixed): string $systemPrompt
      */
     public function __construct(
         ?ClientInterface $guzzleClient = null,
-        ?LoggerInterface $logger = null,
+        private readonly LoggerInterface $logger = new NullLogger(),
         ?callable $systemPrompt = null,
         ?string $baseUri = null,
     ) {
@@ -42,8 +40,6 @@ class Ollama
             ],
         ]);
         $this->baseUri = $baseUri ?? (getenv('OLLAMA_HOST') ?: 'http://localhost:11434') . '/v1';
-
-        $this->logger = $logger ?? new NullLogger();
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
             $encodedSchema = encode($schema);

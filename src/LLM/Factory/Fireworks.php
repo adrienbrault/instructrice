@@ -16,9 +16,7 @@ use function Psl\Json\encode;
 
 class Fireworks
 {
-    private ClientInterface $guzzleClient;
-
-    private LoggerInterface $logger;
+    private readonly ClientInterface $guzzleClient;
 
     /**
      * @var callable(mixed): string
@@ -35,7 +33,7 @@ class Fireworks
      */
     public function __construct(
         ?ClientInterface $guzzleClient = null,
-        ?LoggerInterface $logger = null,
+        private readonly LoggerInterface $logger = new NullLogger(),
         ?callable $systemPrompt = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
@@ -43,8 +41,6 @@ class Fireworks
                 'Authorization' => 'Bearer ' . getenv('FIREWORKS_API_KEY'),
             ],
         ]);
-
-        $this->logger = $logger ?? new NullLogger();
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
             return 'You are a helpful assistant with access to functions. If the user intent is unclear, consider it a structured information extraction task.';

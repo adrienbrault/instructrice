@@ -14,9 +14,7 @@ use Psr\Log\NullLogger;
 
 class Together
 {
-    private ClientInterface $guzzleClient;
-
-    private LoggerInterface $logger;
+    private readonly ClientInterface $guzzleClient;
 
     /**
      * @var callable(mixed): string
@@ -28,7 +26,7 @@ class Together
      */
     public function __construct(
         ?ClientInterface $guzzleClient = null,
-        ?LoggerInterface $logger = null,
+        private readonly LoggerInterface $logger = new NullLogger(),
         ?callable $systemPrompt = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
@@ -36,8 +34,6 @@ class Together
                 'Authorization' => 'Bearer ' . getenv('TOGETHER_API_KEY'),
             ],
         ]);
-
-        $this->logger = $logger ?? new NullLogger();
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
             return 'You are a helpful assistant that can access external functions. The responses from these function calls will be appended to this dialogue. Please provide responses based on the information from these function calls. If the user intent is unclear, consider it a structured information extraction task.';

@@ -24,7 +24,7 @@ use function Psl\Type\vec;
 
 class OpenAiCompatibleLLM implements LLMInterface
 {
-    private JsonParser $jsonParser;
+    private readonly JsonParser $jsonParser;
 
     /**
      * @param callable(mixed): string                  $systemPrompt
@@ -32,13 +32,13 @@ class OpenAiCompatibleLLM implements LLMInterface
      * @param 'json_mode'|'json_mode_with_schema'|null $jsonMode
      */
     public function __construct(
-        private string $baseUri,
+        private readonly string $baseUri,
         private readonly ClientInterface $client,
         private readonly LoggerInterface $logger,
         private readonly string $model,
         private $systemPrompt,
-        private ?string $toolMode = null,
-        private ?string $jsonMode = 'json_mode'
+        private readonly ?string $toolMode = null,
+        private readonly ?string $jsonMode = 'json_mode'
     ) {
         $this->jsonParser = new JsonParser();
     }

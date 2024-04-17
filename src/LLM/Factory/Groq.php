@@ -16,9 +16,7 @@ use function Psl\Json\encode;
 
 class Groq
 {
-    private ClientInterface $guzzleClient;
-
-    private LoggerInterface $logger;
+    private readonly ClientInterface $guzzleClient;
 
     /**
      * @var callable(mixed): string
@@ -30,7 +28,7 @@ class Groq
      */
     public function __construct(
         ?ClientInterface $guzzleClient = null,
-        ?LoggerInterface $logger = null,
+        private readonly LoggerInterface $logger = new NullLogger(),
         ?callable $systemPrompt = null,
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
@@ -38,8 +36,6 @@ class Groq
                 'Authorization' => 'Bearer ' . getenv('GROQ_API_KEY'),
             ],
         ]);
-
-        $this->logger = $logger ?? new NullLogger();
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
             $encodedSchema = encode($schema);
