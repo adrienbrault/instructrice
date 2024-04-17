@@ -68,6 +68,18 @@ class SchemaFactory
                     $node['type'] = $node['type'][0];
                 }
             }
+
+            if (\is_array($node['type'] ?? null)
+                && \in_array('null', $node['type'], true)
+            ) {
+                $node['type'] = array_diff($node['type'], ['null']);
+                $node['nullable'] = true;
+
+                if (\count($node['type']) === 1) {
+                    $node['type'] = $node['type'][0];
+                }
+            }
+
             if ($makeAllRequired
                 && \is_array($node['anyOf'] ?? null)
             ) {
