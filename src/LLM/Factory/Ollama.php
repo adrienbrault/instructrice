@@ -49,14 +49,14 @@ class Ollama
             $encodedSchema = encode($schema);
 
             return <<<PROMPT
-You are a helpful assistant that answers in JSON.
-If the user intent is unclear, consider it a structured information extraction task.
+                You are a helpful assistant that answers in JSON.
+                If the user intent is unclear, consider it a structured information extraction task.
 
-Here's the json schema you must adhere to:
-<schema>
-{$encodedSchema}
-</schema>
-PROMPT;
+                Here's the json schema you must adhere to:
+                <schema>
+                {$encodedSchema}
+                </schema>
+                PROMPT;
         };
     }
 
@@ -139,23 +139,23 @@ PROMPT;
             $encodedSchema = encode($schema);
 
             return <<<PROMPT
-You are a helpful assistant that answers in JSON.
-If the user intent is unclear, consider it a structured information extraction task.
+                You are a helpful assistant that answers in JSON.
+                If the user intent is unclear, consider it a structured information extraction task.
 
-## Available Tools
+                ## Available Tools
 
-A single tool is available with the following schema:
-```json
-{$encodedSchema}
-```
+                A single tool is available with the following schema:
+                ```json
+                {$encodedSchema}
+                ```
 
-Here is an example invocation:
-```json
-{"firstProperty":...}
-```
+                Here is an example invocation:
+                ```json
+                {"firstProperty":...}
+                ```
 
-Strictly follow the schema.
-PROMPT;
+                Strictly follow the schema.
+                PROMPT;
         };
     }
 }

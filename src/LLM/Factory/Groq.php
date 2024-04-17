@@ -45,16 +45,16 @@ class Groq
             $encodedSchema = encode($schema);
 
             return <<<PROMPT
-You are a helpful assistant that answers in JSON.
-If the user intent is unclear, consider it a structured information extraction task.
+                You are a helpful assistant that answers in JSON.
+                If the user intent is unclear, consider it a structured information extraction task.
 
-Here's the json schema you must adhere to:
-<schema>
-{$encodedSchema}
-</schema>
+                Here's the json schema you must adhere to:
+                <schema>
+                {$encodedSchema}
+                </schema>
 
-ONLY OUTPUT JSON.
-PROMPT;
+                ONLY OUTPUT JSON.
+                PROMPT;
         };
     }
 

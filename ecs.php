@@ -27,6 +27,7 @@ return ECSConfig::configure()
     ->withPhpCsFixerSets(
         symfony: true,
         symfonyRisky: true,
+        php81Migration: true,
     )
 
     ->withSkip([
