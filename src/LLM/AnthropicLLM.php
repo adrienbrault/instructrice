@@ -50,6 +50,8 @@ class AnthropicLLM implements LLMInterface
             'system' => \call_user_func($this->systemPrompt, $schema),
         ];
 
+        // Tool mode does not support streaming.
+
         $this->logger->debug('Anthropic Request', $request);
 
         try {
