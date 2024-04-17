@@ -6,6 +6,7 @@ namespace AdrienBrault\Instructrice\LLM;
 
 use GregHunt\PartialJson\JsonParser;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
@@ -120,14 +121,24 @@ class OpenAiLLM implements LLMInterface
 
         $this->logger->debug('OpenAI Request', $request);
 
-        $response = $this->client->request(
-            'POST',
-            $this->baseUri . '/chat/completions',
-            [
-                RequestOptions::JSON => $request,
-                RequestOptions::STREAM => true,
-            ]
-        );
+        try {
+            $response = $this->client->request(
+                'POST',
+                $this->baseUri . '/chat/completions',
+                [
+                    RequestOptions::JSON => $request,
+                    RequestOptions::STREAM => true,
+                ]
+            );
+        } catch (RequestException $e) {
+            $this->logger->error('OpenAI Request error', [
+                'error' => $e->getMessage(),
+                'response' => $e->getResponse()->getBody()->getContents(true),
+            ]);
+
+            throw $e;
+        }
+
         $content = '';
         $lastContent = '';
         while (! $response->getBody()->eof()) {
