@@ -28,6 +28,9 @@ $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
     $persons = $instructrice->deserializeList(
         context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         type: Person::class,
+        options: [
+            'all_required' => true,
+        ],
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     );
 });

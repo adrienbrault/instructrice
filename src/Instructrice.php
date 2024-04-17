@@ -49,7 +49,7 @@ class Instructrice
 
         $schema = $this->schemaFactory->createListSchema(
             $type,
-            $options['all_required'] ?? true,
+            $options['all_required'] ?? false,
             $listPropertyName
         );
 
