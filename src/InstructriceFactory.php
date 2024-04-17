@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\Attribute\Instruction;
+use AdrienBrault\Instructrice\LLM\Factory\Ollama;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
-use AdrienBrault\Instructrice\LLM\OllamaFactory;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
 use ApiPlatform\JsonSchema\SchemaFactory;
 use ApiPlatform\Metadata\Property\Factory\AttributePropertyMetadataFactory;
@@ -48,7 +48,7 @@ class InstructriceFactory
         array $directories = [],
     ): Instructrice {
         $logger ??= new NullLogger();
-        $llm ??= (new OllamaFactory(logger: $logger))->hermes2pro();
+        $llm ??= (new Ollama(logger: $logger))->hermes2pro();
 
         $propertyInfo = self::createPropertyInfoExtractor();
         $schemaFactory = self::createSchemaFactory($propertyInfo, $directories);

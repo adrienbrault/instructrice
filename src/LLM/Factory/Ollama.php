@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM;
+namespace AdrienBrault\Instructrice\LLM\Factory;
 
+use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
@@ -11,7 +13,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use function Psl\Json\encode;
 
-class OllamaFactory
+class Ollama
 {
     private ClientInterface $guzzleClient;
 
@@ -58,7 +60,7 @@ PROMPT;
 
     public function hermes2pro(string $quantization = 'Q4_K_M'): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
@@ -69,7 +71,7 @@ PROMPT;
 
     public function dolphincoder7B(string $quantization = 'q4_K_M'): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
@@ -80,7 +82,7 @@ PROMPT;
 
     public function dolphincoder15B(string $quantization = 'q4_K_M'): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
@@ -91,7 +93,7 @@ PROMPT;
 
     public function stablelm2(string $quantization = 'q8_0'): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
@@ -102,7 +104,7 @@ PROMPT;
 
     public function commandR(string $quantization = 'q4_K_M'): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
@@ -115,7 +117,7 @@ PROMPT;
 
     public function commandRPlus(string $quantization = 'q2_K'): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,

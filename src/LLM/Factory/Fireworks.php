@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM;
+namespace AdrienBrault\Instructrice\LLM\Factory;
 
+use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
@@ -11,7 +13,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use function Psl\Json\encode;
 
-class FireworksFactory
+class Fireworks
 {
     private ClientInterface $guzzleClient;
 
@@ -62,7 +64,7 @@ PROMPT;
 
     public function firefunctionV1(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.fireworks.ai/inference/v1',
             $this->guzzleClient,
             $this->logger,
@@ -74,7 +76,7 @@ PROMPT;
 
     public function mixtral(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.fireworks.ai/inference/v1',
             $this->guzzleClient,
             $this->logger,
@@ -87,7 +89,7 @@ PROMPT;
 
     public function bigMixtral(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.fireworks.ai/inference/v1',
             $this->guzzleClient,
             $this->logger,
@@ -100,7 +102,7 @@ PROMPT;
 
     public function dbrx(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.fireworks.ai/inference/v1',
             $this->guzzleClient,
             $this->logger,
@@ -113,7 +115,7 @@ PROMPT;
 
     public function hermes2pro(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.fireworks.ai/inference/v1',
             $this->guzzleClient,
             $this->logger,

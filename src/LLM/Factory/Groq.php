@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM;
+namespace AdrienBrault\Instructrice\LLM\Factory;
 
+use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
@@ -11,7 +13,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use function Psl\Json\encode;
 
-class MistralFactory
+class Groq
 {
     private ClientInterface $guzzleClient;
 
@@ -32,7 +34,7 @@ class MistralFactory
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
             RequestOptions::HEADERS => [
-                'Authorization' => 'Bearer ' . getenv('MISTRAL_API_KEY'),
+                'Authorization' => 'Bearer ' . getenv('GROQ_API_KEY'),
             ],
         ]);
 
@@ -44,32 +46,39 @@ class MistralFactory
 You are a helpful assistant that answers in JSON.
 If the user intent is unclear, consider it a structured information extraction task.
 
+Here's the json schema you must adhere to:
 <schema>
 {$encodedSchema}
 </schema>
+
+ONLY OUTPUT JSON.
 PROMPT;
         };
     }
 
-    public function mistralSmall(string $version = 'latest'): LLMInterface
+    public function mixtral(): LLMInterface
     {
-        return new OpenAiLLM(
-            'https://api.mistral.ai/v1',
+        return new OpenAiCompatibleLLM(
+            'https://api.groq.com/openai/v1',
             $this->guzzleClient,
             $this->logger,
-            'mistral-small-' . $version,
+            'mixtral-8x7b-32768',
             $this->systemPrompt,
+            null,
+            null
         );
     }
 
-    public function mistralLarge(string $version = 'latest'): LLMInterface
+    public function gemma7b(): LLMInterface
     {
-        return new OpenAiLLM(
-            'https://api.mistral.ai/v1',
+        return new OpenAiCompatibleLLM(
+            'https://api.groq.com/openai/v1',
             $this->guzzleClient,
             $this->logger,
-            'mistral-large-' . $version,
+            'gemma-7b-it',
             $this->systemPrompt,
+            null,
+            null
         );
     }
 }

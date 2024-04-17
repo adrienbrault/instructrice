@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM;
+namespace AdrienBrault\Instructrice\LLM\Factory;
 
+use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class TogetherFactory
+class Together
 {
     private ClientInterface $guzzleClient;
 
@@ -44,7 +46,7 @@ class TogetherFactory
 
     public function mixtral(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.together.xyz/v1',
             $this->guzzleClient,
             $this->logger,
@@ -56,7 +58,7 @@ class TogetherFactory
 
     public function mistral7B(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.together.xyz/v1',
             $this->guzzleClient,
             $this->logger,
@@ -68,7 +70,7 @@ class TogetherFactory
 
     public function codeLLama34b(): LLMInterface
     {
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             'https://api.together.xyz/v1',
             $this->guzzleClient,
             $this->logger,

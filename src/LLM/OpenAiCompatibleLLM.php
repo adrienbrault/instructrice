@@ -21,7 +21,7 @@ use function Psl\Type\string;
 use function Psl\Type\union;
 use function Psl\Type\vec;
 
-class OpenAiLLM implements LLMInterface
+class OpenAiCompatibleLLM implements LLMInterface
 {
     private JsonParser $jsonParser;
 

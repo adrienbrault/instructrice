@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM;
+namespace AdrienBrault\Instructrice\LLM\Factory;
 
+use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class OpenAiFactory
+class OpenAi
 {
     private ClientInterface $guzzleClient;
 
@@ -54,7 +56,7 @@ PROMPT;
             $model .= '-' . $version;
         }
 
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
@@ -71,7 +73,7 @@ PROMPT;
             $model .= '-' . $version;
         }
 
-        return new OpenAiLLM(
+        return new OpenAiCompatibleLLM(
             $this->baseUri,
             $this->guzzleClient,
             $this->logger,
