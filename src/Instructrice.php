@@ -80,8 +80,10 @@ class Instructrice
                         'json'
                     );
                 } catch (\Throwable $e) {
-                    $this->logger->warning('Failed to denormalize list', [
-                        'type' => $list,
+                    $this->logger->info('Failed to denormalize list', [
+                        'rawData' => $rawData,
+                        'data' => $data,
+                        'type' => $type,
                         'error' => $e,
                     ]);
 
