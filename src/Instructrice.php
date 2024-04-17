@@ -88,10 +88,12 @@ class Instructrice
                     return; // Ignore, final denormalize should fail if so bad
                 }
 
-                $onChunk(
-                    $denormalized,
-                    $this->gp3Tokenizer->count($rawData) / (microtime(true) - $t0),
-                );
+                // For models not using the GPT tokenizer, this won't be accurate
+                // However this makes comparing the speed of different models better
+                // than using different tokenizers
+                $tokensPerSecond = $this->gp3Tokenizer->count($rawData) / (microtime(true) - $t0);
+
+                $onChunk($denormalized, $tokensPerSecond);
             };
         }
 
