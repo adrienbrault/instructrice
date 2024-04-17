@@ -63,22 +63,8 @@ class Instructrice
         if ($onChunk !== null) {
             $t0 = microtime(true);
             $llmOnChunk = function (mixed $data, string $rawData) use ($type, $onChunk, $t0) {
-                if (! is_array($data)) {
-                    return;
-                }
-
-                $list = $data['list'] ?? null;
-
-                if ($list === null) {
-                    return;
-                }
-
                 try {
-                    $denormalized = $this->serializer->denormalize(
-                        $list,
-                        sprintf('%s[]', $type),
-                        'json'
-                    );
+                    $denormalized = $this->denormalizeList($data, $type);
                 } catch (\Throwable $e) {
                     $this->logger->info('Failed to denormalize list', [
                         'rawData' => $rawData,
@@ -88,6 +74,10 @@ class Instructrice
                     ]);
 
                     return; // Ignore, final denormalize should fail if so bad
+                }
+
+                if ($denormalized === null) {
+                    return;
                 }
 
                 // For models not using the GPT tokenizer, this won't be accurate
@@ -107,8 +97,28 @@ class Instructrice
             $llmOnChunk,
         );
 
+        return $this->denormalizeList($data, $type) ?? [];
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $type
+     * @return null|list<T>
+     */
+    private function denormalizeList(mixed $data, string $type): ?array
+    {
+        if (! is_array($data)) {
+            return null;
+        }
+
+        $list = $data['list'] ?? null;
+
+        if ($list === null) {
+            return null;
+        }
+
         return $this->serializer->denormalize(
-            $data['list'],
+            $list,
             sprintf('%s[]', $type),
             'json'
         );
