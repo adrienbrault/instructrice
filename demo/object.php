@@ -10,7 +10,7 @@ class Interest
 {
     public ?string $name = null;
 
-    #[Instruction(description: 'A set of keywords to to learn more about this interest. Write in French.')]
+    #[Instruction('A set of keywords to to learn more about this interest. Write in French.')]
     public ?string $searchQueryToLearnMore = null;
 }
 class Person
