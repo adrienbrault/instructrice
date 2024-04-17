@@ -21,6 +21,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
+use function Psl\Type\vec;
 use function Psl\Vec\filter;
 
 /**
@@ -125,8 +126,8 @@ class Instructrice
             return null;
         }
 
-        if (! \is_string($type)) {
-            return $list;
+        if ($type instanceof TypeInterface) {
+            return vec($type)->coerce($list);
         }
 
         return $this->serializer->denormalize(
