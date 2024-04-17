@@ -6,9 +6,8 @@ namespace AdrienBrault\Instructrice\Tests;
 
 use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\SchemaFactory;
 use AdrienBrault\Instructrice\Tests\Fixtures\Person;
-use ApiPlatform\JsonSchema\Schema;
-use ApiPlatform\JsonSchema\SchemaFactoryInterface;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -21,18 +20,26 @@ class InstructriceTest extends TestCase
 {
     public function testDeserializeList(): void
     {
+        $schema = [
+            'type' => 'some_type',
+        ];
+
         $llm = $this->createMock(LLMInterface::class);
         $llm
             ->method('get')
+            ->with(
+                $schema,
+                'context',
+            )
             ->willReturn([
                 'list' => [
                     'name' => 'John',
                 ],
             ]);
-        $schemaFactory = $this->createMock(SchemaFactoryInterface::class);
+        $schemaFactory = $this->createMock(SchemaFactory::class);
         $schemaFactory
-            ->method('buildSchema')
-            ->willReturn($schema = new Schema());
+            ->method('createListSchema')
+            ->willReturn($schema);
         $serializer = $this->createMock(Serializer::class);
         $serializer
             ->method('denormalize')

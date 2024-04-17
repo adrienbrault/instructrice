@@ -5,16 +5,7 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\LLM\LLMInterface;
-use ApiPlatform\JsonSchema\Schema;
-use ApiPlatform\JsonSchema\SchemaFactoryInterface;
-use ArrayObject;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
-use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
-use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\TypeNode;
-use PHPStan\PhpDocParser\Lexer\Lexer;
-use PHPStan\PhpDocParser\Parser\TokenIterator;
-use PHPStan\PhpDocParser\Parser\TypeParser;
 use Psl\Type\TypeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -22,7 +13,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
 use function Psl\Type\vec;
-use function Psl\Vec\filter;
 
 /**
  * @phpstan-type InstructriceOptions array{
@@ -35,7 +25,7 @@ class Instructrice
         private readonly LLMInterface $llm,
         private readonly LoggerInterface $logger,
         private readonly Gpt3Tokenizer $gp3Tokenizer,
-        private readonly SchemaFactoryInterface $schemaFactory,
+        private readonly SchemaFactory $schemaFactory,
         public readonly SerializerInterface&DenormalizerInterface $serializer,
     ) {
     }
@@ -55,23 +45,20 @@ class Instructrice
         array $options = [],
         ?callable $onChunk = null,
     ): array {
-        $schema = [
-            'type' => 'object',
-            'properties' => [
-                'list' => [
-                    'type' => 'array',
-                    'items' => $this->createSchema($type, $options),
-                ],
-            ],
-            'required' => ['list'],
-        ];
+        $listPropertyName = 'list';
+
+        $schema = $this->schemaFactory->createListSchema(
+            $type,
+            $options['all_required'] ?? true,
+            $listPropertyName
+        );
 
         $llmOnChunk = null;
         if ($onChunk !== null) {
             $t0 = microtime(true);
-            $llmOnChunk = function (mixed $data, string $rawData) use ($type, $onChunk, $t0) {
+            $llmOnChunk = function (mixed $data, string $rawData) use ($type, $listPropertyName, $onChunk, $t0) {
                 try {
-                    $denormalized = $this->denormalizeList($data, $type);
+                    $denormalized = $this->denormalizeList($data, $type, $listPropertyName);
                 } catch (Throwable $e) {
                     $this->logger->info('Failed to denormalize list', [
                         'rawData' => $rawData,
@@ -104,7 +91,7 @@ class Instructrice
             $llmOnChunk,
         );
 
-        return $this->denormalizeList($data, $type) ?? [];
+        return $this->denormalizeList($data, $type, $listPropertyName) ?? [];
     }
 
     /**
@@ -114,13 +101,13 @@ class Instructrice
      *
      * @return list<T>|null
      */
-    private function denormalizeList(mixed $data, string|TypeInterface $type): ?array
+    private function denormalizeList(mixed $data, string|TypeInterface $type, string $listPropertyName): ?array
     {
         if (! \is_array($data)) {
             return null;
         }
 
-        $list = $data['list'] ?? null;
+        $list = $data[$listPropertyName] ?? null;
 
         if ($list === null) {
             return null;
@@ -135,128 +122,5 @@ class Instructrice
             sprintf('%s[]', $type),
             'json'
         );
-    }
-
-    private function mapSchema(mixed $node, Schema $schema, bool $makeAllRequired): mixed
-    {
-        if ($node instanceof ArrayObject) {
-            $node = $node->getArrayCopy();
-        }
-
-        if (\is_array($node)) {
-            if (\array_key_exists('$ref', $node)) {
-                $ref = $node['$ref'];
-                if (str_starts_with((string) $ref, '#/definitions/')) {
-                    $ref = substr((string) $ref, \strlen('#/definitions/'));
-                    $node = $schema->getDefinitions()[$ref];
-                    if ($node instanceof ArrayObject) {
-                        $node = $node->getArrayCopy();
-                    }
-
-                    return $this->mapSchema($node, $schema, $makeAllRequired);
-                }
-            }
-
-            unset($node['deprecated']);
-            if (($node['description'] ?? null) === '') {
-                unset($node['description']);
-            }
-
-            if ($makeAllRequired
-                && \is_array($node['properties'] ?? null)
-            ) {
-                $properties = $node['properties'];
-                $required = [
-                    ...($node['required'] ?? []),
-                    ...array_keys($properties),
-                ];
-                $node['required'] = $required;
-            }
-            if ($makeAllRequired
-                && \is_array($node['type'] ?? null)
-            ) {
-                $node['type'] = array_diff($node['type'], ['null']);
-
-                if (\count($node['type']) === 1) {
-                    $node['type'] = $node['type'][0];
-                }
-            }
-            if ($makeAllRequired
-                && \is_array($node['anyOf'] ?? null)
-            ) {
-                $node['anyOf'] = filter(
-                    $node['anyOf'],
-                    fn ($item) => $item !== [
-                        'type' => 'null',
-                    ]
-                );
-
-                if (\count($node['anyOf']) === 1) {
-                    return $this->mapSchema($node['anyOf'][0], $schema, $makeAllRequired);
-                }
-            }
-
-            return array_map(
-                fn ($value) => $this->mapSchema($value, $schema, $makeAllRequired),
-                $node,
-            );
-        }
-
-        return $node;
-    }
-
-    /**
-     * @template T
-     *
-     * @param TypeNode|TypeInterface<T>|class-string<T> $type
-     * @param InstructriceOptions                       $options
-     */
-    public function createSchema(TypeNode|TypeInterface|string $type, array $options): mixed
-    {
-        if (\is_string($type)) {
-            $schema = $this->schemaFactory->buildSchema($type);
-
-            return $this->mapSchema(
-                $schema->getArrayCopy(),
-                $schema,
-                $options['all_required'] ?? true
-            );
-        }
-
-        if ($type instanceof TypeNode) {
-            $phpstanType = $type;
-        } else {
-            $phpstanType = (new TypeParser())->parse(
-                new TokenIterator((new Lexer())->tokenize($type->toString()))
-            );
-        }
-
-        if ($phpstanType instanceof ArrayShapeNode) {
-            $schema = [
-                'type' => 'object',
-                'properties' => [],
-            ];
-
-            foreach ($phpstanType->items as $item) {
-                if ($item->keyName === null) {
-                    continue;
-                }
-
-                $schema['properties'][(string) $item->keyName] = $this->createSchema($item->valueType, $options);
-
-                if (! $item->optional) {
-                    $schema['required'][] = (string) $item->keyName;
-                }
-            }
-
-            return $schema;
-        }
-
-        \assert($phpstanType instanceof IdentifierTypeNode);
-
-        // todo support more complex types
-        return [
-            'type' => $phpstanType->name,
-        ];
     }
 }

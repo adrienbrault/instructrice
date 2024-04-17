@@ -8,7 +8,7 @@ use AdrienBrault\Instructrice\Attribute\Instruction;
 use AdrienBrault\Instructrice\LLM\Factory\Ollama;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
-use ApiPlatform\JsonSchema\SchemaFactory;
+use ApiPlatform\JsonSchema\SchemaFactory as ApiPlatformSchemaFactory;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\Property\Factory\AttributePropertyMetadataFactory;
 use ApiPlatform\Metadata\Property\Factory\DefaultPropertyMetadataFactory;
@@ -55,7 +55,9 @@ class InstructriceFactory
         $llm ??= (new Ollama(logger: $logger))->hermes2pro();
 
         $propertyInfo = self::createPropertyInfoExtractor();
-        $schemaFactory = self::createSchemaFactory($propertyInfo, $directories);
+        $schemaFactory = new SchemaFactory(
+            self::createApiPlatformSchemaFactory($propertyInfo, $directories)
+        );
         $serializer = self::createSerializer($propertyInfo);
 
         return new Instructrice(
@@ -110,13 +112,13 @@ class InstructriceFactory
     /**
      * @param list<string> $directories
      */
-    public static function createSchemaFactory(PropertyInfoExtractor $propertyInfo, array $directories): SchemaFactory
+    public static function createApiPlatformSchemaFactory(PropertyInfoExtractor $propertyInfo, array $directories): ApiPlatformSchemaFactory
     {
         $resourceClassResolver = new ResourceClassResolver(
             new AttributesResourceNameCollectionFactory($directories)
         );
 
-        return new SchemaFactory(
+        return new ApiPlatformSchemaFactory(
             null,
             new AttributesResourceMetadataCollectionFactory(null),
             new PropertyInfoPropertyNameCollectionFactory($propertyInfo),
