@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5122f63ac36ff8c310467c002a73e85b",
+    "content-hash": "c7c3dffc2ff71dffbc37da4311434100",
     "packages": [
         {
             "name": "api-platform/json-schema",
@@ -3439,6 +3439,59 @@
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
             "time": "2022-02-21T01:04:05+00:00"
+        },
+        {
+            "name": "php-standard-library/phpstan-extension",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-standard-library/phpstan-extension.git",
+                "reference": "53601fe346aa90cbeaf9916f15eed46a3cb90ead"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-standard-library/phpstan-extension/zipball/53601fe346aa90cbeaf9916f15eed46a3cb90ead",
+                "reference": "53601fe346aa90cbeaf9916f15eed46a3cb90ead",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^1.7"
+            },
+            "conflict": {
+                "azjezz/psl": "<1.6||>=3.0"
+            },
+            "require-dev": {
+                "azjezz/psl": "^1.6||^2.0",
+                "nikic/php-parser": "^4.14.0",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psl\\PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan PSL extension",
+            "support": {
+                "issues": "https://github.com/php-standard-library/phpstan-extension/issues",
+                "source": "https://github.com/php-standard-library/phpstan-extension/tree/1.0.0"
+            },
+            "time": "2022-06-10T11:39:34+00:00"
         },
         {
             "name": "phpstan/phpstan",
