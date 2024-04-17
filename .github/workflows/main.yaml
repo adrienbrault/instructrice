@@ -1,0 +1,66 @@
+name: Tests
+
+on:
+    pull_request: ~
+    push: ~
+
+jobs:
+    checks:
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - php_version: '8.1'
+                      symfony_version: '6.2'
+                php_version:
+                    - '8.2'
+                    - '8.3'
+                symfony_version:
+                    - '6.2'
+                    - '6.4'
+                    - '7.0'
+
+        name: 'PHP ${{ matrix.php_version }} - Symfony ${{ matrix.symfony_version }}'
+
+        steps:
+            -   uses: actions/checkout@v2
+
+            -
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php_version }}
+                    coverage: none
+                    extensions: bcmath
+
+            -   name: Get composer cache directory
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            -   name: Cache dependencies
+                uses: actions/cache@v4
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ runner.os }}-composer-php${{ matrix.php_version }}-sf${{ matrix.symfony_version }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ runner.os }}-composer-
+
+            -   name: "Install symfony/flex for SYMFONY_REQUIRE"
+                run: |
+                    composer global config --no-plugins allow-plugins.symfony/flex true
+                    composer global require --no-progress --no-scripts --no-plugins symfony/flex
+                    
+            -   name: 'Install dependencies'
+                run: SYMFONY_REQUIRE='${{ matrix.symfony_version }}.*' composer update ${{ matrix.composer-flags }} --prefer-dist
+
+            - run: composer normalize --dry-run
+              if: always()
+            - run: vendor/bin/rector --dry-run
+              if: always()
+            - run: vendor/bin/ecs
+              if: always()
+            - run: vendor/bin/phpstan
+              if: always()
+            - run: vendor/bin/phpunit
+              if: always()
+
