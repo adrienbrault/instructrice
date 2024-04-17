@@ -15,16 +15,10 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
 $input = new ArgvInput();
 $output = new ConsoleOutput($input->hasParameterOption('-v', true) ? ConsoleOutput::VERBOSITY_DEBUG : ConsoleOutput::VERBOSITY_NORMAL);
@@ -65,96 +59,11 @@ $instructrice = InstructriceFactory::create(
     logger: $logger,
 );
 
-class Person
-{
-    #[NotBlank]
-    #[Regex(
-        '/ /',
-        message: 'Include both the first and last name.'
-    )]
-    #[Regex(
-        '/@/',
-        message: 'Only include the first and last name.',
-        match: false,
-    )]
-    #[Regex(
-        '/^([A-Z][^A-Z]* ?)+$/',
-        message: 'Format like this: First Last',
-    )]
-    public ?string $name = null;
-
-    #[NotBlank]
-    #[Length(min: 75)]
-    #[Regex(
-        '/ (et|de|pour|est|connu) /i',
-        message: 'The sentences must be written in french, not english.'
-    )]
-    #[Regex(
-        '/DAMN/',
-        message: 'You must include "DAMN".',
-    )]
-    public ?string $biography = null;
-}
-
-$tableSection = $output->section();
-$table = new Table($tableSection);
-$table->setHeaderTitle(sprintf('LLM: %s', $llmToUse));
-$table->setColumnMaxWidth(0, 20);
-$table->setColumnMaxWidth(1, 50);
-$table->setHeaders(['Name', 'Biography']);
-$table->setColumnWidths([20, 50]);
-$table->render();
-
-$form = $instructrice->fillCollection(
+$persons = $instructrice->deserializeList(
     context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
-    entryOptions: [
-        'data_class' => Person::class,
-    ],
-    newEntryForm: fn (FormBuilderInterface $builder) => $builder
-        ->add('name')
-        ->add('biography', null, [
-            'liform' => [
-                // todo fill this using custom attributes
-                'description' => 'Succintly describe the person\'s life.',
-            ],
-        ]),
-    minEntries: 2,
-    retries: 3,
-    onChunk: function (FormInterface $form, float $tokensPerSecond) use ($tableSection, $table) {
-        $listData = $form->get('list')->getData();
-
-        $table->setRows([]);
-        $yo = function (FormInterface $form) {
-            $value = $form->getData();
-            if (! $form->isValid()) {
-                $value = sprintf('<error>%s</error>', $value ?? 'null');
-            }
-            return $value;
-        };
-        foreach ($form->get('list') as $personForm) {
-            $table->addRow([
-                $yo($personForm->get('name')),
-                $yo($personForm->get('biography')),
-            ]);
-        }
-
-        //        $table->setRows(
-        //            array_map(
-        //                fn (Person $person) => [$person->name, $person->biography],
-        //                $listData,
-        //            ),
-        //        );
-        $table->setFooterTitle(sprintf('%.1f tokens/s', $tokensPerSecond));
-
-        $tableSection->clear();
-        $table->render();
-    },
+    type: \Demo\Person::class,
+    onChunk: InstructriceFactory::createOnChunkDump($output),
 );
-
-dump([
-    'data' => $form->getData(),
-    'errors' => (string) $form->getErrors(true),
-]);
 
 function createConsoleLogger(OutputInterface $output): LoggerInterface
 {

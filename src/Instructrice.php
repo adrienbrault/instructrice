@@ -5,235 +5,164 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\LLM\LLMInterface;
+use ApiPlatform\JsonSchema\Schema;
+use ApiPlatform\JsonSchema\SchemaFactoryInterface;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
-use GuzzleHttp\Exception\RequestException;
-use Limenius\Liform\Form\Extension\AddLiformExtension;
-use Limenius\Liform\LiformInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormErrorIterator;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\Validation;
-use function Psl\Regex\replace;
-use function Psl\Vec\filter_nulls;
-use function Psl\Vec\map;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use function Psl\Vec\filter;
 
 class Instructrice
 {
+    public const OPT_ALL_REQUIRED = 'all_required';
+
     public function __construct(
-        private readonly FormFactoryInterface $formFactory,
-        private readonly LiformInterface $liform,
         private readonly LLMInterface $llm,
         private readonly LoggerInterface $logger,
         private readonly Gpt3Tokenizer $gp3Tokenizer,
+        private readonly SchemaFactoryInterface $schemaFactory,
+        public readonly SerializerInterface&DenormalizerInterface $serializer,
     ) {
     }
 
     /**
-     * @param callable(FormFactoryInterface, float): FormInterface $newForm
-     * @param FormInterface|null $form A previously submitted forms with validation errors
+     * @template T
+     * @param class-string<T> $type
+     * @param callable(array<T>, float): void $onChunk
+     * @param array<self::OPT_*, mixed> $options
+     * @return list<T>
      */
-    public function fillForm(
+    public function deserializeList(
         string $context,
-        callable $newForm,
-        int $retries = 0,
-        ?FormInterface $form = null,
+        string $type,
+        array $options = [],
         ?callable $onChunk = null,
-    ): FormInterface {
-        $form ??= $newForm($this->formFactory);
-
-        $formattedErrors = $this->formatErrors($form);
-
-        $schema = $this->liform->transform($form);
-        unset($schema['title']);
+    ): array {
+        $schema = $this->schemaFactory->buildSchema($type);
+        $schema = $this->mapSchema(
+            $schema->getArrayCopy(),
+            $schema,
+            $options[self::OPT_ALL_REQUIRED] ?? true
+        );
+        $schema = [
+            'type' => 'object',
+            'properties' => [
+                'list' => [
+                    'type' => 'array',
+                    'items' => $schema,
+                ],
+            ],
+            'required' => ['list'],
+        ];
 
         $llmOnChunk = null;
-        $t0 = microtime(true);
         if ($onChunk !== null) {
-            $llmOnChunk = function (mixed $data, string $rawData) use ($onChunk, $newForm, $t0) {
-                $secondsElapsed = microtime(true) - $t0;
+            $t0 = microtime(true);
+            $llmOnChunk = function (mixed $data, string $rawData) use ($type, $onChunk, $t0) {
+                $list = $data['list'] ?? null;
+
+                if ($list === null) {
+                    return;
+                }
+
+                try {
+                    $denormalized = $this->serializer->denormalize(
+                        $list,
+                        sprintf('%s[]', $type),
+                        'json'
+                    );
+                } catch (\Throwable $e) {
+                    $this->logger->warning('Failed to denormalize list', [
+                        'type' => $list,
+                        'error' => $e,
+                    ]);
+
+                    return; // Ignore, final denormalize should fail if so bad
+                }
 
                 $onChunk(
-                    $this->createFormWithLLMData($data, $newForm),
-                    $this->gp3Tokenizer->count($rawData) / $secondsElapsed,
+                    $denormalized,
+                    $this->gp3Tokenizer->count($rawData) / (microtime(true) - $t0),
                 );
             };
         }
-        try {
-            $data = $this->llm->get(
-                $schema,
-                $context,
-                $formattedErrors,
-                $form->getData(),
-                $llmOnChunk,
-            );
-        } catch (\Throwable $e) {
-            dump($e);
 
-            if ($e instanceof RequestException) {
-                dump($e->getResponse()->getBody()->getContents(true));
-            }
-
-            throw $e;
-        }
-
-        $form = $this->createFormWithLLMData($data, $newForm);
-
-        $this->logger->debug('Form state post submission', [
-            'isvalid' => $form->isValid(),
-            'errors' => ! $form->isValid() ? $formattedErrors : [],
-        ]);
-
-        if ($retries === 0
-            || $form->isValid()
-        ) {
-            return $form;
-        }
-
-        // Retry, feeding back the errors
-        return $this->fillForm(
-            context: $context,
-            newForm: $newForm,
-            retries: $retries - 1,
-            form: $form,
-            onChunk: $onChunk,
-        );
-    }
-
-    /**
-     * @param callable(FormBuilderInterface, float): FormInterface $newEntryForm
-     */
-    public function fillCollection(
-        string $context,
-        callable $newEntryForm,
-        ?int $minEntries = null,
-        array $entryOptions = [],
-        int $retries = 0,
-        ?callable $onChunk = null,
-    ): FormInterface {
-        $entryType = new class() extends AbstractType {
-            /**
-             * @var callable(FormBuilderInterface): FormInterface
-             */
-            public static $newEntryForm = null;
-
-            public static array $entryOptions = [];
-
-            public function buildForm(FormBuilderInterface $builder, array $options): void
-            {
-                call_user_func(static::$newEntryForm, $builder);
-            }
-
-            public function configureOptions(OptionsResolver $resolver)
-            {
-                $resolver->setDefaults(static::$entryOptions);
-            }
-        };
-        $entryType::$newEntryForm = $newEntryForm;
-        $entryType::$entryOptions = $entryOptions;
-
-        $entryTypeName = get_class($entryType);
-        $constraints = [];
-        if ($minEntries !== null) {
-            $constraints[] = new Count([
-                'min' => $minEntries,
-            ]);
-        }
-
-        return $this->fillForm(
+        $data = $this->llm->get(
+            $schema,
             $context,
-            fn (FormFactoryInterface $ff) => $ff->createBuilder()
-                ->add('list', CollectionType::class, [
-                    'entry_type' => $entryTypeName,
-                    'entry_options' => $entryOptions,
-                    'allow_add' => true,
-                    'constraints' => $constraints,
-                ])
-                ->getForm(),
-            $retries,
+            [],
             null,
-            $onChunk
-        )->get('list');
+            $llmOnChunk,
+        );
+
+        return $this->serializer->denormalize(
+            $data['list'],
+            sprintf('%s[]', $type),
+            'json'
+        );
     }
 
-    /**
-     * @return list<array{message: string, path: string}>
-     */
-    public function formatErrors(FormInterface $form): array
+    private function mapSchema(mixed $node, Schema $schema, bool $makeAllRequired): mixed
     {
-        return filter_nulls(
-            map(
-                $form->getErrors(true),
-                function (FormError|FormErrorIterator $error) {
-                    if ($error instanceof FormErrorIterator) {
-                        return null; // ignore for now
-                    }
+        if ($node instanceof \ArrayObject) {
+            $node = $node->getArrayCopy();
+        }
 
-                    $cause = $error->getCause();
-                    assert($cause instanceof ConstraintViolationInterface);
-
-                    $cleanPropertyPath = replace(
-                        $cause->getPropertyPath(),
-                        '#(^data|[.]?children|[.]data$)#',
-                        ''
-                    );
-                    $cleanPropertyPath = replace(
-                        $cleanPropertyPath,
-                        '#\[([a-z]\w*)\]#i',
-                        '.$1'
-                    );
-                    $cleanPropertyPath = replace(
-                        $cleanPropertyPath,
-                        '#^[.]#',
-                        ''
-                    );
-
-                    return [
-                        'message' => $error->getMessage(),
-                        'path' => $cleanPropertyPath,
-                    ];
+        if (is_array($node)) {
+            if (array_key_exists('$ref', $node)) {
+                $ref = $node['$ref'];
+                if (str_starts_with($ref, '#/definitions/')) {
+                    $ref = substr($ref, strlen('#/definitions/'));
+                    $node = $schema->getDefinitions()[$ref];
                 }
-            )
-        );
-    }
-
-    /**
-     * @return mixed
-     */
-    public function createFormWithLLMData(mixed $data, callable $newForm)
-    {
-        if (! is_array($data) && $data !== null && ! is_string($data)) {
-            $this->logger->warning('LLM returned invalid data', [
-                'data' => $data,
-            ]);
-            $data = [];
-        }
-        $form = $newForm($this->formFactory);
-        $form->submit($data);
-
-        return $form;
-    }
-
-    private function assertLiformExtensionRegistered(FormInterface $form): void
-    {
-        $typeExtensions = $form->getConfig()->getType()->getTypeExtensions();
-
-        foreach ($typeExtensions as $typeExtension) {
-            if ($typeExtension instanceof AddLiformExtension) {
-                return;
             }
+
+            unset($node['deprecated']);
+            if ($node['description'] ?? null === '') {
+                unset($node['description']);
+            }
+
+            if ($makeAllRequired
+                && is_array($node['properties'] ?? null)
+            ) {
+                $properties = $node['properties'];
+                $required = [
+                    ...($node['required'] ?? []),
+                    ...array_keys($properties),
+                ];
+                $node['required'] = $required;
+            }
+            if ($makeAllRequired
+                && is_array($node['type'] ?? null)
+            ) {
+                $node['type'] = array_diff($node['type'], ['null']);
+
+                if (count($node['type']) === 1) {
+                    $node['type'] = $node['type'][0];
+                }
+            }
+            if ($makeAllRequired
+                && is_array($node['anyOf'] ?? null)
+            ) {
+                $node['anyOf'] = filter(
+                    $node['anyOf'],
+                    fn ($item) => $item !== [
+                        'type' => 'null',
+                    ]
+                );
+
+                if (count($node['anyOf']) === 1) {
+                    $node = $this->mapSchema($node['anyOf'][0], $schema, $makeAllRequired);
+                }
+            }
+
+            return \Psl\Dict\map(
+                $node,
+                fn ($value) => $this->mapSchema($value, $schema, $makeAllRequired)
+            );
         }
 
-        throw new \InvalidArgumentException(
-            'The form must have the Liform extension registered.'
-        );
+        return $node;
     }
 }

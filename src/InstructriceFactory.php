@@ -6,94 +6,148 @@ namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use AdrienBrault\Instructrice\LLM\OllamaFactory;
+use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
+use ApiPlatform\JsonSchema\SchemaFactory;
+use ApiPlatform\Metadata\Property\Factory\AttributePropertyMetadataFactory;
+use ApiPlatform\Metadata\Property\Factory\DefaultPropertyMetadataFactory;
+use ApiPlatform\Metadata\Property\Factory\PropertyInfoPropertyMetadataFactory;
+use ApiPlatform\Metadata\Property\Factory\PropertyInfoPropertyNameCollectionFactory;
+use ApiPlatform\Metadata\Resource\Factory\AttributesResourceMetadataCollectionFactory;
+use ApiPlatform\Metadata\Resource\Factory\AttributesResourceNameCollectionFactory;
+use ApiPlatform\Metadata\ResourceClassResolver;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
-use Limenius\Liform\Form\Extension\AddLiformExtension;
-use Limenius\Liform\Liform;
-use Limenius\Liform\LiformInterface;
-use Limenius\Liform\Resolver;
-use Limenius\Liform\Transformer\ArrayTransformer;
-use Limenius\Liform\Transformer\CompoundTransformer;
-use Limenius\Liform\Transformer\IntegerTransformer;
-use Limenius\Liform\Transformer\StringTransformer;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Translation\Translator;
-use Symfony\Component\Validator\Validation;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\VarDumper\Caster\ReflectionCaster;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 class InstructriceFactory
 {
     /**
-     * @param list<FormTypeInterface>|null $formFactoryTypes
+     * @param list<string> $directories
      */
     public static function create(
         ?LLMInterface $llm = null,
         ?LoggerInterface $logger = null,
-        ?FormFactoryInterface $formFactory = null,
-        ?array $formFactoryTypes = null,
-        ?LiformInterface $liform = null
+        array $directories = [],
     ): Instructrice {
         $logger ??= new NullLogger();
         $llm ??= (new OllamaFactory(logger: $logger))->hermes2pro();
 
-        if ($formFactory === null) {
-            $formFactory = self::createFormFactory($formFactoryTypes);
-        }
-
-        $liform ??= self::createLiform();
+        $propertyInfo = self::createPropertyInfoExtractor();
+        $schemaFactory = self::createSchemaFactory($propertyInfo, $directories);
+        $serializer = self::createSerializer($propertyInfo);
 
         return new Instructrice(
-            $formFactory,
-            $liform,
             $llm,
             $logger,
-            new Gpt3Tokenizer(new Gpt3TokenizerConfig())
+            new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
+            $schemaFactory,
+            $serializer
+        );
+    }
+
+    public static function createOnChunkDump(ConsoleOutputInterface $output): callable
+    {
+        $dumpSection = $output->section();
+
+        $cloner = new VarCloner();
+        $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+        $dumper = new \Symfony\Component\VarDumper\Dumper\CliDumper(function (string $line, int $depth, string $indentPad) use ($dumpSection): void {
+            if ($depth > 0) {
+                $line = str_repeat($indentPad, $depth) . $line;
+            }
+            $dumpSection->writeln($line);
+        });
+        $dumper->setColors(true);
+        \Symfony\Component\VarDumper\VarDumper::setHandler(function ($var, ?string $label = null) use ($cloner, $dumper) {
+            $var = $cloner->cloneVar($var);
+
+            if ($label !== null) {
+                $var = $var->withContext([
+                    'label' => $label,
+                ]);
+            }
+
+            $dumper->dump($var);
+        });
+
+        return function (array $data, float $tokensPerSecond) use ($dumpSection) {
+            $dumpSection->clear();
+            dump($data, sprintf('%.1f tokens/s', $tokensPerSecond));
+        };
+    }
+
+    public static function createPropertyInfoExtractor(): PropertyInfoExtractor
+    {
+        return new PropertyInfoExtractor(
+            [$reflection = new ReflectionExtractor()],
+            [new PhpStanExtractor(), $phpdoc = new PhpDocExtractor(), new ReflectionExtractor()],
+            [$phpdoc],
+            [$reflection],
+            [$reflection],
         );
     }
 
     /**
-     * @param list<FormTypeInterface>|null $formFactoryTypes
+     * @param list<string> $directories
      */
-    public static function createFormFactory(?array $formFactoryTypes = null): FormFactoryInterface
+    public static function createSchemaFactory(PropertyInfoExtractor $propertyInfo, array $directories): SchemaFactory
     {
-        $validator = Validation::createValidatorBuilder()
-            ->enableAttributeMapping()
-            ->getValidator()
-        ;
-        $formFactoryBuilder = Forms::createFormFactoryBuilder()
-            ->addTypeExtension(new AddLiformExtension())
-            ->addExtension(new ValidatorExtension($validator));
+        $resourceClassResolver = new ResourceClassResolver(
+            new AttributesResourceNameCollectionFactory($directories)
+        );
 
-        if ($formFactoryTypes !== null) {
-            $formFactoryBuilder->addTypes($formFactoryTypes);
-        }
-
-        return $formFactoryBuilder->getFormFactory();
+        return new SchemaFactory(
+            null,
+            new AttributesResourceMetadataCollectionFactory(null),
+            new PropertyInfoPropertyNameCollectionFactory($propertyInfo),
+            new SchemaPropertyMetadataFactory(
+                $resourceClassResolver,
+                new AttributePropertyMetadataFactory(
+                    new PropertyInfoPropertyMetadataFactory(
+                        $propertyInfo,
+                        new DefaultPropertyMetadataFactory()
+                    )
+                ),
+            ),
+            null,
+            $resourceClassResolver
+        );
     }
 
-    private static function createLiform(?TranslatorInterface $translator = null): Liform
+    public static function createSerializer(PropertyInfoExtractor $propertyInfo): Serializer
     {
-        $translator ??= self::createTranslator();
-
-        $resolver = new Resolver();
-        $stringTransformer = new StringTransformer($translator);
-        $integerTransformer = new IntegerTransformer($translator);
-        $resolver->setTransformer('text', $stringTransformer);
-        $resolver->setTransformer('textarea', $stringTransformer, 'textarea');
-        $resolver->setTransformer('integer', $integerTransformer);
-        $resolver->setTransformer('compound', new CompoundTransformer($translator, null, $resolver));
-        $resolver->setTransformer('collection', new ArrayTransformer($translator, null, $resolver));
-
-        return new Liform($resolver);
-    }
-
-    private static function createTranslator(): Translator
-    {
-        return new Translator('en_US');
+        return new Serializer(
+            [
+                new DateTimeNormalizer(),
+                new BackedEnumNormalizer(),
+                new PropertyNormalizer(
+                    propertyTypeExtractor: $propertyInfo,
+                ),
+                new ObjectNormalizer(
+                    propertyTypeExtractor: $propertyInfo,
+                ),
+                new GetSetMethodNormalizer(
+                    propertyTypeExtractor: $propertyInfo,
+                ),
+                new ArrayDenormalizer(),
+            ],
+            [new JsonEncoder()]
+        );
     }
 }
