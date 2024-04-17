@@ -136,6 +136,11 @@ class Instructrice
                 if (str_starts_with($ref, '#/definitions/')) {
                     $ref = substr($ref, strlen('#/definitions/'));
                     $node = $schema->getDefinitions()[$ref];
+                    if ($node instanceof \ArrayObject) {
+                        $node = $node->getArrayCopy();
+                    }
+
+                    return $this->mapSchema($node, $schema, $makeAllRequired);
                 }
             }
 
@@ -174,13 +179,13 @@ class Instructrice
                 );
 
                 if (count($node['anyOf']) === 1) {
-                    $node = $this->mapSchema($node['anyOf'][0], $schema, $makeAllRequired);
+                    return $this->mapSchema($node['anyOf'][0], $schema, $makeAllRequired);
                 }
             }
 
-            return \Psl\Dict\map(
+            return array_map(
+                fn ($value) => $this->mapSchema($value, $schema, $makeAllRequired),
                 $node,
-                fn ($value) => $this->mapSchema($value, $schema, $makeAllRequired)
             );
         }
 
