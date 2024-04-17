@@ -119,7 +119,7 @@ class Instructrice
             }
 
             unset($node['deprecated']);
-            if ($node['description'] ?? null === '') {
+            if (($node['description'] ?? null) === '') {
                 unset($node['description']);
             }
 

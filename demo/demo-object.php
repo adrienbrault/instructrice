@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use AdrienBrault\Instructrice\Attribute\Instruction;
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\FireworksFactory;
 use AdrienBrault\Instructrice\LLM\GroqFactory;
@@ -57,6 +58,8 @@ $questionSection->clear();
 class Interest
 {
     public ?string $name = null;
+
+    #[Instruction(description: 'A set of keywords to to learn more about this interest. Write in French.')]
     public ?string $searchQueryToLearnMore = null;
 }
 class Person

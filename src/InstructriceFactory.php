@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice;
 
+use AdrienBrault\Instructrice\Attribute\Instruction;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use AdrienBrault\Instructrice\LLM\OllamaFactory;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
@@ -12,6 +13,7 @@ use ApiPlatform\Metadata\Property\Factory\AttributePropertyMetadataFactory;
 use ApiPlatform\Metadata\Property\Factory\DefaultPropertyMetadataFactory;
 use ApiPlatform\Metadata\Property\Factory\PropertyInfoPropertyMetadataFactory;
 use ApiPlatform\Metadata\Property\Factory\PropertyInfoPropertyNameCollectionFactory;
+use ApiPlatform\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Metadata\Resource\Factory\AttributesResourceMetadataCollectionFactory;
 use ApiPlatform\Metadata\Resource\Factory\AttributesResourceNameCollectionFactory;
 use ApiPlatform\Metadata\ResourceClassResolver;
@@ -116,15 +118,46 @@ class InstructriceFactory
             null,
             new AttributesResourceMetadataCollectionFactory(null),
             new PropertyInfoPropertyNameCollectionFactory($propertyInfo),
-            new SchemaPropertyMetadataFactory(
-                $resourceClassResolver,
-                new AttributePropertyMetadataFactory(
-                    new PropertyInfoPropertyMetadataFactory(
-                        $propertyInfo,
-                        new DefaultPropertyMetadataFactory()
-                    )
-                ),
-            ),
+            new class(new SchemaPropertyMetadataFactory($resourceClassResolver, new AttributePropertyMetadataFactory(new PropertyInfoPropertyMetadataFactory($propertyInfo, new DefaultPropertyMetadataFactory())))) implements PropertyMetadataFactoryInterface {
+                public function __construct(
+                    private readonly ?PropertyMetadataFactoryInterface $decorated = null
+                ) {
+                }
+
+                /**
+                 * @param class-string $resourceClass
+                 * @param array<array-key, mixed> $options
+                 */
+                public function create(string $resourceClass, string $property, array $options = []): \ApiPlatform\Metadata\ApiProperty
+                {
+                    if ($this->decorated === null) {
+                        $apiProperty = new \ApiPlatform\Metadata\ApiProperty();
+                    } else {
+                        $apiProperty = $this->decorated->create($resourceClass, $property, $options);
+                    }
+
+                    $reflectionClass = new \ReflectionClass($resourceClass);
+
+                    if (! $reflectionClass->hasProperty($property)) {
+                        return $apiProperty;
+                    }
+
+                    $reflectionProperty = $reflectionClass->getProperty($property);
+                    $attributes = $reflectionProperty->getAttributes(Instruction::class);
+                    foreach ($attributes as $attribute) {
+                        $instruction = $attribute->newInstance();
+                        assert($instruction instanceof Instruction);
+                        if ($instruction->description !== null) {
+                            $apiProperty = $apiProperty->withSchema([
+                                'description' => $instruction->description,
+                                ...($apiProperty->getSchema() ?? []),
+                            ]);
+                        }
+                    }
+
+                    return $apiProperty;
+                }
+            },
             null,
             $resourceClassResolver
         );
