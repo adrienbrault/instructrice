@@ -15,8 +15,6 @@ use function Psl\Regex\replace;
 
 class AnthropicLLM implements LLMInterface
 {
-    private readonly JsonParser $jsonParser;
-
     /**
      * @param callable(mixed): string $systemPrompt
      */
@@ -26,8 +24,8 @@ class AnthropicLLM implements LLMInterface
         private readonly string $model,
         private $systemPrompt,
         private readonly string $baseUri = 'https://api.anthropic.com',
+        private readonly JsonParser $jsonParser = new JsonParser()
     ) {
-        $this->jsonParser = new JsonParser();
     }
 
     public function get(
