@@ -41,6 +41,8 @@ $characters = $instructrice->deserializeList(
 );
 ```
 
+https://github.com/adrienbrault/instructrice/assets/611271/0fc554f7-090d-46c3-bdaa-7147b825e54a
+
 ## Supported providers and models
 
 | Provider                          | Model                                              |
