@@ -54,6 +54,21 @@ $llmToUse = $questionHelper->ask($input, $questionSection, new ChoiceQuestion(
 ));
 $questionSection->clear();
 
+class Interest
+{
+    public ?string $name = null;
+    public ?string $searchQueryToLearnMore = null;
+}
+class Person
+{
+    public ?string $name = null;
+    public ?string $biography = null;
+    /**
+     * @var list<Interest>
+     */
+    public array $interests = [];
+}
+
 $instructrice = InstructriceFactory::create(
     llm: $llmRegistry[$llmToUse](),
     logger: $logger,
@@ -61,7 +76,7 @@ $instructrice = InstructriceFactory::create(
 
 $persons = $instructrice->deserializeList(
     context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
-    type: \Demo\Person::class,
+    type: Person::class,
     onChunk: InstructriceFactory::createOnChunkDump($output),
 );
 
