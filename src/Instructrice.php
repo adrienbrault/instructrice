@@ -63,6 +63,10 @@ class Instructrice
         if ($onChunk !== null) {
             $t0 = microtime(true);
             $llmOnChunk = function (mixed $data, string $rawData) use ($type, $onChunk, $t0) {
+                if (! is_array($data)) {
+                    return;
+                }
+
                 $list = $data['list'] ?? null;
 
                 if ($list === null) {
