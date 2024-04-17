@@ -12,10 +12,10 @@
         "php": "^8.1",
         "api-platform/json-schema": "^3.0",
         "azjezz/psl": "^2.0",
-        "gioni06/gpt3-tokenizer": "^1.2",
-        "greghunt/partial-json": "^1.1",
+        "gioni06/gpt3-tokenizer": "^1.0",
+        "greghunt/partial-json": "^1.0",
         "guzzlehttp/guzzle": "^7.0",
-        "phpdocumentor/reflection-docblock": "^5.4",
+        "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.0",
         "symfony/property-access": "^6.0 || ^7.0"
     },
