@@ -9,6 +9,7 @@ use AdrienBrault\Instructrice\LLM\Factory\Ollama;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
 use ApiPlatform\JsonSchema\SchemaFactory;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\Property\Factory\AttributePropertyMetadataFactory;
 use ApiPlatform\Metadata\Property\Factory\DefaultPropertyMetadataFactory;
 use ApiPlatform\Metadata\Property\Factory\PropertyInfoPropertyMetadataFactory;
@@ -21,6 +22,7 @@ use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use ReflectionClass;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
@@ -36,6 +38,8 @@ use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\VarDumper;
 
 class InstructriceFactory
 {
@@ -67,14 +71,14 @@ class InstructriceFactory
     {
         $cloner = new VarCloner();
         $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
-        $dumper = new \Symfony\Component\VarDumper\Dumper\CliDumper(function (string $line, int $depth, string $indentPad) use ($section): void {
+        $dumper = new CliDumper(function (string $line, int $depth, string $indentPad) use ($section): void {
             if ($depth > 0) {
                 $line = str_repeat($indentPad, $depth) . $line;
             }
             $section->writeln($line);
         });
         $dumper->setColors(true);
-        \Symfony\Component\VarDumper\VarDumper::setHandler(function ($var, ?string $label = null) use ($cloner, $dumper) {
+        VarDumper::setHandler(function ($var, ?string $label = null) use ($cloner, $dumper) {
             $var = $cloner->cloneVar($var);
 
             if ($label !== null) {
@@ -126,15 +130,15 @@ class InstructriceFactory
                  * @param class-string            $resourceClass
                  * @param array<array-key, mixed> $options
                  */
-                public function create(string $resourceClass, string $property, array $options = []): \ApiPlatform\Metadata\ApiProperty
+                public function create(string $resourceClass, string $property, array $options = []): ApiProperty
                 {
                     if ($this->decorated === null) {
-                        $apiProperty = new \ApiPlatform\Metadata\ApiProperty();
+                        $apiProperty = new ApiProperty();
                     } else {
                         $apiProperty = $this->decorated->create($resourceClass, $property, $options);
                     }
 
-                    $reflectionClass = new \ReflectionClass($resourceClass);
+                    $reflectionClass = new ReflectionClass($resourceClass);
 
                     if (! $reflectionClass->hasProperty($property)) {
                         return $apiProperty;

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
+use PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer;
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -34,5 +35,6 @@ return ECSConfig::configure()
         ClassAttributesSeparationFixer::class => [
             __DIR__ . '/demo'
         ],
+        GlobalNamespaceImportFixer::class,
     ])
 ;

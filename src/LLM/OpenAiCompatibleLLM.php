@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
+use Exception;
 use GregHunt\PartialJson\JsonParser;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -230,7 +231,7 @@ class OpenAiCompatibleLLM implements LLMInterface
 
         $errorMessage = $responseData['error']['message'] ?? null;
         if ($errorMessage !== null) {
-            throw new \Exception(\is_array($errorMessage) ? implode(', ', $errorMessage) : $errorMessage);
+            throw new Exception(\is_array($errorMessage) ? implode(', ', $errorMessage) : $errorMessage);
         }
 
         if ($this->toolMode !== null) {
@@ -243,7 +244,7 @@ class OpenAiCompatibleLLM implements LLMInterface
     /**
      * @return array|mixed|string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function parseData(string $content): mixed
     {

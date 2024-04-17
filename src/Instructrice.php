@@ -7,10 +7,12 @@ namespace AdrienBrault\Instructrice;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\JsonSchema\SchemaFactoryInterface;
+use ArrayObject;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Throwable;
 
 use function Psl\Vec\filter;
 
@@ -68,7 +70,7 @@ class Instructrice
             $llmOnChunk = function (mixed $data, string $rawData) use ($type, $onChunk, $t0) {
                 try {
                     $denormalized = $this->denormalizeList($data, $type);
-                } catch (\Throwable $e) {
+                } catch (Throwable $e) {
                     $this->logger->info('Failed to denormalize list', [
                         'rawData' => $rawData,
                         'data' => $data,
@@ -131,7 +133,7 @@ class Instructrice
 
     private function mapSchema(mixed $node, Schema $schema, bool $makeAllRequired): mixed
     {
-        if ($node instanceof \ArrayObject) {
+        if ($node instanceof ArrayObject) {
             $node = $node->getArrayCopy();
         }
 
@@ -141,7 +143,7 @@ class Instructrice
                 if (str_starts_with((string) $ref, '#/definitions/')) {
                     $ref = substr((string) $ref, \strlen('#/definitions/'));
                     $node = $schema->getDefinitions()[$ref];
-                    if ($node instanceof \ArrayObject) {
+                    if ($node instanceof ArrayObject) {
                         $node = $node->getArrayCopy();
                     }
 

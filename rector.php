@@ -16,4 +16,5 @@ return RectorConfig::configure()
     ->withSkip([
         ClosureToArrowFunctionRector::class,
     ])
+    ->withImportNames()
 ;
