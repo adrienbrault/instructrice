@@ -40,7 +40,7 @@ class Together
         };
     }
 
-    public function mixtral(): LLMInterface
+    public function mixtral7(): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             'https://api.together.xyz/v1',
@@ -52,7 +52,7 @@ class Together
         );
     }
 
-    public function mistral7B(): LLMInterface
+    public function mistral7(): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             'https://api.together.xyz/v1',
@@ -64,7 +64,7 @@ class Together
         );
     }
 
-    public function codeLLama34b(): LLMInterface
+    public function codeLLama34(): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             'https://api.together.xyz/v1',

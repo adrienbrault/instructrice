@@ -67,7 +67,7 @@ class Ollama
         );
     }
 
-    public function dolphincoder7B(string $quantization = 'q4_K_M'): LLMInterface
+    public function dolphincoder7(string $quantization = 'q4_K_M'): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             $this->baseUri,
@@ -78,7 +78,7 @@ class Ollama
         );
     }
 
-    public function dolphincoder15B(string $quantization = 'q4_K_M'): LLMInterface
+    public function dolphincoder15(string $quantization = 'q4_K_M'): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             $this->baseUri,

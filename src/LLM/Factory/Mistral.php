@@ -51,13 +51,34 @@ class Mistral
         };
     }
 
-    public function mistralSmall(string $version = 'latest'): LLMInterface
+    public function mixtral7(?string $version = null): LLMInterface
     {
+        $model = 'open-mixtral-8x7b';
+        if ($version !== null) {
+            $model .= '-' . $version;
+        }
+
         return new OpenAiCompatibleLLM(
             'https://api.mistral.ai/v1',
             $this->guzzleClient,
             $this->logger,
-            'mistral-small-' . $version,
+            $model,
+            $this->systemPrompt,
+        );
+    }
+
+    public function mixtral22(?string $version = null): LLMInterface
+    {
+        $model = 'open-mixtral-8x22b';
+        if ($version !== null) {
+            $model .= '-' . $version;
+        }
+
+        return new OpenAiCompatibleLLM(
+            'https://api.mistral.ai/v1',
+            $this->guzzleClient,
+            $this->logger,
+            $model,
             $this->systemPrompt,
         );
     }

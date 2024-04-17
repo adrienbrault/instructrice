@@ -72,7 +72,7 @@ class Fireworks
         );
     }
 
-    public function mixtral(): LLMInterface
+    public function mixtral7(): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             'https://api.fireworks.ai/inference/v1',
@@ -85,7 +85,7 @@ class Fireworks
         );
     }
 
-    public function bigMixtral(): LLMInterface
+    public function mixtral22(): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             'https://api.fireworks.ai/inference/v1',

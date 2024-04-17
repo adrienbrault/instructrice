@@ -67,7 +67,7 @@ class Groq
         );
     }
 
-    public function gemma7b(): LLMInterface
+    public function gemma7(): LLMInterface
     {
         return new OpenAiCompatibleLLM(
             'https://api.groq.com/openai/v1',
