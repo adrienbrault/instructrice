@@ -45,29 +45,33 @@ https://github.com/adrienbrault/instructrice/assets/611271/0fc554f7-090d-46c3-bd
 
 ## Supported providers and models
 
-| Provider                          | Model                                              |
-|-----------------------------------|----------------------------------------------------|
-| [OpenAI][openai_pricing]          | [gpt-3.5-turbo][openai_gpt35t]                     |
-| [OpenAI][openai_pricing]          | [gpt-4-turbo][openai_gpt4t]                        |
-| [Anthropic][anthropic_pricing]    | [Haiku][anthropic_models]                          |
-| [Anthropic][anthropic_pricing]    | [Sonnet][anthropic_models]                         |
-| [Anthropic][anthropic_pricing]    | [Opus][anthropic_models]                           |
-| [Ollama][ollama]                  | [adrienbrault/nous-hermes2pro][ollama_h2p]         |
-| [Ollama][ollama]                  | [command-r][ollama_command_r]                      |
-| [Ollama][ollama]                  | [command-r-plus][ollama_command_r_plus]            |
-| [Mistral][mistral_pricing]        | [open-mixtral-8x7b][mistral_models]                |
-| [Mistral][mistral_pricing]        | [open-mixtral-8x22b][mistral_models]               |
-| [Mistral][mistral_pricing]        | [mistral-large][mistral_models]                    |
-| [Fireworks AI][fireworks_pricing] | [firefunction-v1][fireworks_models]                |
-| [Fireworks AI][fireworks_pricing] | [mixtral-8x7b-instruct][fireworks_models]          |
-| [Fireworks AI][fireworks_pricing] | [mixtral-8x22b-instruct-preview][fireworks_models] |
-| [Fireworks AI][fireworks_pricing] | [dbrx-instruct][fireworks_models]                  |
-| [Fireworks AI][fireworks_pricing] | [hermes-2-pro-mistral-7b][fireworks_models]        |
-| [Groq][groq_pricing]              | [mixtral-8x7b-32768][groq_models]                  |
-| [Groq][groq_pricing]              | [gemma-7b-it][groq_models]                         |
-| [Together AI][together_pricing]   | [Mixtral-8x7B-Instruct-v0.1][together_models]      |
-| [Together AI][together_pricing]   | [Mistral-7B-Instruct-v0.1][together_models]        |
-| [Together AI][together_pricing]   | [CodeLlama-34b-Instruct][together_models]          |
+| Provider                          | Model                                                |
+|-----------------------------------|------------------------------------------------------|
+| [OpenAI][openai_pricing]          | [gpt-3.5-turbo][openai_gpt35t]                       |
+| [OpenAI][openai_pricing]          | [gpt-4-turbo][openai_gpt4t]                          |
+| [Anthropic][anthropic_pricing]    | [Haiku][anthropic_models]                            |
+| [Anthropic][anthropic_pricing]    | [Sonnet][anthropic_models]                           |
+| [Anthropic][anthropic_pricing]    | [Opus][anthropic_models]                             |
+| [Ollama][ollama]                  | [adrienbrault/nous-hermes2pro][ollama_h2p]           |
+| [Ollama][ollama]                  | [command-r][ollama_command_r]                        |
+| [Ollama][ollama]                  | [command-r-plus][ollama_command_r_plus]              |
+| [Mistral][mistral_pricing]        | [open-mixtral-8x7b][mistral_models]                  |
+| [Mistral][mistral_pricing]        | [open-mixtral-8x22b][mistral_models]                 |
+| [Mistral][mistral_pricing]        | [mistral-large][mistral_models]                      |
+| [Fireworks AI][fireworks_pricing] | [firefunction-v1][fireworks_models]                  |
+| [Fireworks AI][fireworks_pricing] | [mixtral-8x7b-instruct][fireworks_models]            |
+| [Fireworks AI][fireworks_pricing] | [mixtral-8x22b-instruct-preview][fireworks_models]   |
+| [Fireworks AI][fireworks_pricing] | [dbrx-instruct][fireworks_models]                    |
+| [Fireworks AI][fireworks_pricing] | [hermes-2-pro-mistral-7b][fireworks_models]          |
+| [Groq][groq_pricing]              | [mixtral-8x7b-32768][groq_models]                    |
+| [Groq][groq_pricing]              | [gemma-7b-it][groq_models]                           |
+| [Together AI][together_pricing]   | [Mixtral-8x7B-Instruct-v0.1][together_models]        |
+| [Together AI][together_pricing]   | [Mistral-7B-Instruct-v0.1][together_models]          |
+| [Together AI][together_pricing]   | [CodeLlama-34b-Instruct][together_models]            |
+| [Deepinfra][deepinfra_pricing]    | [Mixtral-8x22B-Instruct][deepinfra_mixtral]          |
+| [Deepinfra][deepinfra_pricing]    | [microsoft/WizardLM-2-8x22B][deepinfra_wizardlm2_22] |
+| [Deepinfra][deepinfra_pricing]    | [microsoft/WizardLM-2-8x7B][deepinfra_wizardlm2_7]   |
+| [Deepinfra][deepinfra_pricing]    | [databricks/dbrx-instruct][deepinfra_dbrx]   |
 
 ## Acknowledgements
 
@@ -151,3 +155,7 @@ Use this lib to generate a table of provider/model prices by scraping!
 [oooas]: https://github.com/goldspecdigital/oooas
 [anthropic_pricing]: https://www.anthropic.com/api
 [anthropic_models]: https://docs.anthropic.com/claude/docs/models-overview
+[deepinfra_mixtral]: https://deepinfra.com/mistralai/Mixtral-8x22B-Instruct-v0.1
+[deepinfra_wizardlm2_22]: https://deepinfra.com/microsoft/WizardLM-2-8x22B
+[deepinfra_wizardlm2_7]: https://deepinfra.com/microsoft/WizardLM-2-8x7B
+[deepinfra_dbrx]: https://deepinfra.com/databricks/dbrx-instruct

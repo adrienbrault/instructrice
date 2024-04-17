@@ -3,6 +3,7 @@
 declare(strict_types=1);
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\Factory\Anthropic;
+use AdrienBrault\Instructrice\LLM\Factory\Deepinfra;
 use AdrienBrault\Instructrice\LLM\Factory\Fireworks;
 use AdrienBrault\Instructrice\LLM\Factory\Groq;
 use AdrienBrault\Instructrice\LLM\Factory\Mistral;
@@ -55,6 +56,10 @@ return function (callable $do) {
         'Groq Gemma 7B' => fn () => (new Groq(logger: $logger))->gemma7(),
         'Together Mixtral 8x7B' => fn () => (new Together(logger: $logger))->mixtral7(),
         'Together Mistral 7B' => fn () => (new Together(logger: $logger))->mistral7(),
+        'Deepinfra Mixtral 8x22B' => fn () => (new Deepinfra(logger: $logger))->mixtral22(),
+        'Deepinfra WizardLM-2 8x22B' => fn () => (new Deepinfra(logger: $logger))->wizardlm2_22(),
+        'Deepinfra WizardLM-2 8x7B' => fn () => (new Deepinfra(logger: $logger))->wizardlm2_7(),
+        'Deepinfra Dbrx' => fn () => (new Deepinfra(logger: $logger))->dbrx(),
     ];
 
     $questionSection = $output->section();

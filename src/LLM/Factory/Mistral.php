@@ -37,18 +37,7 @@ class Mistral
             ],
         ]);
 
-        $this->systemPrompt = $systemPrompt ?? function ($schema): string {
-            $encodedSchema = encode($schema);
-
-            return <<<PROMPT
-                You are a helpful assistant that answers in JSON.
-                If the user intent is unclear, consider it a structured information extraction task.
-
-                <schema>
-                {$encodedSchema}
-                </schema>
-                PROMPT;
-        };
+        $this->systemPrompt = $systemPrompt ?? static::getMixtralJsonSystem();
     }
 
     public function mixtral7(?string $version = null): LLMInterface
@@ -92,5 +81,24 @@ class Mistral
             'mistral-large-' . $version,
             $this->systemPrompt,
         );
+    }
+
+    /**
+     * @return callable(mixed): string
+     */
+    public static function getMixtralJsonSystem(): callable
+    {
+        return function ($schema): string {
+            $encodedSchema = encode($schema);
+
+            return <<<PROMPT
+                You are a helpful assistant that answers in JSON.
+                If the user intent is unclear, consider it a structured information extraction task.
+
+                <schema>
+                {$encodedSchema}
+                </schema>
+                PROMPT;
+        };
     }
 }
