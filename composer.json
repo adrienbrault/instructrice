@@ -36,7 +36,8 @@
         "guzzlehttp/guzzle": "^7.0",
         "api-platform/json-schema": "^3.0",
         "phpdocumentor/type-resolver": "^1.0",
-        "phpdocumentor/reflection-docblock": "^5.4"
+        "phpdocumentor/reflection-docblock": "^5.4",
+        "symfony/property-access": "^7.0"
     },
     "config": {
         "allow-plugins": {
