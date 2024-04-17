@@ -68,6 +68,29 @@ $characters = $instructrice->deserializeList(
 
 Obviously inspired by [instructor-php][instructor-php] and [instructor][instructor-python].
 
+> How is it different from instructor php?
+
+Both libraries essentially do the same thing:
+- Automatic schema generation from classes
+- Multiple LLM/Providers abstraction/support
+- Many strategies to extract data: function calling, json mode, etc
+- Automatic deserialization/hydration
+- Maybe validation/retries later for this lib.
+
+However, I created yet another library because I wanted to do a lot of things differently:
+- Make it Symfony/Adrien friendly/ready/first - instructor-php appears more for laravel. Navigating and understanding the instructor-php codebase hasn't been easy for me as I am not familiar with a lot of the patterns. I want dependency injection for everything, composition over inheritance/traits. I am not a fan of Saloon.
+- PSR-3 logging and Guzzle+symfony/http-client support so that I can easily get all the debugging information in the symfony profiler.
+- Streaming first/only. I think both UX and DX are quite a bit worse without streaming. Not supporting non-streaming to simplify things a bit.
+- Preconfigured provider+llms, to not have to worry about:
+  - Json mode, function calling, etc
+  - The best prompt format to use
+  - How to parse the response (cf ollama + hermes2pro)
+  - Whether streaming works. For example, groq can only do streaming without json-mode/function calling.
+- No messages. You just pass context, instruction.
+  - That choice might be more helpful later: trying to support few-shots examples, evals, etc
+- Easily be able to use my own json-schema as a plain array, or generated with a library like [goldspecdigital/oooas][oooas]. Use case in this video where a user is able to define the schema: <a target="_blank" href="https://github.com/adrienbrault/carotte/assets/611271/02d37186-f1e6-43bf-b7c0-5785d29779d5">video</a> 
+- instructor-php uses docblocks comments as instructions. I prefer using a dedicated attribute, which I have tried here.
+
 ## Notes/Ideas
 
 Things to look into:
@@ -120,3 +143,4 @@ Use this lib to generate a table of provider/model prices by scraping!
 [groq_models]: https://console.groq.com/docs/models
 [together_pricing]: https://www.together.ai/pricing
 [together_models]: https://docs.together.ai/docs/inference-models
+[oooas]: https://github.com/goldspecdigital/oooas
