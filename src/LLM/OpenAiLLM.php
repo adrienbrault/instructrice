@@ -11,8 +11,15 @@ use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use function Psl\Json\encode;
+use function Psl\Json\typed;
 use function Psl\Regex\matches;
 use function Psl\Regex\replace;
+use function Psl\Type\nullable;
+use function Psl\Type\optional;
+use function Psl\Type\shape;
+use function Psl\Type\string;
+use function Psl\Type\union;
+use function Psl\Type\vec;
 
 class OpenAiLLM implements LLMInterface
 {
@@ -133,7 +140,7 @@ class OpenAiLLM implements LLMInterface
         } catch (RequestException $e) {
             $this->logger->error('OpenAI Request error', [
                 'error' => $e->getMessage(),
-                'response' => $e->getResponse()->getBody()->getContents(true),
+                'response' => $e->getResponse()?->getBody()->getContents(),
             ]);
 
             throw $e;
@@ -154,22 +161,7 @@ class OpenAiLLM implements LLMInterface
                 break;
             }
 
-            /** @var array{error?: array{message: string|array<int, string>, type: string, code: string}} $response */
-            $responseData = json_decode(
-                $data,
-                true,
-                flags: JSON_THROW_ON_ERROR
-            );
-
-            if (isset($responseData['error'])) {
-                throw new \Exception($response['error']);
-            }
-
-            if ($this->toolMode !== null) {
-                $content .= $responseData['choices'][0]['delta']['tool_calls'][0]['function']['arguments'] ?? '';
-            } else {
-                $content .= $responseData['choices'][0]['delta']['content'] ?? '';
-            }
+            $content .= $this->getChunkContent($data);
 
             if (matches($content, '#(\n\s*){3,}$#')) {
                 // If the content ends with whitespace including at least 3 newlines, we stop
@@ -200,11 +192,60 @@ class OpenAiLLM implements LLMInterface
         return $this->parseData($content);
     }
 
+    private function getChunkContent(string $data): string
+    {
+        $responseData = typed(
+            $data,
+            shape([
+                'error' => optional(
+                    shape([
+                        'message' => union(string(), vec(string())),
+                        'type' => string(),
+                        'code' => string(),
+                    ], true)
+                ),
+                'choices' => vec(
+                    shape([
+                        'delta' => shape([
+                            'content' => optional(
+                                nullable(string())
+                            ),
+                            'tool_calls' => optional(
+                                vec(
+                                    shape([
+                                        'function' => shape([
+                                            'arguments' => optional(
+                                                nullable(string())
+                                            ),
+                                        ], true),
+                                    ], true)
+                                )
+                            ),
+                        ], true),
+                    ], true)
+                ),
+            ], true)
+        );
+
+        $errorMessage = $responseData['error']['message'] ?? null;
+        if ($errorMessage !== null) {
+            throw new \Exception(
+                is_array($errorMessage) ? implode(', ', $errorMessage) : $errorMessage
+            );
+        }
+
+        if ($this->toolMode !== null) {
+            return $responseData['choices'][0]['delta']['tool_calls'][0]['function']['arguments'] ?? '';
+        }
+
+        return $responseData['choices'][0]['delta']['content'] ?? '';
+    }
+
     /**
      * @return array|mixed|string
      * @throws \Exception
      */
-    public function parseData(string $content): mixed
+    private function parseData(string $content): mixed
     {
         $data = null;
         if ($content !== null) {
