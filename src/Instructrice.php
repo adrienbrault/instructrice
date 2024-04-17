@@ -86,8 +86,6 @@ class Instructrice
         $data = $this->llm->get(
             $schema,
             $context,
-            [],
-            null,
             $llmOnChunk,
         );
 

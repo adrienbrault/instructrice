@@ -12,7 +12,6 @@ use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 
-use function Psl\Json\encode;
 use function Psl\Json\typed;
 use function Psl\Regex\matches;
 use function Psl\Regex\replace;
@@ -47,8 +46,6 @@ class OpenAiCompatibleLLM implements LLMInterface
     public function get(
         array $schema,
         string $context,
-        array $errors = [],
-        mixed $errorsData = null,
         ?callable $onChunk = null,
     ): mixed {
         $messages = [
@@ -61,29 +58,6 @@ class OpenAiCompatibleLLM implements LLMInterface
                 'content' => $context,
             ],
         ];
-
-        if ($errors !== []) {
-            if ($this->toolMode !== null) {
-                $messages[] = [
-                    'tool_call_id' => '123',
-                    'role' => 'function',
-                    'name' => 'extract',
-                    'content' => encode($errorsData),
-                ];
-            } else {
-                $messages[] = [
-                    'role' => 'assistant',
-                    'content' => encode($errorsData),
-                ];
-            }
-            $messages[] = [
-                'role' => 'user',
-                'content' => sprintf(
-                    'Try again, fixing the following errors: %s',
-                    encode($errors)
-                ),
-            ];
-        }
 
         $request = [
             'model' => $this->model,

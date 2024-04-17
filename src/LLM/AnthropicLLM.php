@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
-use Exception;
 use GregHunt\PartialJson\JsonParser;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -34,8 +33,6 @@ class AnthropicLLM implements LLMInterface
     public function get(
         array $schema,
         string $context,
-        array $errors = [],
-        mixed $errorsData = null,
         ?callable $onChunk = null
     ): mixed {
         $messages = [
@@ -44,10 +41,6 @@ class AnthropicLLM implements LLMInterface
                 'content' => $context,
             ],
         ];
-
-        if ($errors !== []) {
-            throw new Exception('todo');
-        }
 
         $request = [
             'model' => $this->model,
