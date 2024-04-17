@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
+
 use function Psl\Json\encode;
 use function Psl\Json\typed;
 use function Psl\Regex\matches;
@@ -26,9 +27,9 @@ class OpenAiCompatibleLLM implements LLMInterface
     private JsonParser $jsonParser;
 
     /**
-     * @param callable(mixed): string $systemPrompt
-     * @param null|'auto'|'any'|'function' $toolMode
-     * @param null|'json_mode'|'json_mode_with_schema' $jsonMode
+     * @param callable(mixed): string                  $systemPrompt
+     * @param 'auto'|'any'|'function'|null             $toolMode
+     * @param 'json_mode'|'json_mode_with_schema'|null $jsonMode
      */
     public function __construct(
         private string $baseUri,
@@ -52,7 +53,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         $messages = [
             [
                 'role' => 'system',
-                'content' => call_user_func($this->systemPrompt, $schema),
+                'content' => \call_user_func($this->systemPrompt, $schema),
             ],
             [
                 'role' => 'user',
@@ -155,7 +156,7 @@ class OpenAiCompatibleLLM implements LLMInterface
                 continue;
             }
 
-            $data = trim(substr($line, strlen('data:')));
+            $data = trim(substr($line, \strlen('data:')));
 
             if ($data === '[DONE]') {
                 break;
@@ -229,9 +230,7 @@ class OpenAiCompatibleLLM implements LLMInterface
 
         $errorMessage = $responseData['error']['message'] ?? null;
         if ($errorMessage !== null) {
-            throw new \Exception(
-                is_array($errorMessage) ? implode(', ', $errorMessage) : $errorMessage
-            );
+            throw new \Exception(\is_array($errorMessage) ? implode(', ', $errorMessage) : $errorMessage);
         }
 
         if ($this->toolMode !== null) {
@@ -243,6 +242,7 @@ class OpenAiCompatibleLLM implements LLMInterface
 
     /**
      * @return array|mixed|string
+     *
      * @throws \Exception
      */
     private function parseData(string $content): mixed
@@ -255,7 +255,7 @@ class OpenAiCompatibleLLM implements LLMInterface
                 && ! str_starts_with($content, '[')
                 && str_contains($content, '```json')
             ) {
-                $content = substr($content, strpos($content, '```json') + strlen('```json'));
+                $content = substr($content, strpos($content, '```json') + \strlen('```json'));
                 $content = replace($content, '#(.+)```.+$#m', '\1');
                 $content = trim($content);
             }
@@ -265,7 +265,7 @@ class OpenAiCompatibleLLM implements LLMInterface
             }
         }
 
-        if (! is_array($data) && ! is_string($data)) {
+        if (! \is_array($data) && ! \is_string($data)) {
             return null;
         }
 

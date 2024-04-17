@@ -11,6 +11,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+
 use function Psl\Json\encode;
 
 class Fireworks
@@ -22,12 +23,12 @@ class Fireworks
     /**
      * @var callable(mixed): string
      */
-    private $systemPrompt = null;
+    private $systemPrompt;
 
     /**
      * @var callable(mixed): string
      */
-    private $jsonSystemPrompt = null;
+    private $jsonSystemPrompt;
 
     /**
      * @param callable(mixed): string $systemPrompt
@@ -50,6 +51,7 @@ class Fireworks
         };
         $this->jsonSystemPrompt = $systemPrompt ?? function ($schema): string {
             $encodedSchema = encode($schema);
+
             return <<<PROMPT
 You are a helpful assistant that answers in JSON.
 If the user intent is unclear, consider it a structured information extraction task.

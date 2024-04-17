@@ -11,6 +11,7 @@ use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+
 use function Psl\Vec\filter;
 
 /**
@@ -31,9 +32,11 @@ class Instructrice
 
     /**
      * @template T
-     * @param class-string<T> $type
+     *
+     * @param class-string<T>                 $type
      * @param callable(array<T>, float): void $onChunk
-     * @param InstructriceOptions $options
+     * @param InstructriceOptions             $options
+     *
      * @return list<T>
      */
     public function deserializeList(
@@ -102,12 +105,14 @@ class Instructrice
 
     /**
      * @template T
+     *
      * @param class-string<T> $type
-     * @return null|list<T>
+     *
+     * @return list<T>|null
      */
     private function denormalizeList(mixed $data, string $type): ?array
     {
-        if (! is_array($data)) {
+        if (! \is_array($data)) {
             return null;
         }
 
@@ -130,11 +135,11 @@ class Instructrice
             $node = $node->getArrayCopy();
         }
 
-        if (is_array($node)) {
-            if (array_key_exists('$ref', $node)) {
+        if (\is_array($node)) {
+            if (\array_key_exists('$ref', $node)) {
                 $ref = $node['$ref'];
                 if (str_starts_with($ref, '#/definitions/')) {
-                    $ref = substr($ref, strlen('#/definitions/'));
+                    $ref = substr($ref, \strlen('#/definitions/'));
                     $node = $schema->getDefinitions()[$ref];
                     if ($node instanceof \ArrayObject) {
                         $node = $node->getArrayCopy();
@@ -150,7 +155,7 @@ class Instructrice
             }
 
             if ($makeAllRequired
-                && is_array($node['properties'] ?? null)
+                && \is_array($node['properties'] ?? null)
             ) {
                 $properties = $node['properties'];
                 $required = [
@@ -160,16 +165,16 @@ class Instructrice
                 $node['required'] = $required;
             }
             if ($makeAllRequired
-                && is_array($node['type'] ?? null)
+                && \is_array($node['type'] ?? null)
             ) {
                 $node['type'] = array_diff($node['type'], ['null']);
 
-                if (count($node['type']) === 1) {
+                if (\count($node['type']) === 1) {
                     $node['type'] = $node['type'][0];
                 }
             }
             if ($makeAllRequired
-                && is_array($node['anyOf'] ?? null)
+                && \is_array($node['anyOf'] ?? null)
             ) {
                 $node['anyOf'] = filter(
                     $node['anyOf'],
@@ -178,7 +183,7 @@ class Instructrice
                     ]
                 );
 
-                if (count($node['anyOf']) === 1) {
+                if (\count($node['anyOf']) === 1) {
                     return $this->mapSchema($node['anyOf'][0], $schema, $makeAllRequired);
                 }
             }

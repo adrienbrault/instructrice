@@ -24,6 +24,11 @@ return ECSConfig::configure()
         cleanCode: true,
     )
 
+    ->withPhpCsFixerSets(
+        symfony: true,
+        symfonyRisky: true,
+    )
+
     ->withSkip([
         ClassAttributesSeparationFixer::class => [
             __DIR__ . '/demo'

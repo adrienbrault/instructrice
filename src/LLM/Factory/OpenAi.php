@@ -21,7 +21,7 @@ class OpenAi
     /**
      * @var callable(mixed): string
      */
-    private $systemPrompt = null;
+    private $systemPrompt;
 
     private string $baseUri = 'https://api.openai.com/v1';
 

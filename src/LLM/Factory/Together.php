@@ -21,7 +21,7 @@ class Together
     /**
      * @var callable(mixed): string
      */
-    private $systemPrompt = null;
+    private $systemPrompt;
 
     /**
      * @param callable(mixed): string $systemPrompt

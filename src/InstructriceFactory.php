@@ -123,7 +123,7 @@ class InstructriceFactory
                 }
 
                 /**
-                 * @param class-string $resourceClass
+                 * @param class-string            $resourceClass
                  * @param array<array-key, mixed> $options
                  */
                 public function create(string $resourceClass, string $property, array $options = []): \ApiPlatform\Metadata\ApiProperty
@@ -144,7 +144,7 @@ class InstructriceFactory
                     $attributes = $reflectionProperty->getAttributes(Instruction::class);
                     foreach ($attributes as $attribute) {
                         $instruction = $attribute->newInstance();
-                        assert($instruction instanceof Instruction);
+                        \assert($instruction instanceof Instruction);
                         if ($instruction->description !== null) {
                             $apiProperty = $apiProperty->withSchema([
                                 'description' => $instruction->description,
