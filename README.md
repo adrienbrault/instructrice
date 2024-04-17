@@ -47,6 +47,9 @@ $characters = $instructrice->deserializeList(
 |-----------------------------------|----------------------------------------------------|
 | [OpenAI][openai_pricing]          | [gpt-3.5-turbo][openai_gpt35t]                     |
 | [OpenAI][openai_pricing]          | [gpt-4-turbo][openai_gpt4t]                        |
+| [Anthropic][anthropic_pricing]    | [Haiku][anthropic_models]                          |
+| [Anthropic][anthropic_pricing]    | [Sonnet][anthropic_models]                         |
+| [Anthropic][anthropic_pricing]    | [Opus][anthropic_models]                           |
 | [Ollama][ollama]                  | [adrienbrault/nous-hermes2pro][ollama_h2p]         |
 | [Ollama][ollama]                  | [command-r][ollama_command_r]                      |
 | [Ollama][ollama]                  | [command-r-plus][ollama_command_r_plus]            |
@@ -144,3 +147,5 @@ Use this lib to generate a table of provider/model prices by scraping!
 [together_pricing]: https://www.together.ai/pricing
 [together_models]: https://docs.together.ai/docs/inference-models
 [oooas]: https://github.com/goldspecdigital/oooas
+[anthropic_pricing]: https://www.anthropic.com/api
+[anthropic_models]: https://docs.anthropic.com/claude/docs/models-overview

@@ -151,7 +151,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         $content = '';
         $lastContent = '';
         while (! $response->getBody()->eof()) {
-            $line = $this->readLine($response->getBody());
+            $line = self::readLine($response->getBody());
 
             if (! str_starts_with($line, 'data:')) {
                 continue;
@@ -268,7 +268,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         return $data;
     }
 
-    private function readLine(StreamInterface $stream): string
+    public static function readLine(StreamInterface $stream): string
     {
         $buffer = '';
 

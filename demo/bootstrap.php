@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\Factory\Anthropic;
 use AdrienBrault\Instructrice\LLM\Factory\Fireworks;
 use AdrienBrault\Instructrice\LLM\Factory\Groq;
 use AdrienBrault\Instructrice\LLM\Factory\Mistral;
@@ -35,6 +36,9 @@ return function (callable $do) {
     $llmRegistry = [
         'OpenAI GPT-4' => fn () => (new OpenAi(logger: $logger))->gpt4(),
         'OpenAI GPT-3.5' => fn () => (new OpenAi(logger: $logger))->gpt35(),
+        'Anthropic Haiku' => fn () => (new Anthropic(logger: $logger))->haiku(),
+        'Anthropic Sonnet' => fn () => (new Anthropic(logger: $logger))->sonnet(),
+        'Anthropic Opus' => fn () => (new Anthropic(logger: $logger))->opus(),
         'Ollama Hermes 2 Pro 7B' => fn () => (new Ollama(logger: $logger))->hermes2pro(),
         'Ollama DolphinCoder 7B' => fn () => (new Ollama(logger: $logger))->dolphincoder7('q5_K_M'),
         'Ollama Command R 35B' => fn () => (new Ollama(logger: $logger))->commandR('q5_K_M'),
