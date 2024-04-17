@@ -23,7 +23,7 @@ class Person
     public array $interests = [];
 }
 
-$demo = require __DIR__ . '/demo.php';
+$demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
     $persons = $instructrice->deserializeList(
         context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',

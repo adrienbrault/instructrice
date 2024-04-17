@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use function Psl\Type\shape;
 use function Psl\Type\string;
 
-$demo = require __DIR__ . '/demo.php';
+$demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
     $type = shape([
         'name' => string(),
