@@ -51,6 +51,7 @@ return function (callable $do) {
         'Fireworks Mixtral 8x7B' => fn () => (new Fireworks(logger: $logger))->mixtral7(),
         'Fireworks Mixtral 8x22B' => fn () => (new Fireworks(logger: $logger))->mixtral22(),
         'Fireworks DBRX 132B' => fn () => (new Fireworks(logger: $logger))->dbrx(),
+        'Fireworks Capybara 34B' => fn () => (new Fireworks(logger: $logger))->capybara34(),
         'Fireworks Hermes 2 Pro 7B' => fn () => (new Fireworks(logger: $logger))->hermes2pro(),
         'Groq Mixtral 8x7B' => fn () => (new Groq(logger: $logger))->mixtral(),
         'Groq Gemma 7B' => fn () => (new Groq(logger: $logger))->gemma7(),

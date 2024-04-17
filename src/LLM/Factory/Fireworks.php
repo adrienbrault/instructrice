@@ -123,4 +123,17 @@ class Fireworks
             'json_mode_with_schema'
         );
     }
+
+    public function capybara34(): LLMInterface
+    {
+        return new OpenAiCompatibleLLM(
+            'https://api.fireworks.ai/inference/v1',
+            $this->guzzleClient,
+            $this->logger,
+            'fireworks/yi-34b-200k-capybara',
+            $this->jsonSystemPrompt,
+            null,
+            'json_mode_with_schema'
+        );
+    }
 }
