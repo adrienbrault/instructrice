@@ -7,6 +7,7 @@ namespace AdrienBrault\Instructrice\LLM;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
+use DateTimeImmutable;
 use Exception;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
@@ -76,6 +77,7 @@ class OpenAiCompatibleLLM implements LLMInterface
 
         $this->logger->debug('OpenAI Request', $request);
 
+        $requestedAt = new DateTimeImmutable();
         $updatesIterator = $this->client->request(
             'POST',
             $this->config->uri,
@@ -87,18 +89,21 @@ class OpenAiCompatibleLLM implements LLMInterface
         foreach ($this->getFullContentUpdates($updatesIterator) as $contentUpdate) {
             $content = $contentUpdate;
 
+            $firstTokenReceivedAt ??= new DateTimeImmutable();
+
             if ($onChunk !== null) {
                 $completionTokensEstimate = $this->tokenizer->count($content);
 
-                $onChunk(
+                $chunk = new LLMChunk(
                     $this->parser->parse($content),
                     $promptTokensEstimate,
                     $completionTokensEstimate,
-                    $this->config->providerModel->getCost()->calculate(
-                        $promptTokensEstimate,
-                        $completionTokensEstimate
-                    )
+                    $this->config->providerModel->getCost(),
+                    $requestedAt,
+                    $firstTokenReceivedAt
                 );
+
+                $onChunk($chunk);
             }
         }
 

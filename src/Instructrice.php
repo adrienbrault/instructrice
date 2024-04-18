@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice;
 
+use AdrienBrault\Instructrice\LLM\LLMChunk;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use Psl\Type\TypeInterface;
 use Psr\Log\LoggerInterface;
@@ -31,9 +32,9 @@ class Instructrice
     /**
      * @template T
      *
-     * @param class-string<T>|TypeInterface<T>       $type
-     * @param callable(array<T>, float, float): void $onChunk
-     * @param InstructriceOptions                    $options
+     * @param class-string<T>|TypeInterface<T>   $type
+     * @param callable(array<T>, LLMChunk): void $onChunk
+     * @param InstructriceOptions                $options
      *
      * @return list<T>
      */
@@ -54,13 +55,12 @@ class Instructrice
 
         $llmOnChunk = null;
         if ($onChunk !== null) {
-            $t0 = microtime(true);
-            $llmOnChunk = function (mixed $data, int $promptTokens, int $completionTokens, float $cost) use ($type, $listPropertyName, $onChunk, $t0) {
+            $llmOnChunk = function (LLMChunk $chunk) use ($type, $listPropertyName, $onChunk) {
                 try {
-                    $denormalized = $this->denormalizeList($data, $type, $listPropertyName);
+                    $denormalized = $this->denormalizeList($chunk->data, $type, $listPropertyName);
                 } catch (Throwable $e) {
                     $this->logger->info('Failed to denormalize list', [
-                        'data' => $data,
+                        'data' => $chunk->data,
                         'type' => $type,
                         'error' => $e,
                     ]);
@@ -72,12 +72,7 @@ class Instructrice
                     return;
                 }
 
-                // For models not using the GPT tokenizer, this won't be accurate
-                // However this makes comparing the speed of different models better
-                // than using different tokenizers
-                $tokensPerSecond = $completionTokens / (microtime(true) - $t0);
-
-                $onChunk($denormalized, $tokensPerSecond, $cost);
+                $onChunk($denormalized, $chunk);
             };
         }
 

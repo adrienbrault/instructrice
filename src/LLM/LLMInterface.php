@@ -7,8 +7,8 @@ namespace AdrienBrault\Instructrice\LLM;
 interface LLMInterface
 {
     /**
-     * @param array<array-key, mixed>                     $schema
-     * @param callable(mixed, int, int, float): void|null $onChunk
+     * @param array<array-key, mixed>       $schema
+     * @param callable(LLMChunk): void|null $onChunk
      */
     public function get(
         array $schema,

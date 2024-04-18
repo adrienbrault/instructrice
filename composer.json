@@ -15,6 +15,7 @@
         "gioni06/gpt3-tokenizer": "^1.0",
         "greghunt/partial-json": "^1.0",
         "guzzlehttp/guzzle": "^7.0",
+        "nesbot/carbon": "^3",
         "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.0",
         "symfony/property-access": "^6.0 || ^7.0"

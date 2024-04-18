@@ -7,6 +7,7 @@ namespace AdrienBrault\Instructrice;
 use AdrienBrault\Instructrice\Attribute\Instruction;
 use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
+use AdrienBrault\Instructrice\LLM\LLMChunk;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 use AdrienBrault\Instructrice\LLM\LLMFactory;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
@@ -57,7 +58,6 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
 
-use function Psl\Regex\replace;
 use function Psl\Vec\filter;
 
 class InstructriceFactory
@@ -145,7 +145,7 @@ class InstructriceFactory
         );
     }
 
-    public static function createOnChunkDump(ConsoleSectionOutput $section): callable
+    public static function createOnChunkDump(ConsoleSectionOutput $section, bool $renderOnEveryUpdate = true): callable
     {
         $cloner = new VarCloner();
         $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
@@ -168,23 +168,34 @@ class InstructriceFactory
             $dumper->dump($var);
         });
 
-        return function (array $data, float $tokensPerSecond, float $cost) use ($section) {
-            $section->clear();
-            $formattedCost = match ($cost) {
-                0.0 => 'Free',
-                default => '$' . replace(
-                    number_format($cost, 10),
-                    '#0+$#',
-                    ''
-                )
-            };
+        $lastPropertyPath = '';
+
+        return function (array $data, LLMChunk $profile) use ($section, &$lastPropertyPath, $renderOnEveryUpdate) {
+            if (! $renderOnEveryUpdate) {
+                $propertyPath = $profile->getDataLastPropertyPath();
+                if ($lastPropertyPath === $propertyPath) {
+                    return;
+                }
+
+                $lastPropertyPath = $propertyPath;
+            }
+
+            if (! $section->isVeryVerbose()) {
+                $section->clear();
+            }
 
             dump(
                 $data,
                 sprintf(
-                    '%.1f tokens/s - Cost: %s',
-                    $tokensPerSecond,
-                    $formattedCost
+                    '[Prompt: %d tokens - %s] -> [TTFT: %s] -> [Completion: %d tokens - %s - %.1f tokens/s] -> [Total: %d tokens - %s]',
+                    $profile->promptTokens,
+                    $profile->getFormattedCost(),
+                    $profile->getTimeToFirstToken()->forHumans(),
+                    $profile->completionTokens,
+                    $profile->getFormattedCompletionCost(),
+                    $profile->getTokensPerSecond(),
+                    $profile->getTokens(),
+                    $profile->getFormattedCost()
                 )
             );
         };

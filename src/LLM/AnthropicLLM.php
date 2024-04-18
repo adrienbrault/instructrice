@@ -7,6 +7,7 @@ namespace AdrienBrault\Instructrice\LLM;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
+use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 
 use function Psl\Json\decode;
@@ -51,6 +52,7 @@ class AnthropicLLM implements LLMInterface
 
         $this->logger->debug('Anthropic Request', $request);
 
+        $requestedAt = new DateTimeImmutable();
         $updatesIterator = $this->client->request(
             'POST',
             $this->config->uri,
@@ -122,16 +124,19 @@ class AnthropicLLM implements LLMInterface
                 continue;
             }
 
+            $firstTokenReceivedAt ??= new DateTimeImmutable();
+
             if ($onChunk !== null) {
-                $onChunk(
+                $chunk = new LLMChunk(
                     $this->parser->parse($content),
                     $promptTokens,
                     $completionTokens ?? $completionTokensEstimate,
-                    $this->config->providerModel->getCost()->calculate(
-                        $promptTokens,
-                        $completionTokens ?? $completionTokensEstimate
-                    )
+                    $this->config->providerModel->getCost(),
+                    $requestedAt,
+                    $firstTokenReceivedAt
                 );
+
+                $onChunk($chunk);
             }
 
             $lastContent = $content;
