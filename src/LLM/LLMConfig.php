@@ -9,8 +9,14 @@ use AdrienBrault\Instructrice\LLM\ProviderModel\ProviderModel;
 class LLMConfig
 {
     /**
+     * @var list<string>
+     */
+    public readonly array $stopTokens;
+
+    /**
      * @param callable(mixed, string): string $systemPrompt
      * @param array<string, mixed>            $headers
+     * @param list<string>                    $stopTokens
      */
     public function __construct(
         public readonly ProviderModel $providerModel,
@@ -19,6 +25,8 @@ class LLMConfig
         public readonly OpenAiToolStrategy|OpenAiJsonStrategy|null $strategy = null,
         public $systemPrompt = null,
         public readonly array $headers = [],
+        ?array $stopTokens = null,
     ) {
+        $this->stopTokens = $stopTokens ?? ["```\n\n", '<|im_end|>', "\n\n\n", "\t\n\t\n"];
     }
 }

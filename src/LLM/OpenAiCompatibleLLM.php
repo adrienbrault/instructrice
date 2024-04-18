@@ -234,7 +234,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         }
 
         if ($this->config->strategy === null) {
-            $request['stop'] = ["```\n\n", '<|im_end|>', '<|eot_id|>', "\n\n\n", "\t\n\t\n"];
+            $request['stop'] = $this->config->stopTokens;
         }
 
         return $request;

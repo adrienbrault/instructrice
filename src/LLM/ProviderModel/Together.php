@@ -103,7 +103,11 @@ enum Together: string implements ProviderModel
             null,
             [
                 'Authorization' => 'Bearer ' . $apiKey,
-            ]
+            ],
+            match ($this) {
+                self::LLAMA3_8B, self::LLAMA3_70B => ["```\n\n", '<|im_end|>', '<|eot_id|>', "\t\n\t\n"],
+                default => null,
+            }
         );
     }
 }
