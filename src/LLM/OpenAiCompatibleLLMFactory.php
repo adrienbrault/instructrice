@@ -14,6 +14,10 @@ use AdrienBrault\Instructrice\LLM\Config\Ollama;
 use AdrienBrault\Instructrice\LLM\Config\OpenAi;
 use AdrienBrault\Instructrice\LLM\Config\ProviderEnumInterface;
 use AdrienBrault\Instructrice\LLM\Config\Together;
+use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
+use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
+use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
+use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -24,7 +28,9 @@ class OpenAiCompatibleLLMFactory
 {
     public function __construct(
         private readonly StreamingClientInterface $client,
-        private readonly LoggerInterface $logger = new NullLogger()
+        private readonly LoggerInterface $logger = new NullLogger(),
+        private readonly Gpt3Tokenizer $tokenizer = new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
+        private readonly ParserInterface $parser = new JsonParser(),
     ) {
     }
 
@@ -56,7 +62,9 @@ class OpenAiCompatibleLLMFactory
         return new OpenAiCompatibleLLM(
             $this->client,
             $this->logger,
-            $config
+            $config,
+            $this->tokenizer,
+            $this->parser,
         );
     }
 }

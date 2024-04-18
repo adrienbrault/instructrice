@@ -11,6 +11,8 @@ use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
 use AdrienBrault\Instructrice\LLM\Config\Ollama;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLMFactory;
+use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
+use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
 use ApiPlatform\JsonSchema\SchemaFactory as ApiPlatformSchemaFactory;
 use ApiPlatform\Metadata\ApiProperty;
@@ -209,11 +211,12 @@ class InstructriceFactory
 
     public static function createOpenAiCompatibleLLMFactory(
         ?StreamingClientInterface $httpClient = null,
-        ?LoggerInterface $logger = null
+        LoggerInterface $logger = new NullLogger(),
+        Gpt3Tokenizer $tokenizer = new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
+        ParserInterface $parser = new JsonParser(),
     ): OpenAiCompatibleLLMFactory {
-        $logger ??= new NullLogger();
         $httpClient ??= new GuzzleStreamingClient(new Client(), $logger);
 
-        return new OpenAiCompatibleLLMFactory($httpClient, $logger);
+        return new OpenAiCompatibleLLMFactory($httpClient, $logger, $tokenizer, $parser);
     }
 }

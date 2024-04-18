@@ -6,16 +6,16 @@ namespace AdrienBrault\Instructrice\LLM;
 
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
+use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
+use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use Exception;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
-use GregHunt\PartialJson\JsonParser;
 use Psr\Log\LoggerInterface;
 
 use function Psl\Json\encode;
 use function Psl\Json\typed;
 use function Psl\Regex\matches;
-use function Psl\Regex\replace;
 use function Psl\Type\nullable;
 use function Psl\Type\optional;
 use function Psl\Type\shape;
@@ -29,8 +29,8 @@ class OpenAiCompatibleLLM implements LLMInterface
         private readonly StreamingClientInterface $client,
         private readonly LoggerInterface $logger,
         private readonly LLMConfig $config,
-        private readonly JsonParser $jsonParser = new JsonParser(),
         private readonly Gpt3Tokenizer $tokenizer = new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
+        private readonly ParserInterface $parser = new JsonParser(),
     ) {
     }
 
@@ -90,7 +90,7 @@ class OpenAiCompatibleLLM implements LLMInterface
 
             if ($onChunk !== null) {
                 $onChunk(
-                    $this->parseData($content),
+                    $this->parser->parse($content),
                     $content
                 );
             }
@@ -100,7 +100,7 @@ class OpenAiCompatibleLLM implements LLMInterface
             'content' => $content,
         ]);
 
-        return $this->parseData($content);
+        return $this->parser->parse($content);
     }
 
     /**
@@ -185,33 +185,6 @@ class OpenAiCompatibleLLM implements LLMInterface
         }
 
         return $responseData['choices'][0]['delta']['content'] ?? '';
-    }
-
-    private function parseData(?string $content): mixed
-    {
-        $data = null;
-        if ($content !== null) {
-            $content = trim($content);
-
-            if (! str_starts_with($content, '{')
-                && ! str_starts_with($content, '[')
-                && str_contains($content, '```json')
-            ) {
-                $content = substr($content, strpos($content, '```json') + \strlen('```json'));
-                $content = replace($content, '#(.+)```.+$#m', '\1');
-                $content = trim($content);
-            }
-
-            if (str_starts_with($content, '{') || str_starts_with($content, '[')) {
-                $data = $this->jsonParser->parse($content);
-            }
-        }
-
-        if (! \is_array($data) && ! \is_string($data)) {
-            return null;
-        }
-
-        return $data;
     }
 
     /**

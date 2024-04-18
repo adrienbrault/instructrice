@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\LLM;
 
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
-use GregHunt\PartialJson\JsonParser;
+use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
+use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use Psr\Log\LoggerInterface;
 
 use function Psl\Json\decode;
-use function Psl\Regex\replace;
 
 class AnthropicLLM implements LLMInterface
 {
@@ -24,7 +24,7 @@ class AnthropicLLM implements LLMInterface
         private $systemPrompt,
         private readonly array $headers,
         private readonly string $baseUri = 'https://api.anthropic.com',
-        private readonly JsonParser $jsonParser = new JsonParser()
+        private readonly ParserInterface $parser = new JsonParser(),
     ) {
     }
 
@@ -86,7 +86,7 @@ class AnthropicLLM implements LLMInterface
 
             if ($onChunk !== null) {
                 $onChunk(
-                    $this->parseData($content),
+                    $this->parser->parse($content),
                     $content
                 );
             }
@@ -94,33 +94,6 @@ class AnthropicLLM implements LLMInterface
             $lastContent = $content;
         }
 
-        return $this->parseData($content);
-    }
-
-    private function parseData(?string $content): mixed
-    {
-        $data = null;
-        if ($content !== null) {
-            $content = trim($content);
-
-            if (! str_starts_with($content, '{')
-                && ! str_starts_with($content, '[')
-                && str_contains($content, '```json')
-            ) {
-                $content = substr($content, strpos($content, '```json') + \strlen('```json'));
-                $content = replace($content, '#(.+)```.+$#m', '\1');
-                $content = trim($content);
-            }
-
-            if (str_starts_with($content, '{') || str_starts_with($content, '[')) {
-                $data = $this->jsonParser->parse($content);
-            }
-        }
-
-        if (! \is_array($data) && ! \is_string($data)) {
-            return null;
-        }
-
-        return $data;
+        return $this->parser->parse($content);
     }
 }
