@@ -26,7 +26,7 @@ class Instructrice
         private readonly LoggerInterface $logger,
         private readonly Gpt3Tokenizer $gp3Tokenizer,
         private readonly SchemaFactory $schemaFactory,
-        public readonly SerializerInterface&DenormalizerInterface $serializer,
+        private readonly SerializerInterface&DenormalizerInterface $serializer,
     ) {
     }
 
