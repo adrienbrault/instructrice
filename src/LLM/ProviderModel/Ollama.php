@@ -18,6 +18,8 @@ enum Ollama: string implements ProviderModel
     case STABLELM2_16 = 'stablelm2:1.6b-chat-';
     case COMMANDR = 'command-r:35b-v0.1-';
     case COMMANDRPLUS = 'command-r-plus:104b-';
+    case LLAMA3_8B = 'llama3:8b-instruct-';
+    case LLAMA3_70B = 'llama3:70b-instruct-';
 
     public function getApiKeyEnvVar(): ?string
     {
@@ -33,6 +35,7 @@ enum Ollama: string implements ProviderModel
             self::STABLELM2_16 => 4000,
             self::COMMANDR => 128000,
             self::COMMANDRPLUS => 128000,
+            self::LLAMA3_8B, self::LLAMA3_70B => 8000,
         };
     }
 
@@ -55,6 +58,8 @@ enum Ollama: string implements ProviderModel
             self::STABLELM2_16 => 'StableLM2 1.6B',
             self::COMMANDR => 'CommandR 35B',
             self::COMMANDRPLUS => 'CommandR+ 104B',
+            self::LLAMA3_8B => 'Llama3 8B',
+            self::LLAMA3_70B => 'Llama3 70B',
         };
     }
 
@@ -72,6 +77,7 @@ enum Ollama: string implements ProviderModel
     {
         $strategy = match ($this) {
             self::COMMANDR, self::COMMANDRPLUS => null,
+            self::LLAMA3_8B => null, // json mode makes it slower
             default => OpenAiJsonStrategy::JSON,
         };
         $systemPrompt = match ($this) {
@@ -81,6 +87,8 @@ enum Ollama: string implements ProviderModel
         $defaultVersion = match ($this) {
             self::COMMANDRPLUS => 'q2_K_M',
             self::STABLELM2_16 => 'q8_0',
+            self::LLAMA3_8B => 'q4_K_M',
+            self::LLAMA3_70B => 'q4_0',
             default => 'q4_K_M',
         };
 
