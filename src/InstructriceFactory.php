@@ -57,6 +57,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
 
+use function Psl\Regex\replace;
 use function Psl\Vec\filter;
 
 class InstructriceFactory
@@ -96,7 +97,6 @@ class InstructriceFactory
         return new Instructrice(
             $llm,
             $logger,
-            new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
             $schemaFactory,
             $serializer
         );
@@ -168,9 +168,25 @@ class InstructriceFactory
             $dumper->dump($var);
         });
 
-        return function (array $data, float $tokensPerSecond) use ($section) {
+        return function (array $data, float $tokensPerSecond, float $cost) use ($section) {
             $section->clear();
-            dump($data, sprintf('%.1f tokens/s', $tokensPerSecond));
+            $formattedCost = match ($cost) {
+                0.0 => 'Free',
+                default => '$' . replace(
+                    number_format($cost, 10),
+                    '#0+$#',
+                    ''
+                )
+            };
+
+            dump(
+                $data,
+                sprintf(
+                    '%.1f tokens/s - Cost: %s',
+                    $tokensPerSecond,
+                    $formattedCost
+                )
+            );
         };
     }
 

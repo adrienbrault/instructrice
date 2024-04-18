@@ -16,4 +16,12 @@ class Cost
     {
         return new self($uniquePrice, $uniquePrice);
     }
+
+    public function calculate(int $promptTokens, int $completionTokens): float
+    {
+        return (
+            $promptTokens * $this->millionPromptTokensPrice
+            + $completionTokens * $this->millionCompletionTokensPrice
+        ) / 1_000_000;
+    }
 }

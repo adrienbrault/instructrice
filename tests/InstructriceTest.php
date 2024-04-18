@@ -8,8 +8,6 @@ use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 use AdrienBrault\Instructrice\SchemaFactory;
 use AdrienBrault\Instructrice\Tests\Fixtures\Person;
-use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
-use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -54,7 +52,6 @@ class InstructriceTest extends TestCase
         $instructrice = new Instructrice(
             $llm,
             new NullLogger(),
-            new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
             $schemaFactory,
             $serializer,
         );

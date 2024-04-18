@@ -58,7 +58,7 @@ class OpenAiCompatibleLLM implements LLMInterface
 
         $request = $this->applyOpenAiStrategy($request, $schema);
 
-        $completionEstimatedTokens = $this->tokenizer->count(
+        $promptTokensEstimate = $this->tokenizer->count(
             implode(
                 "\n",
                 [
@@ -70,7 +70,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         );
 
         $request['max_tokens'] = min(
-            $this->config->providerModel->getContextWindow() - $completionEstimatedTokens,
+            $this->config->providerModel->getContextWindow() - $promptTokensEstimate,
             $this->config->providerModel->getMaxTokens() ?? $this->config->providerModel->getContextWindow()
         );
 
@@ -88,9 +88,16 @@ class OpenAiCompatibleLLM implements LLMInterface
             $content = $contentUpdate;
 
             if ($onChunk !== null) {
+                $completionTokensEstimate = $this->tokenizer->count($content);
+
                 $onChunk(
                     $this->parser->parse($content),
-                    $content
+                    $promptTokensEstimate,
+                    $completionTokensEstimate,
+                    $this->config->providerModel->getCost()->calculate(
+                        $promptTokensEstimate,
+                        $completionTokensEstimate
+                    )
                 );
             }
         }

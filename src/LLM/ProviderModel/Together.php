@@ -15,7 +15,6 @@ enum Together: string implements ProviderModel
     case MIXTRAL_8x22B = 'mistralai/Mixtral-8x22B-Instruct-v0.1';
     case WIZARDLM2_8x22B = 'microsoft/WizardLM-2-8x22B';
     case CODE_LLAMA_34B = 'togethercomputer/CodeLlama-34b-Instruct';
-    case GEMMA_7B = 'google/gemma-7b-it';
     case DBRX = 'databricks/dbrx-instruct';
 
     public function getApiKeyEnvVar(): ?string
@@ -31,7 +30,6 @@ enum Together: string implements ProviderModel
             self::MIXTRAL_8x22B => 65000,
             self::WIZARDLM2_8x22B => 65000,
             self::CODE_LLAMA_34B => 16000,
-            self::GEMMA_7B => 8000,
             self::DBRX => 32000,
         };
     }
@@ -49,7 +47,6 @@ enum Together: string implements ProviderModel
             self::MIXTRAL_8x22B => Cost::create(1.2),
             self::WIZARDLM2_8x22B => Cost::create(1.2),
             self::CODE_LLAMA_34B => Cost::create(0.8),
-            self::GEMMA_7B => Cost::create(0.2),
             self::DBRX => Cost::create(1.2),
         };
     }
@@ -62,7 +59,6 @@ enum Together: string implements ProviderModel
             self::MIXTRAL_8x22B => 'Mixtral 8x22B',
             self::WIZARDLM2_8x22B => 'WizardLM 2 8x22B',
             self::CODE_LLAMA_34B => 'CodeLlama 34B',
-            self::GEMMA_7B => 'Gemma 7B',
             self::DBRX => 'DBRX',
         };
     }

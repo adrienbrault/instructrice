@@ -10,6 +10,11 @@ use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use Psr\Log\LoggerInterface;
 
 use function Psl\Json\decode;
+use function Psl\Type\int;
+use function Psl\Type\literal_scalar;
+use function Psl\Type\optional;
+use function Psl\Type\shape;
+use function Psl\Type\string;
 
 class AnthropicLLM implements LLMInterface
 {
@@ -57,20 +62,60 @@ class AnthropicLLM implements LLMInterface
             ],
         );
 
+        $messageStartType = shape([
+            'type' => literal_scalar('message_start'),
+            'message' => shape([
+                'usage' => shape([
+                    'input_tokens' => int(),
+                ], true),
+            ], true),
+        ], true);
+        $messageDeltaType = shape([
+            'type' => literal_scalar('message_delta'),
+            'usage' => shape([
+                'output_tokens' => int(),
+            ], true),
+        ], true);
+        $contentBlockDeltaType = shape([
+            'type' => literal_scalar('content_block_delta'),
+            'delta' => optional(
+                shape([
+                    'text' => optional(string()),
+                ], true)
+            ),
+            'usage' => optional(
+                shape([
+                    'input_tokens' => optional(int()),
+                    'output_tokens' => optional(int()),
+                ])
+            ),
+        ], true);
+
         $content = '';
         $lastContent = '';
+        $promptTokens = 0;
+        $completionTokens = null;
+        $completionTokensEstimate = 0;
         foreach ($updatesIterator as $update) {
             $data = decode($update);
 
-            $delta = null;
-            if (\is_array($data)) {
-                $delta = $data['delta'] ?? null;
+            if ($messageStartType->matches($data)) {
+                $promptTokens = $data['message']['usage']['input_tokens'];
             }
-            if (! \is_array($delta)) {
+            if ($messageDeltaType->matches($data)) {
+                $completionTokens = $data['usage']['output_tokens'];
+            }
+
+            if (! $contentBlockDeltaType->matches($data)) {
                 continue;
             }
 
-            $content .= $delta['text'] ?? '';
+            ++$completionTokensEstimate;
+
+            $promptTokens = $data['usage']['input_tokens'] ?? $promptTokens;
+            $completionTokens = $data['usage']['output_tokens'] ?? $completionTokens;
+
+            $content .= $data['delta']['text'] ?? '';
 
             if ($content === $lastContent) {
                 // If the content hasn't changed, we stop
@@ -80,7 +125,12 @@ class AnthropicLLM implements LLMInterface
             if ($onChunk !== null) {
                 $onChunk(
                     $this->parser->parse($content),
-                    $content
+                    $promptTokens,
+                    $completionTokens ?? $completionTokensEstimate,
+                    $this->config->providerModel->getCost()->calculate(
+                        $promptTokens,
+                        $completionTokens ?? $completionTokensEstimate
+                    )
                 );
             }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\LLM\LLMInterface;
-use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Psl\Type\TypeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -24,7 +23,6 @@ class Instructrice
     public function __construct(
         private readonly LLMInterface $llm,
         private readonly LoggerInterface $logger,
-        private readonly Gpt3Tokenizer $gp3Tokenizer,
         private readonly SchemaFactory $schemaFactory,
         private readonly SerializerInterface&DenormalizerInterface $serializer,
     ) {
@@ -33,9 +31,9 @@ class Instructrice
     /**
      * @template T
      *
-     * @param class-string<T>|TypeInterface<T> $type
-     * @param callable(array<T>, float): void  $onChunk
-     * @param InstructriceOptions              $options
+     * @param class-string<T>|TypeInterface<T>       $type
+     * @param callable(array<T>, float, float): void $onChunk
+     * @param InstructriceOptions                    $options
      *
      * @return list<T>
      */
@@ -57,12 +55,11 @@ class Instructrice
         $llmOnChunk = null;
         if ($onChunk !== null) {
             $t0 = microtime(true);
-            $llmOnChunk = function (mixed $data, string $rawData) use ($type, $listPropertyName, $onChunk, $t0) {
+            $llmOnChunk = function (mixed $data, int $promptTokens, int $completionTokens, float $cost) use ($type, $listPropertyName, $onChunk, $t0) {
                 try {
                     $denormalized = $this->denormalizeList($data, $type, $listPropertyName);
                 } catch (Throwable $e) {
                     $this->logger->info('Failed to denormalize list', [
-                        'rawData' => $rawData,
                         'data' => $data,
                         'type' => $type,
                         'error' => $e,
@@ -78,9 +75,9 @@ class Instructrice
                 // For models not using the GPT tokenizer, this won't be accurate
                 // However this makes comparing the speed of different models better
                 // than using different tokenizers
-                $tokensPerSecond = $this->gp3Tokenizer->count($rawData) / (microtime(true) - $t0);
+                $tokensPerSecond = $completionTokens / (microtime(true) - $t0);
 
-                $onChunk($denormalized, $tokensPerSecond);
+                $onChunk($denormalized, $tokensPerSecond, $cost);
             };
         }
 
