@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM\Config;
+namespace AdrienBrault\Instructrice\LLM;
 
 class Cost
 {

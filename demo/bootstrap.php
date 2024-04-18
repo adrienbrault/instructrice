@@ -1,10 +1,8 @@
 <?php
 
 declare(strict_types=1);
-
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\Config\Anthropic;
-use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
+use AdrienBrault\Instructrice\LLM\ProviderModel\ProviderModel;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
@@ -13,6 +11,8 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+
+use function Psl\Dict\reindex;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -29,37 +29,24 @@ return function (callable $do) {
 
     $logger = createConsoleLogger($output);
 
-    $openAiCompatibleLLMFactory = InstructriceFactory::createOpenAiCompatibleLLMFactory();
-    $llmRegistry = [];
-    foreach ($openAiCompatibleLLMFactory->createAvailable() as $llmConfig) {
-        $llmRegistry[$llmConfig->label] = $llmConfig;
-    }
-    $anthropicFactory = new Anthropic(logger: $logger);
-
-    $llmRegistry['Anthropic - Haiku'] = fn () => $anthropicFactory->haiku();
-    $llmRegistry['Anthropic - Sonnet'] = fn () => $anthropicFactory->sonnet();
-    $llmRegistry['Anthropic - Opus'] = fn () => $anthropicFactory->opus();
+    $providerModels = reindex(
+        InstructriceFactory::createAvailableProviderModels(),
+        fn (ProviderModel $providerModel) => $providerModel->getLabel(),
+    );
 
     $questionSection = $output->section();
     $questionHelper = new QuestionHelper();
     $llmToUse = $questionHelper->ask($input, $questionSection, new ChoiceQuestion(
         'Which LLM do you want to use?',
-        array_keys($llmRegistry),
+        array_keys($providerModels),
         0,
     ));
     $questionSection->clear();
     $output->writeln(sprintf('Using LLM: <info>%s</info>', $llmToUse));
     $output->writeln('');
 
-    $llmConfig = $llmRegistry[$llmToUse];
-    if ($llmConfig instanceof LLMConfig) {
-        $llm = $openAiCompatibleLLMFactory->create($llmConfig);
-    } else {
-        $llm = $llmConfig();
-    }
-
     $instructrice = InstructriceFactory::create(
-        llm: $llm,
+        llm: $providerModels[$llmToUse],
         logger: $logger,
     );
 

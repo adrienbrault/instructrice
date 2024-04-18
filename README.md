@@ -19,7 +19,7 @@ $ composer require adrienbrault/instructrice:@dev
 
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\Config\Ollama;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Ollama;
 use AdrienBrault\Instructrice\Attribute\Instruction;
 
 class Character

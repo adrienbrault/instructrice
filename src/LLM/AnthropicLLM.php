@@ -13,17 +13,10 @@ use function Psl\Json\decode;
 
 class AnthropicLLM implements LLMInterface
 {
-    /**
-     * @param callable(mixed): string $systemPrompt
-     * @param array<string, mixed>    $headers
-     */
     public function __construct(
         private readonly StreamingClientInterface $client,
         private readonly LoggerInterface $logger,
-        private readonly string $model,
-        private $systemPrompt,
-        private readonly array $headers,
-        private readonly string $baseUri = 'https://api.anthropic.com',
+        private readonly LLMConfig $config,
         private readonly ParserInterface $parser = new JsonParser(),
     ) {
     }
@@ -42,23 +35,23 @@ class AnthropicLLM implements LLMInterface
         ];
 
         $request = [
-            'model' => $this->model,
+            'model' => $this->config->model,
             'messages' => $messages,
             'max_tokens' => 4000,
             'stream' => true,
-            'system' => \call_user_func($this->systemPrompt, $schema, $instructions),
+            'system' => \call_user_func($this->config->systemPrompt, $schema, $instructions),
         ];
 
-        // Tool mode does not support streaming.
+        // Tool and json modes do not support streaming.
 
         $this->logger->debug('Anthropic Request', $request);
 
         $updatesIterator = $this->client->request(
             'POST',
-            $this->baseUri . '/v1/messages',
+            $this->config->uri,
             $request,
             [
-                ...$this->headers,
+                ...$this->config->headers,
                 'anthropic-version' => '2023-06-01',
                 'anthropic-beta' => 'tools-2024-04-04',
             ],

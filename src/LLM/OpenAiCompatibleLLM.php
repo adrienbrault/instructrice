@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\LLM;
 
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
-use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use Exception;
@@ -71,8 +70,8 @@ class OpenAiCompatibleLLM implements LLMInterface
         );
 
         $request['max_tokens'] = min(
-            $this->config->contextWindow - $completionEstimatedTokens,
-            $this->config->maxCompletionTokens ?? $this->config->contextWindow
+            $this->config->providerModel->getContextWindow() - $completionEstimatedTokens,
+            $this->config->providerModel->getMaxTokens() ?? $this->config->providerModel->getContextWindow()
         );
 
         $this->logger->debug('OpenAI Request', $request);
@@ -96,7 +95,7 @@ class OpenAiCompatibleLLM implements LLMInterface
             }
         }
 
-        $this->logger->debug('OpenAI response message content', [
+        $this->logger->debug('OpenAI Response message content', [
             'content' => $content,
         ]);
 

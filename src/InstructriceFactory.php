@@ -7,12 +7,20 @@ namespace AdrienBrault\Instructrice;
 use AdrienBrault\Instructrice\Attribute\Instruction;
 use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
-use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
-use AdrienBrault\Instructrice\LLM\Config\Ollama;
+use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\LLMFactory;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
-use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLMFactory;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Anthropic;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Deepinfra;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Fireworks;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Groq;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Mistral;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Ollama;
+use AdrienBrault\Instructrice\LLM\ProviderModel\OpenAi;
+use AdrienBrault\Instructrice\LLM\ProviderModel\ProviderModel;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Together;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
 use ApiPlatform\JsonSchema\SchemaFactory as ApiPlatformSchemaFactory;
 use ApiPlatform\Metadata\ApiProperty;
@@ -27,10 +35,10 @@ use ApiPlatform\Metadata\ResourceClassResolver;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use GuzzleHttp\Client;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ReflectionClass;
-use RuntimeException;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
@@ -49,13 +57,15 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
 
+use function Psl\Vec\filter;
+
 class InstructriceFactory
 {
     /**
      * @param list<string> $directories
      */
     public static function create(
-        LLMInterface|LLMConfig|null $llm = null,
+        LLMInterface|LLMConfig|ProviderModel|null $llm = null,
         ?LoggerInterface $logger = null,
         array $directories = [],
         ?StreamingClientInterface $httpClient = null
@@ -64,14 +74,16 @@ class InstructriceFactory
         $httpClient ??= new GuzzleStreamingClient(new Client(), $logger);
 
         if ($llm === null) {
-            $llm = Ollama::HERMES2PRO->createConfig();
-
-            if ($llm === null) {
-                throw new RuntimeException('No LLM available');
-            }
+            $llm = Ollama::HERMES2PRO->createConfig('sk-xxx');
         }
+
+        if ($llm instanceof ProviderModel) {
+            $apiKey = self::getProviderModelApiKey($llm, true) ?? 'sk-xxx';
+            $llm = $llm->createConfig($apiKey);
+        }
+
         if ($llm instanceof LLMConfig) {
-            $llmFactory = self::createOpenAiCompatibleLLMFactory($httpClient, $logger);
+            $llmFactory = self::createLLMFactory($httpClient, $logger);
             $llm = $llmFactory->create($llm);
         }
 
@@ -87,6 +99,49 @@ class InstructriceFactory
             new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
             $schemaFactory,
             $serializer
+        );
+    }
+
+    private static function getProviderModelApiKey(ProviderModel $providerModel, bool $throwWhenMissing = false): ?string
+    {
+        $apiKeyEnvVar = $providerModel->getApiKeyEnvVar();
+
+        if ($apiKeyEnvVar === null) {
+            return 'sk-xxx';
+        }
+
+        $apiKey = getenv($apiKeyEnvVar) ?: null;
+
+        if ($apiKey !== null) {
+            return $apiKey;
+        }
+
+        if ($throwWhenMissing) {
+            throw new InvalidArgumentException(sprintf('In order to use %s please set the %s environment variable', $providerModel->getLabel(), $apiKeyEnvVar));
+        }
+
+        return null;
+    }
+
+    /**
+     * @return list<ProviderModel>
+     */
+    public static function createAvailableProviderModels(): array
+    {
+        $providerModels = [
+            ...OpenAi::cases(),
+            ...Ollama::cases(),
+            ...Anthropic::cases(),
+            ...Mistral::cases(),
+            ...Groq::cases(),
+            ...Fireworks::cases(),
+            ...Together::cases(),
+            ...Deepinfra::cases(),
+        ];
+
+        return filter(
+            $providerModels,
+            fn (ProviderModel $providerModel): bool => self::getProviderModelApiKey($providerModel, false) !== null
         );
     }
 
@@ -209,14 +264,14 @@ class InstructriceFactory
         );
     }
 
-    public static function createOpenAiCompatibleLLMFactory(
+    public static function createLLMFactory(
         ?StreamingClientInterface $httpClient = null,
         LoggerInterface $logger = new NullLogger(),
         Gpt3Tokenizer $tokenizer = new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
         ParserInterface $parser = new JsonParser(),
-    ): OpenAiCompatibleLLMFactory {
+    ): LLMFactory {
         $httpClient ??= new GuzzleStreamingClient(new Client(), $logger);
 
-        return new OpenAiCompatibleLLMFactory($httpClient, $logger, $tokenizer, $parser);
+        return new LLMFactory($httpClient, $logger, $tokenizer, $parser);
     }
 }
