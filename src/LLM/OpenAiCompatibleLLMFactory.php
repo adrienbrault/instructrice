@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
+use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Config\Deepinfra;
 use AdrienBrault\Instructrice\LLM\Config\Fireworks;
 use AdrienBrault\Instructrice\LLM\Config\Groq;
@@ -13,8 +14,6 @@ use AdrienBrault\Instructrice\LLM\Config\Ollama;
 use AdrienBrault\Instructrice\LLM\Config\OpenAi;
 use AdrienBrault\Instructrice\LLM\Config\ProviderEnumInterface;
 use AdrienBrault\Instructrice\LLM\Config\Together;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -24,7 +23,7 @@ use function Psl\Vec\map;
 class OpenAiCompatibleLLMFactory
 {
     public function __construct(
-        private readonly ClientInterface $guzzleClient = new Client(),
+        private readonly StreamingClientInterface $client,
         private readonly LoggerInterface $logger = new NullLogger()
     ) {
     }
@@ -55,7 +54,7 @@ class OpenAiCompatibleLLMFactory
     public function create(LLMConfig $config): LLMInterface
     {
         return new OpenAiCompatibleLLM(
-            $this->guzzleClient,
+            $this->client,
             $this->logger,
             $config
         );

@@ -6,7 +6,6 @@ namespace AdrienBrault\Instructrice\LLM\Config;
 
 use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
 use AdrienBrault\Instructrice\LLM\OpenAiToolStrategy;
-use GuzzleHttp\RequestOptions;
 
 enum Fireworks: string implements ProviderEnumInterface
 {
@@ -75,9 +74,7 @@ enum Fireworks: string implements ProviderEnumInterface
             null,
             Cost::create($config['ppm']),
             [
-                RequestOptions::HEADERS => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                ],
+                'Authorization' => 'Bearer ' . $apiKey,
             ]
         );
     }

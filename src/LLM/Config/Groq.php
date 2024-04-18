@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\LLM\Config;
 
 use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
-use GuzzleHttp\RequestOptions;
 
 enum Groq: string implements ProviderEnumInterface
 {
@@ -46,9 +45,7 @@ enum Groq: string implements ProviderEnumInterface
             null,
             Cost::create($config['ppm']),
             [
-                RequestOptions::HEADERS => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                ],
+                'Authorization' => 'Bearer ' . $apiKey,
             ]
         );
     }

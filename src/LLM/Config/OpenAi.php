@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\LLM\Config;
 
 use AdrienBrault\Instructrice\LLM\OpenAiToolStrategy;
-use GuzzleHttp\RequestOptions;
 
 enum OpenAi: string implements ProviderEnumInterface
 {
@@ -50,9 +49,7 @@ enum OpenAi: string implements ProviderEnumInterface
             null,
             new Cost($config['completionPpm'], $config['promptPpm']),
             [
-                RequestOptions::HEADERS => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                ],
+                'Authorization' => 'Bearer ' . $apiKey,
             ]
         );
     }

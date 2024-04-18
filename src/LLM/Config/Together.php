@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\LLM\Config;
 
 use AdrienBrault\Instructrice\LLM\OpenAiToolStrategy;
-use GuzzleHttp\RequestOptions;
 
 enum Together: string implements ProviderEnumInterface
 {
@@ -76,9 +75,7 @@ enum Together: string implements ProviderEnumInterface
             null,
             Cost::create($config['ppm']),
             [
-                RequestOptions::HEADERS => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                ],
+                'Authorization' => 'Bearer ' . $apiKey,
             ]
         );
     }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\Attribute\Instruction;
+use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
+use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
 use AdrienBrault\Instructrice\LLM\Config\Ollama;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
@@ -22,6 +24,7 @@ use ApiPlatform\Metadata\Resource\Factory\AttributesResourceNameCollectionFactor
 use ApiPlatform\Metadata\ResourceClassResolver;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
+use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ReflectionClass;
@@ -53,8 +56,11 @@ class InstructriceFactory
         LLMInterface|LLMConfig|null $llm = null,
         ?LoggerInterface $logger = null,
         array $directories = [],
+        ?StreamingClientInterface $httpClient = null
     ): Instructrice {
         $logger ??= new NullLogger();
+        $httpClient ??= new GuzzleStreamingClient(new Client(), $logger);
+
         if ($llm === null) {
             $llm = Ollama::HERMES2PRO->createConfig();
 
@@ -63,7 +69,7 @@ class InstructriceFactory
             }
         }
         if ($llm instanceof LLMConfig) {
-            $llmFactory = new OpenAiCompatibleLLMFactory();
+            $llmFactory = self::createOpenAiCompatibleLLMFactory($httpClient, $logger);
             $llm = $llmFactory->create($llm);
         }
 
@@ -199,5 +205,15 @@ class InstructriceFactory
             ],
             [new JsonEncoder()]
         );
+    }
+
+    public static function createOpenAiCompatibleLLMFactory(
+        ?StreamingClientInterface $httpClient = null,
+        ?LoggerInterface $logger = null
+    ): OpenAiCompatibleLLMFactory {
+        $logger ??= new NullLogger();
+        $httpClient ??= new GuzzleStreamingClient(new Client(), $logger);
+
+        return new OpenAiCompatibleLLMFactory($httpClient, $logger);
     }
 }

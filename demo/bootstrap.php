@@ -1,10 +1,10 @@
 <?php
 
 declare(strict_types=1);
+
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\Config\Anthropic;
 use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
-use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLMFactory;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
@@ -29,14 +29,16 @@ return function (callable $do) {
 
     $logger = createConsoleLogger($output);
 
-    $openAiCompatibleLLMFactory = new OpenAiCompatibleLLMFactory(logger: $logger);
+    $openAiCompatibleLLMFactory = InstructriceFactory::createOpenAiCompatibleLLMFactory();
     $llmRegistry = [];
     foreach ($openAiCompatibleLLMFactory->createAvailable() as $llmConfig) {
         $llmRegistry[$llmConfig->label] = $llmConfig;
     }
-    $llmRegistry['Anthropic - Haiku'] = fn () => (new Anthropic(logger: $logger))->haiku();
-    $llmRegistry['Anthropic - Sonnet'] = fn () => (new Anthropic(logger: $logger))->sonnet();
-    $llmRegistry['Anthropic - Opus'] = fn () => (new Anthropic(logger: $logger))->opus();
+    $anthropicFactory = new Anthropic(logger: $logger);
+
+    $llmRegistry['Anthropic - Haiku'] = fn () => $anthropicFactory->haiku();
+    $llmRegistry['Anthropic - Sonnet'] = fn () => $anthropicFactory->sonnet();
+    $llmRegistry['Anthropic - Opus'] = fn () => $anthropicFactory->opus();
 
     $questionSection = $output->section();
     $questionHelper = new QuestionHelper();

@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
+use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
 use Exception;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use GregHunt\PartialJson\JsonParser;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\RequestOptions;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 
 use function Psl\Json\encode;
@@ -30,7 +26,7 @@ use function Psl\Type\vec;
 class OpenAiCompatibleLLM implements LLMInterface
 {
     public function __construct(
-        private readonly ClientInterface $client,
+        private readonly StreamingClientInterface $client,
         private readonly LoggerInterface $logger,
         private readonly LLMConfig $config,
         private readonly JsonParser $jsonParser = new JsonParser(),
@@ -81,27 +77,15 @@ class OpenAiCompatibleLLM implements LLMInterface
 
         $this->logger->debug('OpenAI Request', $request);
 
-        try {
-            $response = $this->client->request(
-                'POST',
-                $this->config->uri,
-                [
-                    RequestOptions::JSON => $request,
-                    RequestOptions::STREAM => true,
-                    ...$this->config->guzzleOptions,
-                ]
-            );
-        } catch (RequestException $e) {
-            $this->logger->error('OpenAI Request error', [
-                'error' => $e->getMessage(),
-                'response' => $e->getResponse()?->getBody()->getContents(),
-            ]);
-
-            throw $e;
-        }
+        $updatesIterator = $this->client->request(
+            'POST',
+            $this->config->uri,
+            $request,
+            $this->config->headers,
+        );
 
         $content = '';
-        foreach ($this->getFullContentUpdates($response) as $contentUpdate) {
+        foreach ($this->getFullContentUpdates($updatesIterator) as $contentUpdate) {
             $content = $contentUpdate;
 
             if ($onChunk !== null) {
@@ -120,31 +104,24 @@ class OpenAiCompatibleLLM implements LLMInterface
     }
 
     /**
+     * @param iterable<string> $updates
+     *
      * @return iterable<string>
      */
-    private function getFullContentUpdates(ResponseInterface $response): iterable
+    private function getFullContentUpdates(iterable $updates): iterable
     {
         $content = '';
         $lastContent = '';
-        while (! $response->getBody()->eof()) {
-            $line = self::readLine($response->getBody());
-
-            if (! str_starts_with($line, 'data:')) {
-                continue;
-            }
-
-            $data = trim(substr($line, \strlen('data:')));
-
-            if ($data === '[DONE]') {
+        foreach ($updates as $update) {
+            if ($update === '[DONE]') {
                 break;
             }
 
-            $content .= $this->getChunkContent($data);
+            $content .= $this->getChunkContent($update);
 
             if (matches($content, '#(\n\s*){3,}$#')) {
                 // If the content ends with whitespace including at least 3 newlines, we stop
 
-                $response->getBody()->close();
                 break;
             }
 
@@ -161,6 +138,10 @@ class OpenAiCompatibleLLM implements LLMInterface
 
     private function getChunkContent(string $data): string
     {
+        if ($data === '') {
+            return '';
+        }
+
         $responseData = typed(
             $data,
             shape([
@@ -231,23 +212,6 @@ class OpenAiCompatibleLLM implements LLMInterface
         }
 
         return $data;
-    }
-
-    public static function readLine(StreamInterface $stream): string
-    {
-        $buffer = '';
-
-        while (! $stream->eof()) {
-            if ('' === ($byte = $stream->read(1))) {
-                return $buffer;
-            }
-            $buffer .= $byte;
-            if ($byte === "\n") {
-                break;
-            }
-        }
-
-        return $buffer;
     }
 
     /**

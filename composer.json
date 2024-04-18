@@ -28,6 +28,7 @@
         "phpunit/phpunit": "^10.0 || ^11.0",
         "rector/rector": "^1.0",
         "symfony/console": "^6.0 || 7.0",
+        "symfony/http-client": "^6.0 || ^7.0",
         "symfony/monolog-bridge": "^6.0 || ^7.0",
         "symfony/var-dumper": "^6.0 || ^7.0",
         "symplify/easy-coding-standard": "*"

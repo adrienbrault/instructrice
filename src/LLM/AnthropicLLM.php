@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
+use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use GregHunt\PartialJson\JsonParser;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 
 use function Psl\Json\decode;
@@ -17,12 +15,14 @@ class AnthropicLLM implements LLMInterface
 {
     /**
      * @param callable(mixed): string $systemPrompt
+     * @param array<string, mixed>    $headers
      */
     public function __construct(
-        private readonly ClientInterface $client,
+        private readonly StreamingClientInterface $client,
         private readonly LoggerInterface $logger,
         private readonly string $model,
         private $systemPrompt,
+        private readonly array $headers,
         private readonly string $baseUri = 'https://api.anthropic.com',
         private readonly JsonParser $jsonParser = new JsonParser()
     ) {
@@ -53,39 +53,21 @@ class AnthropicLLM implements LLMInterface
 
         $this->logger->debug('Anthropic Request', $request);
 
-        try {
-            $response = $this->client->request(
-                'POST',
-                $this->baseUri . '/v1/messages',
-                [
-                    RequestOptions::JSON => $request,
-                    RequestOptions::STREAM => true,
-                    RequestOptions::HEADERS => [
-                        'anthropic-version' => '2023-06-01',
-                        'anthropic-beta' => 'tools-2024-04-04',
-                    ],
-                ]
-            );
-        } catch (RequestException $e) {
-            $this->logger->error('Anthropic Request error', [
-                'error' => $e->getMessage(),
-                'response' => $e->getResponse()?->getBody()->getContents(),
-            ]);
-
-            throw $e;
-        }
+        $updatesIterator = $this->client->request(
+            'POST',
+            $this->baseUri . '/v1/messages',
+            $request,
+            [
+                ...$this->headers,
+                'anthropic-version' => '2023-06-01',
+                'anthropic-beta' => 'tools-2024-04-04',
+            ],
+        );
 
         $content = '';
         $lastContent = '';
-        while (! $response->getBody()->eof()) {
-            $line = OpenAiCompatibleLLM::readLine($response->getBody());
-
-            if (! str_starts_with($line, 'data:')) {
-                continue;
-            }
-
-            $data = trim(substr($line, \strlen('data:')));
-            $data = decode($data);
+        foreach ($updatesIterator as $update) {
+            $data = decode($update);
 
             $delta = null;
             if (\is_array($data)) {

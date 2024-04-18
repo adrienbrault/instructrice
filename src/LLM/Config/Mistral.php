@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\LLM\Config;
 
 use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
-use GuzzleHttp\RequestOptions;
 
 enum Mistral: string implements ProviderEnumInterface
 {
@@ -60,9 +59,7 @@ enum Mistral: string implements ProviderEnumInterface
             null,
             new Cost($config['promptPpm'], $config['comletionPpm']),
             [
-                RequestOptions::HEADERS => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                ],
+                'Authorization' => 'Bearer ' . $apiKey,
             ]
         );
     }
