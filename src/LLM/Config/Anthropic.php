@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM\Factory;
+namespace AdrienBrault\Instructrice\LLM\Config;
 
+use AdrienBrault\Instructrice\LLM\AnthropicLLM;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
-use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class OpenAi
+use function Psl\Json\encode;
+
+class Anthropic
 {
     private readonly ClientInterface $guzzleClient;
 
@@ -20,8 +22,6 @@ class OpenAi
      * @var callable(mixed): string
      */
     private $systemPrompt;
-
-    private string $baseUri = 'https://api.openai.com/v1';
 
     /**
      * @param callable(mixed): string $systemPrompt
@@ -33,49 +33,51 @@ class OpenAi
     ) {
         $this->guzzleClient = $guzzleClient ?? new Client([
             RequestOptions::HEADERS => [
-                'Authorization' => 'Bearer ' . getenv('OPENAI_API_KEY'),
+                'x-api-key' => getenv('ANTHROPIC_API_KEY'),
             ],
         ]);
 
         $this->systemPrompt = $systemPrompt ?? function ($schema): string {
+            $encodedSchema = encode($schema);
+
             return <<<PROMPT
-                You are a helpful assistant that answers in JSON.
+                You are a helpful assistant that answers ONLY in JSON.
                 If the user intent is unclear, consider it a structured information extraction task.
+
+                <schema>
+                {$encodedSchema}
+                </schema>
                 PROMPT;
         };
     }
 
-    public function gpt35(string $version = ''): LLMInterface
+    public function haiku(): LLMInterface
     {
-        $model = 'gpt-3.5-turbo';
-        if ($version !== '') {
-            $model .= '-' . $version;
-        }
-
-        return new OpenAiCompatibleLLM(
-            $this->baseUri,
+        return new AnthropicLLM(
             $this->guzzleClient,
             $this->logger,
-            $model,
+            'claude-3-haiku-20240307',
             $this->systemPrompt,
-            'function'
         );
     }
 
-    public function gpt4(string $version = ''): LLMInterface
+    public function sonnet(): LLMInterface
     {
-        $model = 'gpt-4-turbo';
-        if ($version !== '') {
-            $model .= '-' . $version;
-        }
-
-        return new OpenAiCompatibleLLM(
-            $this->baseUri,
+        return new AnthropicLLM(
             $this->guzzleClient,
             $this->logger,
-            $model,
+            'claude-3-sonnet-20240229',
             $this->systemPrompt,
-            'function'
+        );
+    }
+
+    public function opus(): LLMInterface
+    {
+        return new AnthropicLLM(
+            $this->guzzleClient,
+            $this->logger,
+            'claude-3-opus-20240229',
+            $this->systemPrompt,
         );
     }
 }

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\Attribute\Instruction;
-use AdrienBrault\Instructrice\LLM\Factory\Ollama;
+use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
+use AdrienBrault\Instructrice\LLM\Config\Ollama;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLMFactory;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
 use ApiPlatform\JsonSchema\SchemaFactory as ApiPlatformSchemaFactory;
 use ApiPlatform\Metadata\ApiProperty;
@@ -23,6 +25,7 @@ use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ReflectionClass;
+use RuntimeException;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
@@ -47,12 +50,22 @@ class InstructriceFactory
      * @param list<string> $directories
      */
     public static function create(
-        ?LLMInterface $llm = null,
+        LLMInterface|LLMConfig|null $llm = null,
         ?LoggerInterface $logger = null,
         array $directories = [],
     ): Instructrice {
         $logger ??= new NullLogger();
-        $llm ??= (new Ollama(logger: $logger))->hermes2pro();
+        if ($llm === null) {
+            $llm = Ollama::HERMES2PRO->createConfig();
+
+            if ($llm === null) {
+                throw new RuntimeException('No LLM available');
+            }
+        }
+        if ($llm instanceof LLMConfig) {
+            $llmFactory = new OpenAiCompatibleLLMFactory();
+            $llm = $llmFactory->create($llm);
+        }
 
         $propertyInfo = self::createPropertyInfoExtractor();
         $schemaFactory = new SchemaFactory(

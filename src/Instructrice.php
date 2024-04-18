@@ -42,6 +42,7 @@ class Instructrice
     public function deserializeList(
         string $context,
         string|TypeInterface $type,
+        ?string $instructions = null,
         array $options = [],
         ?callable $onChunk = null,
     ): array {
@@ -86,6 +87,7 @@ class Instructrice
         $data = $this->llm->get(
             $schema,
             $context,
+            $instructions ?? 'Extract all relevant information',
             $llmOnChunk,
         );
 

@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
+use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
 use Exception;
+use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
+use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use GregHunt\PartialJson\JsonParser;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 
+use function Psl\Json\encode;
 use function Psl\Json\typed;
 use function Psl\Regex\matches;
 use function Psl\Regex\replace;
@@ -24,32 +29,25 @@ use function Psl\Type\vec;
 
 class OpenAiCompatibleLLM implements LLMInterface
 {
-    /**
-     * @param callable(mixed): string                  $systemPrompt
-     * @param 'auto'|'any'|'function'|null             $toolMode
-     * @param 'json_mode'|'json_mode_with_schema'|null $jsonMode
-     */
     public function __construct(
-        private readonly string $baseUri,
         private readonly ClientInterface $client,
         private readonly LoggerInterface $logger,
-        private readonly string $model,
-        private $systemPrompt,
-        private readonly ?string $toolMode = null,
-        private readonly ?string $jsonMode = 'json_mode',
-        private readonly JsonParser $jsonParser = new JsonParser()
+        private readonly LLMConfig $config,
+        private readonly JsonParser $jsonParser = new JsonParser(),
+        private readonly Gpt3Tokenizer $tokenizer = new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
     ) {
     }
 
     public function get(
         array $schema,
         string $context,
+        string $instructions,
         ?callable $onChunk = null,
     ): mixed {
         $messages = [
             [
                 'role' => 'system',
-                'content' => \call_user_func($this->systemPrompt, $schema),
+                'content' => $this->getSystemPrompt()($schema, $instructions),
             ],
             [
                 'role' => 'user',
@@ -58,57 +56,39 @@ class OpenAiCompatibleLLM implements LLMInterface
         ];
 
         $request = [
-            'model' => $this->model,
+            'model' => $this->config->model,
             'messages' => $messages,
-            'max_tokens' => 4000,
             'stream' => true,
         ];
-        if ($this->jsonMode !== null && $this->toolMode === null) {
-            $request['response_format'] = [
-                'type' => 'json_object',
-            ];
-            if ($this->jsonMode === 'json_mode_with_schema') {
-                $request['response_format']['schema'] = $schema;
-            }
-        }
-        if ($this->toolMode === null && $this->jsonMode === null) {
-            $request['stop'] = ["```\n", "\n\n", "\n\n\n", "\t\n\t\n"];
-        }
 
-        if ($this->toolMode !== null) {
-            $request['tools'] = [
+        $request = $this->applyOpenAiStrategy($request, $schema);
+
+        $completionEstimatedTokens = $this->tokenizer->count(
+            implode(
+                "\n",
                 [
-                    'type' => 'function',
-                    'function' => [
-                        'name' => 'extract',
-                        'description' => 'Extract the relevant information',
-                        'parameters' => $schema,
-                    ],
-                ],
-            ];
-            if ($this->toolMode === 'any') {
-                $request['tool_choice'] = 'any';
-            } elseif ($this->toolMode === 'auto') {
-                $request['tool_choice'] = 'auto';
-            } elseif ($this->toolMode === 'function') {
-                $request['tool_choice'] = [
-                    'type' => 'function',
-                    'function' => [
-                        'name' => 'extract',
-                    ],
-                ];
-            }
-        }
+                    $messages[0]['content'],
+                    $messages[1]['content'],
+                    encode($request['tools'] ?? []),
+                ]
+            )
+        );
+
+        $request['max_tokens'] = min(
+            $this->config->contextWindow - $completionEstimatedTokens,
+            $this->config->maxCompletionTokens ?? $this->config->contextWindow
+        );
 
         $this->logger->debug('OpenAI Request', $request);
 
         try {
             $response = $this->client->request(
                 'POST',
-                $this->baseUri . '/chat/completions',
+                $this->config->uri,
                 [
                     RequestOptions::JSON => $request,
                     RequestOptions::STREAM => true,
+                    ...$this->config->guzzleOptions,
                 ]
             );
         } catch (RequestException $e) {
@@ -120,6 +100,30 @@ class OpenAiCompatibleLLM implements LLMInterface
             throw $e;
         }
 
+        $content = '';
+        foreach ($this->getFullContentUpdates($response) as $contentUpdate) {
+            $content = $contentUpdate;
+
+            if ($onChunk !== null) {
+                $onChunk(
+                    $this->parseData($content),
+                    $content
+                );
+            }
+        }
+
+        $this->logger->debug('OpenAI response message content', [
+            'content' => $content,
+        ]);
+
+        return $this->parseData($content);
+    }
+
+    /**
+     * @return iterable<string>
+     */
+    private function getFullContentUpdates(ResponseInterface $response): iterable
+    {
         $content = '';
         $lastContent = '';
         while (! $response->getBody()->eof()) {
@@ -149,21 +153,10 @@ class OpenAiCompatibleLLM implements LLMInterface
                 continue;
             }
 
-            if ($onChunk !== null) {
-                $onChunk(
-                    $this->parseData($content),
-                    $content
-                );
-            }
+            yield $content;
 
             $lastContent = $content;
         }
-
-        $this->logger->debug('OpenAI response message content', [
-            'content' => $content,
-        ]);
-
-        return $this->parseData($content);
     }
 
     private function getChunkContent(string $data): string
@@ -185,7 +178,7 @@ class OpenAiCompatibleLLM implements LLMInterface
                                 nullable(string())
                             ),
                             'tool_calls' => optional(
-                                vec(
+                                nullable(vec(
                                     shape([
                                         'function' => shape([
                                             'arguments' => optional(
@@ -193,7 +186,7 @@ class OpenAiCompatibleLLM implements LLMInterface
                                             ),
                                         ], true),
                                     ], true)
-                                )
+                                ))
                             ),
                         ], true),
                     ], true)
@@ -206,7 +199,7 @@ class OpenAiCompatibleLLM implements LLMInterface
             throw new Exception(\is_array($errorMessage) ? implode(', ', $errorMessage) : $errorMessage);
         }
 
-        if ($this->toolMode !== null) {
+        if ($this->config->strategy instanceof OpenAiToolStrategy) {
             return $responseData['choices'][0]['delta']['tool_calls'][0]['function']['arguments'] ?? '';
         }
 
@@ -255,5 +248,92 @@ class OpenAiCompatibleLLM implements LLMInterface
         }
 
         return $buffer;
+    }
+
+    /**
+     * @param array<string, mixed> $request
+     * @param array<string, mixed> $schema
+     *
+     * @return array<string, mixed>
+     */
+    private function applyOpenAiStrategy(array $request, array $schema): array
+    {
+        if ($this->config->strategy instanceof OpenAiJsonStrategy) {
+            $request['response_format'] = [
+                'type' => 'json_object',
+            ];
+            if ($this->config->strategy === OpenAiJsonStrategy::JSON_WITH_SCHEMA) {
+                $request['response_format']['schema'] = $schema;
+            }
+        } elseif ($this->config->strategy instanceof OpenAiToolStrategy) {
+            $request['tools'] = [
+                [
+                    'type' => 'function',
+                    'function' => [
+                        'name' => 'extract',
+                        'description' => 'Extract the relevant information',
+                        'parameters' => $schema,
+                    ],
+                ],
+            ];
+            if ($this->config->strategy === OpenAiToolStrategy::ANY) {
+                $request['tool_choice'] = 'any';
+            } elseif ($this->config->strategy === OpenAiToolStrategy::AUTO) {
+                $request['tool_choice'] = 'auto';
+            } elseif ($this->config->strategy === OpenAiToolStrategy::FUNCTION) {
+                $request['tool_choice'] = [
+                    'type' => 'function',
+                    'function' => [
+                        'name' => 'extract',
+                    ],
+                ];
+            }
+        }
+
+        if ($this->config->strategy === null) {
+            $request['stop'] = ["```\n\n", "\n\n", "\n\n\n", "\t\n\t\n"];
+        }
+
+        return $request;
+    }
+
+    /**
+     * @return callable(mixed, string): string
+     */
+    public function getSystemPrompt(): callable
+    {
+        if ($this->config->systemPrompt !== null) {
+            return $this->config->systemPrompt;
+        }
+
+        $systemPrompt = function (mixed $schema): string {
+            $encodedSchema = encode($schema);
+
+            return <<<PROMPT
+                You are a helpful assistant that answers in JSON.
+                If the user intent is unclear, consider it a structured information extraction task.
+
+                Here's the json schema you must adhere to:
+                <schema>
+                {$encodedSchema}
+                </schema>
+
+                ONLY OUTPUT JSON, eg:
+                ```json
+                {"firstProperty":...}
+                ```
+                PROMPT;
+        };
+        if ($this->config->strategy instanceof OpenAiToolStrategy) {
+            $systemPrompt = fn ($schema): string => 'You are a helpful assistant with access to functions.';
+        }
+
+        return function (mixed $schema, string $instructions) use ($systemPrompt): string {
+            return $systemPrompt($schema) . <<<PROMPT
+
+                # Instructions
+                {$instructions}
+                PROMPT;
+        };
     }
 }

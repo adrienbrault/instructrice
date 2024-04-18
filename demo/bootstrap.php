@@ -2,14 +2,9 @@
 
 declare(strict_types=1);
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\Factory\Anthropic;
-use AdrienBrault\Instructrice\LLM\Factory\Deepinfra;
-use AdrienBrault\Instructrice\LLM\Factory\Fireworks;
-use AdrienBrault\Instructrice\LLM\Factory\Groq;
-use AdrienBrault\Instructrice\LLM\Factory\Mistral;
-use AdrienBrault\Instructrice\LLM\Factory\Ollama;
-use AdrienBrault\Instructrice\LLM\Factory\OpenAi;
-use AdrienBrault\Instructrice\LLM\Factory\Together;
+use AdrienBrault\Instructrice\LLM\Config\Anthropic;
+use AdrienBrault\Instructrice\LLM\Config\LLMConfig;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLMFactory;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
@@ -34,35 +29,14 @@ return function (callable $do) {
 
     $logger = createConsoleLogger($output);
 
-    $llmRegistry = [
-        'OpenAI GPT-4' => fn () => (new OpenAi(logger: $logger))->gpt4(),
-        'OpenAI GPT-3.5' => fn () => (new OpenAi(logger: $logger))->gpt35(),
-        'Anthropic Haiku' => fn () => (new Anthropic(logger: $logger))->haiku(),
-        'Anthropic Sonnet' => fn () => (new Anthropic(logger: $logger))->sonnet(),
-        'Anthropic Opus' => fn () => (new Anthropic(logger: $logger))->opus(),
-        'Ollama Hermes 2 Pro 7B' => fn () => (new Ollama(logger: $logger))->hermes2pro(),
-        'Ollama DolphinCoder 7B' => fn () => (new Ollama(logger: $logger))->dolphincoder7('q5_K_M'),
-        'Ollama Command R 35B' => fn () => (new Ollama(logger: $logger))->commandR('q5_K_M'),
-        'Ollama Command R+ 104B' => fn () => (new Ollama(logger: $logger))->commandRPlus(),
-        'Mistral Mixtral 8x7B' => fn () => (new Mistral(logger: $logger))->mixtral7(),
-        'Mistral Mixtral 8x22B' => fn () => (new Mistral(logger: $logger))->mixtral22(),
-        'Mistral Large' => fn () => (new Mistral(logger: $logger))->mistralLarge(),
-        'Fireworks Firefunction V1' => fn () => (new Fireworks(logger: $logger))->firefunctionV1(),
-        'Fireworks Mixtral 8x7B' => fn () => (new Fireworks(logger: $logger))->mixtral7(),
-        'Fireworks Mixtral 8x22B' => fn () => (new Fireworks(logger: $logger))->mixtral22(),
-        'Fireworks DBRX 132B' => fn () => (new Fireworks(logger: $logger))->dbrx(),
-        'Fireworks Capybara 34B' => fn () => (new Fireworks(logger: $logger))->capybara34(),
-        'Fireworks Hermes 2 Pro 7B' => fn () => (new Fireworks(logger: $logger))->hermes2pro(),
-        'Groq Mixtral 8x7B' => fn () => (new Groq(logger: $logger))->mixtral(),
-        'Groq Gemma 7B' => fn () => (new Groq(logger: $logger))->gemma7(),
-        'Together Mistral 7B' => fn () => (new Together(logger: $logger))->mistral7(),
-        'Together Mixtral 8x7B' => fn () => (new Together(logger: $logger))->mixtral7(),
-        'Together Mixtral 8x22B' => fn () => (new Together(logger: $logger))->mixtral22(),
-        'Deepinfra Mixtral 8x22B' => fn () => (new Deepinfra(logger: $logger))->mixtral22(),
-        'Deepinfra WizardLM-2 8x22B' => fn () => (new Deepinfra(logger: $logger))->wizardlm2_22(),
-        'Deepinfra WizardLM-2 8x7B' => fn () => (new Deepinfra(logger: $logger))->wizardlm2_7(),
-        'Deepinfra Dbrx' => fn () => (new Deepinfra(logger: $logger))->dbrx(),
-    ];
+    $openAiCompatibleLLMFactory = new OpenAiCompatibleLLMFactory(logger: $logger);
+    $llmRegistry = [];
+    foreach ($openAiCompatibleLLMFactory->createAvailable() as $llmConfig) {
+        $llmRegistry[$llmConfig->label] = $llmConfig;
+    }
+    $llmRegistry['Anthropic - Haiku'] = fn () => (new Anthropic(logger: $logger))->haiku();
+    $llmRegistry['Anthropic - Sonnet'] = fn () => (new Anthropic(logger: $logger))->sonnet();
+    $llmRegistry['Anthropic - Opus'] = fn () => (new Anthropic(logger: $logger))->opus();
 
     $questionSection = $output->section();
     $questionHelper = new QuestionHelper();
@@ -75,8 +49,15 @@ return function (callable $do) {
     $output->writeln(sprintf('Using LLM: <info>%s</info>', $llmToUse));
     $output->writeln('');
 
+    $llmConfig = $llmRegistry[$llmToUse];
+    if ($llmConfig instanceof LLMConfig) {
+        $llm = $openAiCompatibleLLMFactory->create($llmConfig);
+    } else {
+        $llm = $llmConfig();
+    }
+
     $instructrice = InstructriceFactory::create(
-        llm: $llmRegistry[$llmToUse](),
+        llm: $llm,
         logger: $logger,
     );
 

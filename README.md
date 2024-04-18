@@ -19,7 +19,7 @@ $ composer require adrienbrault/instructrice:@dev
 
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\Factory;
+use AdrienBrault\Instructrice\LLM\Config\Ollama;
 use AdrienBrault\Instructrice\Attribute\Instruction;
 
 class Character
@@ -32,7 +32,7 @@ class Character
 }
 
 $instructrice = InstructriceFactory::create(
-    llm: (new Factory\Ollama())->hermes2pro()
+    llm: Ollama::HERMES2PRO
 );
 
 $characters = $instructrice->deserializeList(

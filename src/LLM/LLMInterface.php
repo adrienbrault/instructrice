@@ -13,6 +13,7 @@ interface LLMInterface
     public function get(
         array $schema,
         string $context,
+        string $instructions,
         ?callable $onChunk = null,
     ): mixed;
 }
