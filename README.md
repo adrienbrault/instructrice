@@ -8,7 +8,7 @@ Features and design choices:
   - Automatic generation for [PSL][psl]\\[Type][psl_type]
   - Provide your own schema
 - [symfony/serializer][sf_serializer] integration to deserialize LLMs outputs
-- Streaming by default. Partial JSON parsing/deserialization.
+- Streaming first/only. Partial JSON parsing/deserialization.
 - A set of pre-configured LLMs with the best settings. Just set your API keys and try the different models. No need to know about json mode, function calling, etc.
 
 ## Installation and Usage
