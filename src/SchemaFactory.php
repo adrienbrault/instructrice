@@ -110,7 +110,13 @@ class SchemaFactory
         }
 
         return array_map(
-            fn ($value) => \is_array($value) ? $this->mapSchema($value, $schema, $makeAllRequired) : $value,
+            function ($value) use ($schema, $makeAllRequired) {
+                if (! \is_array($value) && ! $value instanceof ArrayObject) {
+                    return $value;
+                }
+
+                return $this->mapSchema($value, $schema, $makeAllRequired);
+            },
             $node,
         );
     }
