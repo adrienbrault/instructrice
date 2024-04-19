@@ -20,6 +20,15 @@ $ composer require adrienbrault/instructrice:@dev
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\ProviderModel\Ollama;
+
+$instructrice = InstructriceFactory::create(
+    llm: Ollama::HERMES2PRO
+);
+```
+
+### List of object
+
+```php
 use AdrienBrault\Instructrice\Attribute\Instruction;
 
 class Character
@@ -31,14 +40,43 @@ class Character
     public ?string $rank = null;
 }
 
-$instructrice = InstructriceFactory::create(
-    llm: Ollama::HERMES2PRO
-);
-
 $characters = $instructrice->getList(
     Character::class,
     'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
 );
+
+assert(count($characters) === 3);
+assert($character[0] instanceof Character);
+```
+
+### Object
+
+```php
+use AdrienBrault\Instructrice\Attribute\Instruction;
+
+$character = $instructrice->get(
+    Character::class,
+    'Colonel Jack O\'Neil.',
+);
+
+assert($character instanceof Character);
+```
+
+### Dynamic Schema
+
+```php
+use AdrienBrault\Instructrice\Attribute\Instruction;
+
+$label = $instructrice->get(
+    [
+        'type' => 'string',
+        'enum' => ['positive', 'neutral', 'negative'],
+    ],
+    'Amazing great cool nice',
+    'Sentiment analysis',
+);
+
+assert($label === 'positive');
 ```
 
 https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2ef-c5e306a56de2
