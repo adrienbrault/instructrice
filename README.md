@@ -90,6 +90,8 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 | [Together AI][together_pricing]   | `TOGETHER_API_KEY`                 | [Together](src/LLM/ProviderModel/Together.php)   | [API Key Management][together_apikey_create]  |
 | [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/ProviderModel/Deepinfra.php) | [API Key Management][deepinfra_apikey_create] |
 
+You can find the list of supported models within each ProviderModel.
+
 ## Acknowledgements
 
 Obviously inspired by [instructor-php][instructor-php] and [instructor][instructor-python].
