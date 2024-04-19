@@ -94,11 +94,11 @@ You can find the list of supported models within each ProviderModel.
 
 ## Supported models
 
-### Open Weights
-
-- 🟢 Text/MD 
+- 🟢 Text/MD
 - 📑 JSON
 - 🔧 Function
+
+### Open Weights
 
 | Model \ Provider | License                          | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
 |------------------|----------------------------------|--------|---------|-----------|------|----------|-----------|
