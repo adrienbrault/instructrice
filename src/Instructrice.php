@@ -31,12 +31,12 @@ class Instructrice
     }
 
     /**
-     * @param Schema|TypeInterface<mixed>     $type
-     * @param callable(mixed, LLMChunk): void $onChunk
-     * @param InstructriceOptions             $options
+     * @param Schema|TypeInterface<mixed>|class-string $type
+     * @param callable(mixed, LLMChunk): void          $onChunk
+     * @param InstructriceOptions                      $options
      */
     public function get(
-        array|TypeInterface $type,
+        array|TypeInterface|string $type,
         string $context,
         ?string $instructions = null,
         array $options = [],
@@ -44,7 +44,7 @@ class Instructrice
     ): mixed {
         $denormalize = fn (mixed $data) => $data;
         $schema = $type;
-        if ($schema instanceof TypeInterface) {
+        if (! \is_array($schema)) {
             $schema = $this->schemaFactory->createSchema(
                 $schema,
                 $options['all_required'] ?? false
