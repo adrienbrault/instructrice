@@ -52,8 +52,6 @@ assert($character[0] instanceof Character);
 ### Object
 
 ```php
-use AdrienBrault\Instructrice\Attribute\Instruction;
-
 $character = $instructrice->get(
     Character::class,
     'Colonel Jack O\'Neil.',
@@ -65,8 +63,6 @@ assert($character instanceof Character);
 ### Dynamic Schema
 
 ```php
-use AdrienBrault\Instructrice\Attribute\Instruction;
-
 $label = $instructrice->get(
     [
         'type' => 'string',
