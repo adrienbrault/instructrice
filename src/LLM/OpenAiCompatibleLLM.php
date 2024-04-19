@@ -136,6 +136,10 @@ class OpenAiCompatibleLLM implements LLMInterface
                 break;
             }
 
+            $this->logger->debug('OpenAI Response chunk', [
+                'content' => $content,
+            ]);
+
             if ($content === $lastContent) {
                 // If the content hasn't changed, we stop
                 continue;
