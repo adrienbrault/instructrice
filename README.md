@@ -94,27 +94,27 @@ You can find the list of supported models within each ProviderModel.
 
 ## Supported models
 
-|                  | OpenAI | Anthropic | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
-|------------------|--------|-----------|--------|---------|-----------|------|----------|-----------|
-| GPT-4 Turbo      | X      |           |        |         |           |      |          |           |
-| GPT-3.5 Turbo    | X      |           |        |         |           |      |          |           |
-| Claude 3 Haiku   |        | X         |        |         |           |      |          |           |
-| Claude 3 Sonnet  |        | X         |        |         |           |      |          |           |
-| Claude 3 Opus    |        | X         |        |         |           |      |          |           |
-| Mistral 7B       |        |           |        | X       |           |      | X        |           |
-| Mixtral 8x7B     |        |           |        | X       |           | X    | X        |           |
-| Mixtral 8x22B    |        |           |        | X       |           |      | X        | X         |
-| Mixtral Large    |        |           |        | X       |           |      |          |           |
-| Llama3 8B        |        |           |        |         | X         | X    | X        | X         |
-| Llama3 70B       |        |           |        |         | X         | X    | X        | X         |
-| Gemma 7B         |        |           |        |         |           | X    |          |           |
-| DBRX             |        |           |        |         | X         |      | X        | X         |
-| WizardLM 2 7B    |        |           |        |         |           |      |          | X         |
-| WizardLM 2 8x22B |        |           |        |         |           |      | X        | X         |
-| Hermes 2 Pro     |        |           | X      |         | X         |      |          |           |
-| Command R        |        |           | X      |         |           |      |          |           |
-| Command R+       |        |           | X      |         |           |      |          |           |
-| FireFunction V1  |        |           |        |         | X         |      |          |           |
+|                  | License                          | OpenAI | Anthropic | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
+|------------------|----------------------------------|--------|-----------|--------|---------|-----------|------|----------|-----------|
+| Mistral 7B       | [Apache 2.0][apache2]            |        |           |        | X       |           |      | X        |           |
+| Mixtral 8x7B     | [Apache 2.0][apache2]            |        |           |        | X       |           | X    | X        |           |
+| Mixtral 8x22B    | [Apache 2.0][apache2]            |        |           |        | X       |           |      | X        | X         |
+| Mixtral Large    | [Apache 2.0][apache2]            |        |           |        | X       |           |      |          |           |
+| WizardLM 2 7B    | [Apache 2.0][apache2]            |        |           |        |         |           |      |          | X         |
+| WizardLM 2 8x22B | [Apache 2.0][apache2]            |        |           |        |         |           |      | X        | X         |
+| Hermes 2 Pro     | [Apache 2.0][apache2]            |        |           | X      |         | X         |      |          |           |
+| FireFunction V1  | [Apache 2.0][apache2]            |        |           |        |         | X         |      |          |           |
+| Llama3 8B        | [Llama 3][llama3_license]        |        |           |        |         | X         | X    | X        | X         |
+| Llama3 70B       | [Llama 3][llama3_license]        |        |           |        |         | X         | X    | X        | X         |
+| Gemma 7B         | Gemma                            |        |           |        |         |           | X    |          |           |
+| DBRX             | [Databricks OML][databricks_oml] |        |           |        |         | X         |      | X        | X         |
+| Command R        | [CC-BY-NC][cc_nc]                |        |           | X      |         |           |      |          |           |
+| Command R+       | [CC-BY-NC][cc_nc]                |        |           | X      |         |           |      |          |           |
+| GPT-4 Turbo      | Proprietary                      | X      |           |        |         |           |      |          |           |
+| GPT-3.5 Turbo    | Proprietary                      | X      |           |        |         |           |      |          |           |
+| Claude 3 Haiku   | Proprietary                      |        | X         |        |         |           |      |          |           |
+| Claude 3 Sonnet  | Proprietary                      |        | X         |        |         |           |      |          |           |
+| Claude 3 Opus    | Proprietary                      |        | X         |        |         |           |      |          |           |
 
 ## Acknowledgements
 
@@ -210,3 +210,7 @@ Use this lib to generate a table of provider/model prices by scraping!
 [groq_apikey_create]: https://console.groq.com/keys
 [together_apikey_create]: https://api.together.xyz/settings/api-keys
 [deepinfra_apikey_create]: https://deepinfra.com/dash/api_keys
+[databricks_oml]: https://www.databricks.com/legal/open-model-license
+[llama3_license]: https://github.com/meta-llama/llama3/blob/main/LICENSE
+[apache2]: https://www.apache.org/licenses/LICENSE-2.0
+[cc_nc]: https://en.wikipedia.org/wiki/Creative_Commons_NonCommercial_license
