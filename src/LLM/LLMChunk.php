@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
+use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DateTimeImmutable;
 
@@ -23,11 +24,7 @@ class LLMChunk
 
     public function getTokensPerSecond(): float
     {
-        $elapsed = (new DateTimeImmutable())->getTimestamp() - $this->requestedAt->getTimestamp();
-
-        if ($elapsed === 0) {
-            return 0;
-        }
+        $elapsed = abs(Carbon::now()->diff($this->requestedAt)->totalSeconds);
 
         return $this->getTokens() / $elapsed;
     }
