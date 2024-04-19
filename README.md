@@ -79,34 +79,16 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 
 ## Supported providers and models
 
-| Provider                          | Model                                                |
-|-----------------------------------|------------------------------------------------------|
-| [OpenAI][openai_pricing]          | [gpt-3.5-turbo][openai_gpt35t]                       |
-| [OpenAI][openai_pricing]          | [gpt-4-turbo][openai_gpt4t]                          |
-| [Anthropic][anthropic_pricing]    | [Haiku][anthropic_models]                            |
-| [Anthropic][anthropic_pricing]    | [Sonnet][anthropic_models]                           |
-| [Anthropic][anthropic_pricing]    | [Opus][anthropic_models]                             |
-| [Ollama][ollama]                  | [adrienbrault/nous-hermes2pro][ollama_h2p]           |
-| [Ollama][ollama]                  | [command-r][ollama_command_r]                        |
-| [Ollama][ollama]                  | [command-r-plus][ollama_command_r_plus]              |
-| [Mistral][mistral_pricing]        | [open-mixtral-8x7b][mistral_models]                  |
-| [Mistral][mistral_pricing]        | [open-mixtral-8x22b][mistral_models]                 |
-| [Mistral][mistral_pricing]        | [mistral-large][mistral_models]                      |
-| [Fireworks AI][fireworks_pricing] | [firefunction-v1][fireworks_models]                  |
-| [Fireworks AI][fireworks_pricing] | [mixtral-8x7b-instruct][fireworks_models]            |
-| [Fireworks AI][fireworks_pricing] | [mixtral-8x22b-instruct-preview][fireworks_models]   |
-| [Fireworks AI][fireworks_pricing] | [dbrx-instruct][fireworks_models]                    |
-| [Fireworks AI][fireworks_pricing] | [hermes-2-pro-mistral-7b][fireworks_models]          |
-| [Groq][groq_pricing]              | [mixtral-8x7b-32768][groq_models]                    |
-| [Groq][groq_pricing]              | [gemma-7b-it][groq_models]                           |
-| [Together AI][together_pricing]   | [Mistral-7B-Instruct-v0.1][together_models]          |
-| [Together AI][together_pricing]   | [Mixtral-8x7B-Instruct-v0.1][together_models]        |
-| [Together AI][together_pricing]   | [Mixtral-8x22B-Instruct-v0.1][together_models]       |
-| [Together AI][together_pricing]   | [CodeLlama-34b-Instruct][together_models]            |
-| [Deepinfra][deepinfra_pricing]    | [Mixtral-8x22B-Instruct][deepinfra_mixtral]          |
-| [Deepinfra][deepinfra_pricing]    | [microsoft/WizardLM-2-8x22B][deepinfra_wizardlm2_22] |
-| [Deepinfra][deepinfra_pricing]    | [microsoft/WizardLM-2-8x7B][deepinfra_wizardlm2_7]   |
-| [Deepinfra][deepinfra_pricing]    | [databricks/dbrx-instruct][deepinfra_dbrx]           |
+| Provider                          | API Key Environment Variable       | ProviderModel                                    | API Key Creation URL                          |
+|-----------------------------------|------------------------------------|--------------------------------------------------|-----------------------------------------------|
+| [Ollama][ollama]                  | Default. You can set `OLLAMA_HOST` | [Ollama](src/LLM/ProviderModel/Ollama.php)       |                                               |
+| [OpenAI][openai_pricing]          | `OPENAI_API_KEY`                   | [OpenAi](src/LLM/ProviderModel/OpenAi.php)       | [API Key Management][openai_apikey_create]    |
+| [Anthropic][anthropic_pricing]    | `ANTHROPIC_API_KEY`                | [Anthropic](src/LLM/ProviderModel/Anthropic.php) | [API Key Management][anthropic_apikey_create] |
+| [Mistral][mistral_pricing]        | `MISTRAL_API_KEY`                  | [Mistral](src/LLM/ProviderModel/Mistral.php)     | [API Key Management][mistral_apikey_create]   |
+| [Fireworks AI][fireworks_pricing] | `FIREWORKS_API_KEY`                | [Fireworks](src/LLM/ProviderModel/Fireworks.php) | [API Key Management][fireworks_apikey_create] |
+| [Groq][groq_pricing]              | `GROQ_API_KEY`                     | [Groq](src/LLM/ProviderModel/Groq.php)           | [API Key Management][groq_apikey_create]      |
+| [Together AI][together_pricing]   | `TOGETHER_API_KEY`                 | [Together](src/LLM/ProviderModel/Together.php)   | [API Key Management][together_apikey_create]  |
+| [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/ProviderModel/Deepinfra.php) | [API Key Management][deepinfra_apikey_create] |
 
 ## Acknowledgements
 
@@ -195,3 +177,10 @@ Use this lib to generate a table of provider/model prices by scraping!
 [deepinfra_wizardlm2_22]: https://deepinfra.com/microsoft/WizardLM-2-8x22B
 [deepinfra_wizardlm2_7]: https://deepinfra.com/microsoft/WizardLM-2-8x7B
 [deepinfra_dbrx]: https://deepinfra.com/databricks/dbrx-instruct
+[openai_apikey_create]: https://platform.openai.com/api-keys
+[anthropic_apikey_create]: https://console.anthropic.com/settings/keys
+[mistral_apikey_create]: https://console.mistral.ai/api-keys/
+[fireworks_apikey_create]: https://fireworks.ai/api-keys
+[groq_apikey_create]: https://console.groq.com/keys
+[together_apikey_create]: https://api.together.xyz/settings/api-keys
+[deepinfra_apikey_create]: https://deepinfra.com/dash/api_keys
