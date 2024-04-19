@@ -100,7 +100,7 @@ You can find the list of supported models within each ProviderModel.
 - 📑 JSON
 - 🔧 Function
 
-| Model            | License                          | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
+| Model \ Provider | License                          | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
 |------------------|----------------------------------|--------|---------|-----------|------|----------|-----------|
 | Mistral 7B       | [Apache 2.0][apache2]            |        | 📑      |           |      | 🟢       |           |
 | Mixtral 8x7B     | [Apache 2.0][apache2]            |        | 📑      |           | 🟢   | 🔧       |           |
