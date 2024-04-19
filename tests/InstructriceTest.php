@@ -26,7 +26,16 @@ class InstructriceTest extends TestCase
         $llm
             ->method('get')
             ->with(
-                $schema,
+                [
+                    'type' => 'object',
+                    'properties' => [
+                        'list' => [
+                            'type' => 'array',
+                            'items' => $schema,
+                        ],
+                    ],
+                    'required' => ['list'],
+                ],
                 'context',
             )
             ->willReturn([
@@ -36,7 +45,7 @@ class InstructriceTest extends TestCase
             ]);
         $schemaFactory = $this->createMock(SchemaFactory::class);
         $schemaFactory
-            ->method('createListSchema')
+            ->method('createSchema')
             ->willReturn($schema);
         $serializer = $this->createMock(Serializer::class);
         $serializer
@@ -56,7 +65,7 @@ class InstructriceTest extends TestCase
             $serializer,
         );
 
-        $list = $instructrice->deserializeList(
+        $list = $instructrice->getList(
             'context',
             Person::class,
         );

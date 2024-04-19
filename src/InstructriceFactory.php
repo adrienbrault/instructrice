@@ -170,9 +170,9 @@ class InstructriceFactory
 
         $lastPropertyPath = '';
 
-        return function (array $data, LLMChunk $profile) use ($section, &$lastPropertyPath, $renderOnEveryUpdate) {
+        return function (mixed $data, LLMChunk $chunk) use ($section, &$lastPropertyPath, $renderOnEveryUpdate) {
             if (! $renderOnEveryUpdate) {
-                $propertyPath = $profile->getDataLastPropertyPath();
+                $propertyPath = $chunk->getDataLastPropertyPath();
                 if ($lastPropertyPath === $propertyPath) {
                     return;
                 }
@@ -188,14 +188,14 @@ class InstructriceFactory
                 $data,
                 sprintf(
                     '[Prompt: %d tokens - %s] -> [TTFT: %s] -> [Completion: %d tokens - %s - %.1f tokens/s] -> [Total: %d tokens - %s]',
-                    $profile->promptTokens,
-                    $profile->getFormattedCost(),
-                    $profile->getTimeToFirstToken()->forHumans(),
-                    $profile->completionTokens,
-                    $profile->getFormattedCompletionCost(),
-                    $profile->getTokensPerSecond(),
-                    $profile->getTokens(),
-                    $profile->getFormattedCost()
+                    $chunk->promptTokens,
+                    $chunk->getFormattedCost(),
+                    $chunk->getTimeToFirstToken()->forHumans(),
+                    $chunk->completionTokens,
+                    $chunk->getFormattedCompletionCost(),
+                    $chunk->getTokensPerSecond(),
+                    $chunk->getTokens(),
+                    $chunk->getFormattedCost()
                 )
             );
         };

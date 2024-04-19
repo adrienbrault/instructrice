@@ -17,7 +17,7 @@ class Character
 
 $demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
-    $characters = $instructrice->deserializeList(
+    $characters = $instructrice->getList(
         'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
         Character::class,
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),

@@ -15,7 +15,7 @@ $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
         'bio' => string(),
     ]);
 
-    $persons = $instructrice->deserializeList(
+    $persons = $instructrice->getList(
         context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         type: $type,
         options: [

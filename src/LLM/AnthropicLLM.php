@@ -136,7 +136,7 @@ class AnthropicLLM implements LLMInterface
                     $firstTokenReceivedAt
                 );
 
-                $onChunk($chunk);
+                $onChunk($chunk->data, $chunk);
             }
 
             $lastContent = $content;

@@ -35,7 +35,7 @@ $instructrice = InstructriceFactory::create(
     llm: Ollama::HERMES2PRO
 );
 
-$characters = $instructrice->deserializeList(
+$characters = $instructrice->getList(
     'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
     Character::class
 );

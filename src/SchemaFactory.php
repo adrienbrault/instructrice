@@ -15,6 +15,7 @@ use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 use Psl\Type\TypeInterface;
 
+use function Psl\Regex\replace;
 use function Psl\Vec\filter;
 
 class SchemaFactory
@@ -24,84 +25,94 @@ class SchemaFactory
     ) {
     }
 
-    private function mapSchema(mixed $node, Schema $schema, bool $makeAllRequired): mixed
+    /**
+     * @param array<string, mixed>|ArrayObject<string, mixed> $node
+     *
+     * @return array<string, mixed>
+     */
+    private function mapSchema(array|ArrayObject $node, Schema $schema, bool $makeAllRequired): array
     {
         if ($node instanceof ArrayObject) {
             $node = $node->getArrayCopy();
         }
-
-        if (\is_array($node)) {
-            if (\array_key_exists('$ref', $node)) {
-                $ref = $node['$ref'];
-                if (str_starts_with((string) $ref, '#/definitions/')) {
-                    $ref = substr((string) $ref, \strlen('#/definitions/'));
-                    $node = $schema->getDefinitions()[$ref];
-                    if ($node instanceof ArrayObject) {
-                        $node = $node->getArrayCopy();
-                    }
-
-                    return $this->mapSchema($node, $schema, $makeAllRequired);
-                }
-            }
-
-            unset($node['deprecated']);
-            if (($node['description'] ?? null) === '') {
-                unset($node['description']);
-            }
-
-            if ($makeAllRequired
-                && \is_array($node['properties'] ?? null)
-            ) {
-                $properties = $node['properties'];
-                $required = [
-                    ...($node['required'] ?? []),
-                    ...array_keys($properties),
-                ];
-                $node['required'] = $required;
-            }
-            if ($makeAllRequired
-                && \is_array($node['type'] ?? null)
-            ) {
-                $node['type'] = array_diff($node['type'], ['null']);
-
-                if (\count($node['type']) === 1) {
-                    $node['type'] = $node['type'][0];
-                }
-            }
-
-            if (\is_array($node['type'] ?? null)
-                && \in_array('null', $node['type'], true)
-            ) {
-                $node['type'] = array_diff($node['type'], ['null']);
-                $node['nullable'] = true;
-
-                if (\count($node['type']) === 1) {
-                    $node['type'] = $node['type'][0];
-                }
-            }
-
-            if ($makeAllRequired
-                && \is_array($node['anyOf'] ?? null)
-            ) {
-                $node['anyOf'] = filter(
-                    $node['anyOf'],
-                    fn ($item) => $item !== [
-                        'type' => 'null',
-                    ]
-                );
-
-                if (\count($node['anyOf']) === 1) {
-                    return $this->mapSchema($node['anyOf'][0], $schema, $makeAllRequired);
-                }
-            }
-
-            return array_map(
-                fn ($value) => $this->mapSchema($value, $schema, $makeAllRequired),
-                $node,
-            );
+        if (! \is_array($node)) {
+            return [];
         }
 
-        return $node;
+        $ref = $node['$ref'] ?? null;
+        if (\is_string($ref)) {
+            if (str_starts_with($ref, '#/definitions/')) {
+                $ref = substr($ref, \strlen('#/definitions/'));
+                $node = $schema->getDefinitions()[$ref];
+                if ($node instanceof ArrayObject) {
+                    $node = $node->getArrayCopy();
+                }
+
+                if (! \is_array($node)) {
+                    return [];
+                }
+
+                return $this->mapSchema($node, $schema, $makeAllRequired);
+            }
+        }
+
+        unset($node['deprecated']);
+        if (($node['description'] ?? null) === '') {
+            unset($node['description']);
+        }
+
+        if ($makeAllRequired
+            && \is_array($node['properties'] ?? null)
+        ) {
+            $properties = $node['properties'];
+            $required = $node['required'] ?? [];
+            $required = \is_array($required) ? $required : [];
+            $required = [
+                ...$required,
+                ...array_keys($properties),
+            ];
+            $node['required'] = $required;
+        }
+        if ($makeAllRequired
+            && \is_array($node['type'] ?? null)
+        ) {
+            $node['type'] = array_diff($node['type'], ['null']);
+
+            if (\count($node['type']) === 1) {
+                $node['type'] = $node['type'][0];
+            }
+        }
+
+        if (\is_array($node['type'] ?? null)
+            && \in_array('null', $node['type'], true)
+        ) {
+            $node['type'] = array_diff($node['type'], ['null']);
+            $node['nullable'] = true;
+
+            if (\count($node['type']) === 1) {
+                $node['type'] = $node['type'][0];
+            }
+        }
+
+        if ($makeAllRequired
+            && \is_array($node['anyOf'] ?? null)
+        ) {
+            $node['anyOf'] = filter(
+                $node['anyOf'],
+                fn ($item) => $item !== [
+                    'type' => 'null',
+                ]
+            );
+
+            if (\count($node['anyOf']) === 1 && \is_array($node['anyOf'][0])) {
+                return $this->mapSchema($node['anyOf'][0], $schema, $makeAllRequired);
+            }
+        }
+
+        return array_map(
+            fn ($value) => \is_array($value) ? $this->mapSchema($value, $schema, $makeAllRequired) : $value,
+            $node,
+        );
     }
 
     /**
@@ -111,26 +122,7 @@ class SchemaFactory
      *
      * @return array<string, mixed>
      */
-    public function createListSchema(TypeNode|TypeInterface|string $type, bool $makeAllRequired, string $propertyName): array
-    {
-        return [
-            'type' => 'object',
-            'properties' => [
-                $propertyName => [
-                    'type' => 'array',
-                    'items' => $this->createSchema($type, $makeAllRequired),
-                ],
-            ],
-            'required' => [$propertyName],
-        ];
-    }
-
-    /**
-     * @template T
-     *
-     * @param TypeNode|TypeInterface<T>|class-string<T> $type
-     */
-    public function createSchema(TypeNode|TypeInterface|string $type, bool $makeAllRequired): mixed
+    public function createSchema(TypeNode|TypeInterface|string $type, bool $makeAllRequired): array
     {
         if (\is_string($type)) {
             $schema = $this->schemaFactory->buildSchema($type);
@@ -143,8 +135,11 @@ class SchemaFactory
         }
 
         if (! $type instanceof TypeNode) {
+            $typeAsString = $type->toString();
+            $typeAsString = replace($typeAsString, '#"#', "'");
+
             $type = (new TypeParser())->parse(
-                new TokenIterator((new Lexer())->tokenize($type->toString()))
+                new TokenIterator((new Lexer())->tokenize($typeAsString))
             );
         }
 
