@@ -72,8 +72,8 @@ class Instructrice
      * @return list<T>
      */
     public function getList(
-        string $context,
         string|TypeInterface $type,
+        string $context,
         ?string $instructions = null,
         array $options = [],
         ?callable $onChunk = null,

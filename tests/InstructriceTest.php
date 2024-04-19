@@ -66,8 +66,8 @@ class InstructriceTest extends TestCase
         );
 
         $list = $instructrice->getList(
-            'context',
             Person::class,
+            'context',
         );
 
         $this->assertSame($deserializedList, $list);

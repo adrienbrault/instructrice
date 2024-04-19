@@ -26,8 +26,8 @@ class Person
 $demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
     $persons = $instructrice->getList(
-        context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         type: Person::class,
+        context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         options: [
             'all_required' => true,
         ],

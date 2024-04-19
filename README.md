@@ -36,8 +36,8 @@ $instructrice = InstructriceFactory::create(
 );
 
 $characters = $instructrice->getList(
+    Character::class,
     'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
-    Character::class
 );
 ```
 

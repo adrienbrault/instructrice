@@ -16,8 +16,8 @@ $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
     ]);
 
     $persons = $instructrice->getList(
-        context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         type: $type,
+        context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         options: [
             'all_required' => true,
         ],
