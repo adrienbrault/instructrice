@@ -31,9 +31,13 @@ class Instructrice
     }
 
     /**
-     * @param Schema|TypeInterface<mixed>|class-string $type
-     * @param callable(mixed, LLMChunk): void          $onChunk
-     * @param InstructriceOptions                      $options
+     * @template T
+     *
+     * @param Schema|TypeInterface<T>|class-string<T> $type
+     * @param callable(mixed, LLMChunk): void         $onChunk
+     * @param InstructriceOptions                     $options
+     *
+     * @return mixed|T|null
      */
     public function get(
         array|TypeInterface|string $type,
@@ -41,7 +45,7 @@ class Instructrice
         ?string $instructions = null,
         array $options = [],
         ?callable $onChunk = null,
-    ): mixed {
+    ) {
         $denormalize = fn (mixed $data) => $data;
         $schema = $type;
         if (! \is_array($schema)) {
