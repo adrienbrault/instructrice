@@ -52,7 +52,7 @@ class Instructrice
             $denormalize = fn (mixed $data) => $this->denormalize($data, $type);
         }
 
-        return $this->something(
+        return $this->getAndDenormalize(
             $denormalize,
             $schema,
             $context,
@@ -93,7 +93,7 @@ class Instructrice
             'required' => [$wrappedWithProperty],
         ];
 
-        return $this->something(
+        return $this->getAndDenormalize(
             function (mixed $data) use ($wrappedWithProperty, $type) {
                 if (\is_array($data)) {
                     $data = $data[$wrappedWithProperty] ?? $data;
@@ -122,7 +122,7 @@ class Instructrice
      *
      * @return ?T
      */
-    private function something(
+    private function getAndDenormalize(
         callable $denormalize,
         array $schema,
         string $context,
