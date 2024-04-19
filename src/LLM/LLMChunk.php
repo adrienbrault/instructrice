@@ -24,7 +24,7 @@ class LLMChunk
 
     public function getTokensPerSecond(): float
     {
-        $elapsed = max(1, Carbon::now()->diff($this->requestedAt, true)->totalSeconds ?? 1);
+        $elapsed = abs(Carbon::now()->diff($this->requestedAt)->totalSeconds ?? 1);
 
         return $this->getTokens() / $elapsed;
     }
