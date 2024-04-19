@@ -96,7 +96,7 @@ class Instructrice
         return $this->something(
             function (mixed $data) use ($wrappedWithProperty, $type) {
                 if (\is_array($data)) {
-                    $data = $data[$wrappedWithProperty] ?? [];
+                    $data = $data[$wrappedWithProperty] ?? $data;
                 } else {
                     $data = [];
                 }
