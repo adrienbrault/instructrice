@@ -96,32 +96,36 @@ You can find the list of supported models within each ProviderModel.
 
 ### Open Weights
 
+- 🟢 Text/MD 
+- 📑 JSON
+- 🔧 Function
+
 | Model            | License                          | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
 |------------------|----------------------------------|--------|---------|-----------|------|----------|-----------|
-| Mistral 7B       | [Apache 2.0][apache2]            |        | X       |           |      | X        |           |
-| Mixtral 8x7B     | [Apache 2.0][apache2]            |        | X       |           | X    | X        |           |
-| Mixtral 8x22B    | [Apache 2.0][apache2]            |        | X       |           |      | X        | X         |
-| WizardLM 2 7B    | [Apache 2.0][apache2]            |        |         |           |      |          | X         |
-| WizardLM 2 8x22B | [Apache 2.0][apache2]            |        |         |           |      | X        | X         |
-| Hermes 2 Pro     | [Apache 2.0][apache2]            | X      |         | X         |      |          |           |
-| FireFunction V1  | [Apache 2.0][apache2]            |        |         | X         |      |          |           |
-| Llama3 8B        | [Llama 3][llama3_license]        |        |         | X         | X    | X        | X         |
-| Llama3 70B       | [Llama 3][llama3_license]        |        |         | X         | X    | X        | X         |
-| Gemma 7B         | Gemma                            |        |         |           | X    |          |           |
-| DBRX             | [Databricks OML][databricks_oml] |        |         | X         |      | X        | X         |
-| Command R        | [CC-BY-NC][cc_nc]                | X      |         |           |      |          |           |
-| Command R+       | [CC-BY-NC][cc_nc]                | X      |         |           |      |          |           |
+| Mistral 7B       | [Apache 2.0][apache2]            |        | 📑      |           |      | 🟢       |           |
+| Mixtral 8x7B     | [Apache 2.0][apache2]            |        | 📑      |           | 🟢   | 🔧       |           |
+| Mixtral 8x22B    | [Apache 2.0][apache2]            |        | 📑      |           |      | 🟢       | 📑        |
+| WizardLM 2 7B    | [Apache 2.0][apache2]            |        |         |           |      |          | 📑        |
+| WizardLM 2 8x22B | [Apache 2.0][apache2]            |        |         |           |      | 🟢       | 📑        |
+| Hermes 2 Pro     | [Apache 2.0][apache2]            | 📑     |         | 📑        |      |          |           |
+| FireFunction V1  | [Apache 2.0][apache2]            |        |         | 🔧        |      |          |           |
+| Llama3 8B        | [Llama 3][llama3_license]        | 🟢     |         | 📑        | 🟢   | 🟢       | 📑        |
+| Llama3 70B       | [Llama 3][llama3_license]        | 📑     |         | 📑        | 🟢   | 🟢       | 📑        |
+| Gemma 7B         | Gemma                            |        |         |           | 🟢   |          |           |
+| DBRX             | [Databricks OML][databricks_oml] |        |         | 📑        |      | 🟢       | 📑        |
+| Command R        | [CC-BY-NC][cc_nc]                | 🟢     |         |           |      |          |           |
+| Command R+       | [CC-BY-NC][cc_nc]                | 🟢     |         |           |      |          |           |
 
 ### Proprietary
 
 | Model           | OpenAI | Anthropic | Mistral |
 |-----------------|--------|-----------|---------|
-| Mixtral Large   |        |           | X       |
-| GPT-4 Turbo     | X      |           |         |
-| GPT-3.5 Turbo   | X      |           |         |
-| Claude 3 Haiku  |        | X         |         |
-| Claude 3 Sonnet |        | X         |         |
-| Claude 3 Opus   |        | X         |         |
+| Mixtral Large   |        |           | 📑      |
+| GPT-4 Turbo     | 🔧     |           |         |
+| GPT-3.5 Turbo   | 🔧     |           |         |
+| Claude 3 Haiku  |        | 🟢        |         |
+| Claude 3 Sonnet |        | 🟢        |         |
+| Claude 3 Opus   |        | 🟢        |         |
 
 ## Acknowledgements
 
