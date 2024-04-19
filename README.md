@@ -77,7 +77,7 @@ assert($label === 'positive');
 
 https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2ef-c5e306a56de2
 
-## Supported providers and models
+## Supported providers
 
 | Provider                          | API Key Environment Variable       | ProviderModel                                    | API Key Creation URL                          |
 |-----------------------------------|------------------------------------|--------------------------------------------------|-----------------------------------------------|
@@ -91,6 +91,30 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 | [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/ProviderModel/Deepinfra.php) | [API Key Management][deepinfra_apikey_create] |
 
 You can find the list of supported models within each ProviderModel.
+
+## Supported models
+
+|                  | OpenAI | Anthropic | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
+|------------------|--------|-----------|--------|---------|-----------|------|----------|-----------|
+| GPT-4 Turbo      | X      |           |        |         |           |      |          |           |
+| GPT-3.5 Turbo    | X      |           |        |         |           |      |          |           |
+| Claude 3 Haiku   |        | X         |        |         |           |      |          |           |
+| Claude 3 Sonnet  |        | X         |        |         |           |      |          |           |
+| Claude 3 Opus    |        | X         |        |         |           |      |          |           |
+| Mistral 7B       |        |           |        | X       |           |      | X        |           |
+| Mixtral 8x7B     |        |           |        | X       |           | X    | X        |           |
+| Mixtral 8x22B    |        |           |        | X       |           |      | X        | X         |
+| Mixtral Large    |        |           |        | X       |           |      |          |           |
+| Llama3 8B        |        |           |        |         | X         | X    | X        | X         |
+| Llama3 70B       |        |           |        |         | X         | X    | X        | X         |
+| Gemma 7B         |        |           |        |         |           | X    |          |           |
+| DBRX             |        |           |        |         | X         |      | X        | X         |
+| WizardLM 2 7B    |        |           |        |         |           |      |          | X         |
+| WizardLM 2 8x22B |        |           |        |         |           |      | X        | X         |
+| Hermes 2 Pro     |        |           | X      |         | X         |      |          |           |
+| Command R        |        |           | X      |         |           |      |          |           |
+| Command R+       |        |           | X      |         |           |      |          |           |
+| FireFunction V1  |        |           |        |         | X         |      |          |           |
 
 ## Acknowledgements
 
