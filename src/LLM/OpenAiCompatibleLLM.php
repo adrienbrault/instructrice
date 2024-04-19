@@ -130,7 +130,7 @@ class OpenAiCompatibleLLM implements LLMInterface
 
             $content .= $this->getChunkContent($update);
 
-            if (matches($content, '#(\n\s*){3,}$#')) {
+            if (matches($content, '#(\n\s*|\t){3,}$#')) {
                 // If the content ends with whitespace including at least 3 newlines, we stop
 
                 break;
@@ -264,15 +264,12 @@ class OpenAiCompatibleLLM implements LLMInterface
             return <<<PROMPT
                 You are a helpful assistant that answers in JSON.
 
-                Here's the json schema you must adhere to:
+                Here's the json schema you must STRICTLY adhere to:
                 <schema>
                 {$encodedSchema}
                 </schema>
 
-                ONLY OUTPUT JSON, eg:
-                ```json
-                {"firstProperty":...}
-                ```
+                Only write json, no other text. Do not add properties.
                 PROMPT;
         };
         if ($this->config->strategy instanceof OpenAiToolStrategy) {
@@ -280,8 +277,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         }
 
         return function (mixed $schema, string $instructions) use ($systemPrompt): string {
-            return $systemPrompt($schema) . <<<PROMPT
-
+            return $systemPrompt($schema) . "\n\n" . <<<PROMPT
                 # Instructions
                 {$instructions}
                 PROMPT;
