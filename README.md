@@ -100,32 +100,46 @@ You can find the list of supported models within each ProviderModel.
 
 ### Open Weights
 
-| Model \ Provider | License                          | Ollama | Mistral | Fireworks | Groq | Together | Deepinfra |
-|------------------|----------------------------------|--------|---------|-----------|------|----------|-----------|
-| Mistral 7B       | [Apache 2.0][apache2]            |        | ✅      |           |      | 🆗       |           |
-| Mixtral 8x7B     | [Apache 2.0][apache2]            |        | ✅      |           | 🆗   | 🚀       |           |
-| Mixtral 8x22B    | [Apache 2.0][apache2]            |        | ✅      |           |      | 🆗       | ✅        |
-| WizardLM 2 7B    | [Apache 2.0][apache2]            |        |         |           |      |          | ✅        |
-| WizardLM 2 8x22B | [Apache 2.0][apache2]            |        |         |           |      | 🆗       | ✅        |
-| Hermes 2 Pro     | [Apache 2.0][apache2]            | ✅     |         | ✅        |      |          |           |
-| FireFunction V1  | [Apache 2.0][apache2]            |        |         | 🚀        |      |          |           |
-| Llama3 8B        | [Llama 3][llama3_license]        | 🆗     |         | ✅        | 🆗   | 🆗       | ✅        |
-| Llama3 70B       | [Llama 3][llama3_license]        | ✅     |         | ✅        | 🆗   | 🆗       | ✅        |
-| Gemma 7B         | Gemma                            |        |         |           | 🆗   |          |           |
-| DBRX             | [Databricks OML][databricks_oml] |        |         | ✅        |      | 🆗       | ✅        |
-| Command R        | [CC-BY-NC][cc_nc]                | 🆗     |         |           |      |          |           |
-| Command R+       | [CC-BY-NC][cc_nc]                | 🆗     |         |           |      |          |           |
+#### Foundation
+
+| Model \ Provider     | License                          | Context | Ollama | Mistral    | Fireworks   | Groq       | Together    | Deepinfra |
+|----------------------|----------------------------------|---------|--------|------------|-------------|------------|-------------|-----------|
+| [Mistral 7B][hf_m7b] | [Apache 2.0][apache2]            | 32k     |        | ✅ 68/s |             |            | 🆗          |           |
+| Mixtral 8x7B         | [Apache 2.0][apache2]            | 32k     |        | ✅ 44/s | ✅ 237/s | 🆗 560/s  | 🚀 99/s     |           |
+| Mixtral 8x22B        | [Apache 2.0][apache2]            | 65k     |        | ✅ 77/s | ✅ 77/s  |            | 🆗 52/s  | ✅ 40/s    |
+| Llama3 8B            | [Llama 3][llama3_license]        | 8k      | 🆗     |            | ✅ 280/s| 🆗 270/s   | 🆗 194/s    | ✅ 133/s   |
+| Llama3 70B           | [Llama 3][llama3_license]        | 8k      | ✅     |            | ✅ 116/s| 🆗 800/s   | 🆗 105/s    | ✅ 26/s    |
+| Gemma 7B             | Gemma                            | 8k      |        |            |        | 🆗 800/s   |             |           |
+| DBRX                 | [Databricks OML][databricks_oml] | 32k     |        |            | ✅ 50/s |            | 🆗 72/s  | ✅         |
+| Command R            | [CC-BY-NC][cc_nc]                |         | 🆗     |            |             |            |             |           |
+| Command R+           | [CC-BY-NC][cc_nc]                |         | 🆗     |            |             |            |             |           |
+
+Throughputs from https://artificialanalysis.ai/leaderboards/providers .
+
+#### Fine Tune
+
+| Model \ Provider | License                          | Parent        | Context | Ollama | Fireworks   | Together   | Deepinfra |
+|------------------|----------------------------------|---------------|---------|--------|-------------|------------|-----------|
+| Hermes 2 Pro     | [Apache 2.0][apache2]            | Mistral 7B    | 8k      | ✅      | ✅           |            |           |
+| FireFunction V1  | [Apache 2.0][apache2]            | Mixtral 8x7B  |         |        | 🚀          |            |           |
+| WizardLM 2 7B        | [Apache 2.0][apache2]            | Mistral 7B    |        |        |            |             | ✅         |
+| WizardLM 2 8x22B     | [Apache 2.0][apache2]            | Mixtral 8x7B  |        |        |            | 🆗          | ✅         |
 
 ### Proprietary
 
-| Model           | OpenAI | Anthropic | Mistral |
-|-----------------|--------|-----------|---------|
-| Mixtral Large   |        |           | ✅      |
-| GPT-4 Turbo     | 🚀     |           |         |
-| GPT-3.5 Turbo   | 🚀     |           |         |
-| Claude 3 Haiku  |        | 🆗        |         |
-| Claude 3 Sonnet |        | 🆗        |         |
-| Claude 3 Opus   |        | 🆗        |         |
+| Model           | Context | OpenAI  | Anthropic | Mistral |
+|-----------------|---------|---------|-----------|---------|
+| Mistral Large   | 32k     |         |           | ✅ 26/s  |
+| GPT-4 Turbo     | 128k    | 🚀 24/s |           |         |
+| GPT-3.5 Turbo   | 16k     | 🚀 72   |           |         |
+| Claude 3 Haiku  |         |         | 🆗 88/s   |         |
+| Claude 3 Sonnet |         |         | 🆗 59/s   |         |
+| Claude 3 Opus   |         |         | 🆗 26/s   |         |
+
+Throughputs from https://artificialanalysis.ai/leaderboards/providers .
+
+Automate updating these tables by scraping artificialanalysis.ai , along with chatboard arena elo.?
+Would be a good use case / showcase of this library/cli? 
 
 ## Acknowledgements
 
@@ -225,3 +239,4 @@ Use this lib to generate a table of provider/model prices by scraping!
 [llama3_license]: https://github.com/meta-llama/llama3/blob/main/LICENSE
 [apache2]: https://www.apache.org/licenses/LICENSE-2.0
 [cc_nc]: https://en.wikipedia.org/wiki/Creative_Commons_NonCommercial_license
+[hf_m7b]: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2
