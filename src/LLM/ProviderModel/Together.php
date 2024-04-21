@@ -21,6 +21,8 @@ enum Together: string implements ProviderModel
     case QWEN_15_14B = 'Qwen/Qwen1.5-14B-Chat';
     case QWEN_15_32B = 'Qwen/Qwen1.5-32B-Chat';
     case QWEN_15_72B = 'Qwen/Qwen1.5-72B-Chat';
+    case GEMMA_7B = 'google/gemma-7b-it';
+    case GEMMA_2B = 'google/gemma-2b-it';
     case LLAMA3_8B = 'meta-llama/Meta-Llama-3-8B-Instruct';
     case LLAMA3_70B = 'meta-llama/Meta-Llama-3-70B-Instruct';
 
@@ -35,7 +37,7 @@ enum Together: string implements ProviderModel
             self::MIXTRAL_8x22B => 65000,
             self::WIZARDLM2_8x22B => 65000,
             self::CODE_LLAMA_34B => 16000,
-            self::LLAMA3_8B, self::LLAMA3_70B => 8000,
+            self::LLAMA3_8B, self::LLAMA3_70B, self::GEMMA_7B, self::GEMMA_2B => 8000,
             default => 32000,
         };
     }
@@ -59,6 +61,7 @@ enum Together: string implements ProviderModel
             self::QWEN_15_14B => Cost::create(0.3),
             self::QWEN_15_32B => Cost::create(0.8),
             self::QWEN_15_72B => Cost::create(0.9),
+            self::GEMMA_7B, self::GEMMA_2B => Cost::create(0.2),
             self::LLAMA3_8B => Cost::create(0.2),
             self::LLAMA3_70B => Cost::create(0.9),
         };
@@ -78,6 +81,8 @@ enum Together: string implements ProviderModel
             self::QWEN_15_14B => 'Qwen 1.5 14B',
             self::QWEN_15_32B => 'Qwen 1.5 32B',
             self::QWEN_15_72B => 'Qwen 1.5 72B',
+            self::GEMMA_2B => 'Gemma 2B',
+            self::GEMMA_7B => 'Gemma 7B',
             self::LLAMA3_8B => 'Llama 3 8B',
             self::LLAMA3_70B => 'Llama 3 70B',
         };
