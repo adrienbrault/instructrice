@@ -94,36 +94,40 @@ You can find the list of supported models within each ProviderModel.
 
 ## Supported models
 
+Legend:
 - 🆗 Text
 - ✅ JSON
 - 🚀 Function
+- 💼 Commercial usage
 
 ### Open Weights
 
 #### Foundation
 
-| Model \ Provider       | License                          | Context | Ollama | Mistral    | Fireworks   | Groq       | Together    | Deepinfra |
-|------------------------|----------------------------------|---------|--------|------------|-------------|------------|-------------|-----------|
-| [Mistral 7B][hf_m7b]   | [Apache 2.0][apache2]            | 32k     |        | ✅ 68/s |             |            | 🆗          |           |
-| [Mixtral 8x7B][hf_mx7] | [Apache 2.0][apache2]            | 32k     |        | ✅ 44/s | ✅ 237/s | 🆗 560/s  | 🚀 99/s     |           |
-| [Mixtral 8x22B][hf_mx22] | [Apache 2.0][apache2]            | 65k     |        | ✅ 77/s | ✅ 77/s  |            | 🆗 52/s  | ✅ 40/s    |
-| [Llama3 8B][hf_l3_8]   | [Llama 3][llama3_license]        | 8k      | 🆗     |            | ✅ 280/s| 🆗 270/s   | 🆗 194/s    | ✅ 133/s   |
-| [Llama3 70B][hf_l3_70] | [Llama 3][llama3_license]        | 8k      | ✅     |            | ✅ 116/s| 🆗 800/s   | 🆗 105/s    | ✅ 26/s    |
-| [Gemma 7B][hf_g7]      | Gemma                            | 8k      |        |            |        | 🆗 800/s   |             |           |
-| [DBRX][hf_dbrx]        | [Databricks OML][databricks_oml] | 32k     |        |            | ✅ 50/s |            | 🆗 72/s  | ✅         |
-| [Command R][hf_cr]           | [CC-BY-NC][cc_nc]                | 128k    | 🆗     |            |             |            |             |           |
-| [Command R+][hf_crp]         | [CC-BY-NC][cc_nc]                | 128k    | 🆗     |            |             |            |             |           |
+
+
+|          | 💼       | ctx  | Ollama | Mistral    | Fireworks   | Groq       | Together    | Deepinfra |
+|--------------------------|----------------------|------|--------|------------|-------------|------------|-------------|-----------|
+| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |        | ✅ 68/s |             |            | 🆗          |           |
+| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |        | ✅ 44/s | ✅ 237/s | 🆗 560/s  | 🚀 99/s     |           |
+| [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |        | ✅ 77/s | ✅ 77/s  |            | 🆗 52/s  | ✅ 40/s    |
+| [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 🆗     |            | ✅ 280/s| 🆗 270/s   | 🆗 194/s    | ✅ 133/s   |
+| [Llama3 70B][hf_l3_70]   | [⚠️][llama3_license] | 8k   | ✅     |            | ✅ 116/s| 🆗 800/s   | 🆗 105/s    | ✅ 26/s    |
+| [Gemma 7B][hf_g7]        | ⚠️                   | 8k   |        |            |        | 🆗 800/s   |             |           |
+| [DBRX][hf_dbrx]          | [⚠️][databricks_oml] | 32k  |        |            | ✅ 50/s |            | 🆗 72/s  | ✅         |
+| [Command R][hf_cr]       | [❌][cc_nc]           | 128k | 🆗     |            |             |            |             |           |
+| [Command R+][hf_crp]     | [❌][cc_nc]           | 128k | 🆗     |            |             |            |             |           |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 #### Fine Tune
 
-| Model \ Provider         | License                          | Parent        | Ollama | Fireworks   | Together   | Deepinfra |
-|--------------------------|----------------------------------|---------------|--------|-------------|------------|-----------|
-| [Hermes 2 Pro][hf_h2p]   | [Apache 2.0][apache2]            | Mistral 7B    | ✅      | ✅           |            |           |
-| [FireFunction V1][hf_ff] | [Apache 2.0][apache2]            | Mixtral 8x7B  |        | 🚀          |            |           |
-| WizardLM 2 7B            | [Apache 2.0][apache2]            | Mistral 7B    |        |            |             | ✅         |
-| WizardLM 2 8x22B         | [Apache 2.0][apache2]            | Mixtral 8x7B  |        |            | 🆗          | ✅         |
+|                          | Commercial   | Parent        | Ollama | Fireworks   | Together   | Deepinfra |
+|--------------------------|--------------|---------------|--------|-------------|------------|-----------|
+| [Hermes 2 Pro][hf_h2p]   | [✅][apache2] | Mistral 7B    | ✅      | ✅           |            |           |
+| [FireFunction V1][hf_ff] | [✅][apache2] | Mixtral 8x7B  |        | 🚀          |            |           |
+| WizardLM 2 7B            | [✅][apache2] | Mistral 7B    |        |            |             | ✅         |
+| WizardLM 2 8x22B         | [✅][apache2] | Mixtral 8x7B  |        |            | 🆗          | ✅         |
 
 ### Proprietary
 
