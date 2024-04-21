@@ -134,7 +134,7 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 |-----------------|---------|---------|-----------|---------|
 | Mistral Large   | 32k     |         |           | ✅ 26/s  |
 | GPT-4 Turbo     | 128k    | 🚀 24/s |           |         |
-| GPT-3.5 Turbo   | 16k     | 🚀 72   |           |         |
+| GPT-3.5 Turbo   | 16k     | 🚀 72/s |           |         |
 | Claude 3 Haiku  | 200k    |         | 🆗 88/s   |         |
 | Claude 3 Sonnet | 200k    |         | 🆗 59/s   |         |
 | Claude 3 Opus   | 200k    |         | 🆗 26/s   |         |
