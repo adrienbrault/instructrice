@@ -97,7 +97,7 @@ You can find the list of supported models within each ProviderModel.
 Legend:
 - 📄 Text
 - 🧩 JSON
-- 🛠️ Function
+- 🚀 Function
 - 💼 Commercial usage
 
 ### Open Weights
@@ -109,7 +109,7 @@ Legend:
 |                          | 💼       | ctx  | Ollama | Mistral    | Fireworks   | Groq       | Together    | Deepinfra |
 |--------------------------|----------------------|------|--------|------------|-------------|------------|-------------|-----------|
 | [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |        | 🧩 68/s |             |            | 📄          |           |
-| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |        | 🧩 44/s | 🧩 237/s | 📄 560/s  | 🛠️ 99/s     |           |
+| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |        | 🧩 44/s | 🧩 237/s | 📄 560/s  | 🚀 99/s     |           |
 | [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |        | 🧩 77/s | 🧩 77/s  |            | 📄 52/s  | 🧩 40/s    |
 | [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 📄     |            | 🧩 280/s| 📄 270/s   | 📄 194/s    | 🧩 133/s   |
 | [Llama3 70B][hf_l3_70]   | [⚠️][llama3_license] | 8k   | 🧩     |            | 🧩 116/s| 📄 800/s   | 📄 105/s    | 🧩 26/s    |
@@ -125,7 +125,7 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 |                          | Commercial   | Parent        | Ollama | Fireworks   | Together   | Deepinfra |
 |--------------------------|--------------|---------------|--------|-------------|------------|-----------|
 | [Hermes 2 Pro][hf_h2p]   | [✅][apache2] | Mistral 7B    | 🧩      | 🧩           |            |           |
-| [FireFunction V1][hf_ff] | [✅][apache2] | Mixtral 8x7B  |        | 🛠️          |            |           |
+| [FireFunction V1][hf_ff] | [✅][apache2] | Mixtral 8x7B  |        | 🚀          |            |           |
 | WizardLM 2 7B            | [✅][apache2] | Mistral 7B    |        |            |             | 🧩        |
 | WizardLM 2 8x22B         | [✅][apache2] | Mixtral 8x7B  |        |            | 📄          | 🧩        |
 
