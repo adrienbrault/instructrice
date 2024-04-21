@@ -87,12 +87,17 @@ enum Fireworks: string implements ProviderModel
             'accounts/fireworks/models/' . $this->value,
             match ($this) {
                 self::FIREFUNCTION_V1 => OpenAiToolStrategy::FUNCTION,
+                self::LLAMA3_8B, self::LLAMA3_70B => null,
                 default => OpenAiJsonStrategy::JSON_WITH_SCHEMA,
             },
             null,
             [
                 'Authorization' => 'Bearer ' . $apiKey,
-            ]
+            ],
+            match ($this) {
+                self::LLAMA3_8B, self::LLAMA3_70B => ["```\n\n", '<|im_end|>', '<|eot_id|>', "\t\n\t\n"],
+                default => null,
+            }
         );
     }
 }
