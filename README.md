@@ -106,17 +106,17 @@ Legend:
 
 
 
-|                          | 💼       | ctx  | Ollama | Mistral    | Fireworks   | Groq       | Together    | Deepinfra |
-|--------------------------|----------------------|------|--------|------------|-------------|------------|-------------|-----------|
-| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |        | 🧩 68/s |             |            | 📄          |           |
-| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |        | 🧩 44/s | 🧩 237/s | 📄 560/s  | 🚀 99/s     |           |
-| [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |        | 🧩 77/s | 🧩 77/s  |            | 📄 52/s  | 🧩 40/s    |
-| [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 📄     |            | 🧩 280/s| 📄 270/s   | 📄 194/s    | 🧩 133/s   |
-| [Llama3 70B][hf_l3_70]   | [⚠️][llama3_license] | 8k   | 🧩     |            | 🧩 116/s| 📄 800/s   | 📄 105/s    | 🧩 26/s    |
-| [Gemma 7B][hf_g7]        | ⚠️                   | 8k   |        |            |        | 📄 800/s   |             |           |
-| [DBRX][hf_dbrx]          | [⚠️][databricks_oml] | 32k  |        |            | 🧩 50/s |            | 📄 72/s  | 🧩         |
-| [Command R][hf_cr]       | [❌][cc_nc]           | 128k | 📄     |            |             |            |             |           |
-| [Command R+][hf_crp]     | [❌][cc_nc]           | 128k | 📄     |            |             |            |             |           |
+|                          | 💼       | ctx  | [Ollama][ollama_models] | [Mistral][mistral_models] | [Fireworks][fireworks_models] | [Groq][groq_models] | [Together][together_models] | [Deepinfra][deepinfra_models] |
+|--------------------------|----------------------|------|-------------------------|---------------------------|-------------|---------------------|-----------------------------|-------------------------------|
+| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |                         | 🧩 68/s                   |             |                     | 📄                          |                               |
+| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |                         | 🧩 44/s                   | 🧩 237/s    | 📄 560/s            | 🚀 99/s                     |                               |
+| [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |                         | 🧩 77/s                   | 🧩 77/s     |                     | 📄 52/s                     | 🧩 40/s                       |
+| [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 📄                      |                           | 🧩 280/s    | 📄 270/s            | 📄 194/s                    | 🧩 133/s                      |
+| [Llama3 70B][hf_l3_70]   | [⚠️][llama3_license] | 8k   | 🧩                      |                           | 🧩 116/s    | 📄 800/s            | 📄 105/s                    | 🧩 26/s                       |
+| [Gemma 7B][hf_g7]        | ⚠️                   | 8k   |                         |                           |             | 📄 800/s            |                             |                               |
+| [DBRX][hf_dbrx]          | [⚠️][databricks_oml] | 32k  |                         |                           | 🧩 50/s     |                     | 📄 72/s                     | 🧩                            |
+| [Command R][hf_cr]       | [❌][cc_nc]           | 128k | 📄                      |                           |             |                     |                             |                               |
+| [Command R+][hf_crp]     | [❌][cc_nc]           | 128k | 📄                      |                           |             |                     |                             |                               |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
@@ -213,32 +213,40 @@ Use this lib to generate a table of provider/model prices by scraping!
 [openai_pricing]: https://openai.com/pricing
 [openai_gpt4t]: https://platform.openai.com/docs/models/gpt-4-turbo-and-gpt-4
 [openai_gpt35t]: https://platform.openai.com/docs/models/gpt-3-5-turbo
+[openai_apikey_create]: https://platform.openai.com/api-keys
 [ollama]: https://ollama.com
 [ollama_h2p]: https://ollama.com/adrienbrault/nous-hermes2pro
 [ollama_command_r]: https://ollama.com/library/command-r
 [ollama_command_r_plus]: https://ollama.com/library/command-r-plus
+[ollama_models]: https://ollama.com/library
 [mistral_pricing]: https://mistral.ai/technology/#pricing
 [mistral_models]: https://docs.mistral.ai/getting-started/models/
+[mistral_apikey_create]: https://console.mistral.ai/api-keys/
 [fireworks_pricing]: https://fireworks.ai/pricing
 [fireworks_models]: https://fireworks.ai/models
+[fireworks_apikey_create]: https://fireworks.ai/api-keys
 [groq_pricing]: https://wow.groq.com
 [groq_models]: https://console.groq.com/docs/models
+[groq_apikey_create]: https://console.groq.com/keys
 [together_pricing]: https://www.together.ai/pricing
 [together_models]: https://docs.together.ai/docs/inference-models
+[together_apikey_create]: https://api.together.xyz/settings/api-keys
 [oooas]: https://github.com/goldspecdigital/oooas
 [anthropic_pricing]: https://www.anthropic.com/api
 [anthropic_models]: https://docs.anthropic.com/claude/docs/models-overview
+[anthropic_apikey_create]: https://console.anthropic.com/settings/keys
 [deepinfra_pricing]: https://deepinfra.com/pricing
 [deepinfra_mixtral]: https://deepinfra.com/mistralai/Mixtral-8x22B-Instruct-v0.1
+[deepinfra_models]: https://deepinfra.com/models/text-generation
 [deepinfra_wizardlm2_22]: https://deepinfra.com/microsoft/WizardLM-2-8x22B
 [deepinfra_wizardlm2_7]: https://deepinfra.com/microsoft/WizardLM-2-8x7B
 [deepinfra_dbrx]: https://deepinfra.com/databricks/dbrx-instruct
-[openai_apikey_create]: https://platform.openai.com/api-keys
-[anthropic_apikey_create]: https://console.anthropic.com/settings/keys
-[mistral_apikey_create]: https://console.mistral.ai/api-keys/
-[fireworks_apikey_create]: https://fireworks.ai/api-keys
-[groq_apikey_create]: https://console.groq.com/keys
-[together_apikey_create]: https://api.together.xyz/settings/api-keys
+
+
+
+
+
+
 [deepinfra_apikey_create]: https://deepinfra.com/dash/api_keys
 [databricks_oml]: https://www.databricks.com/legal/open-model-license
 [llama3_license]: https://github.com/meta-llama/llama3/blob/main/LICENSE
