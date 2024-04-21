@@ -8,6 +8,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -24,7 +27,17 @@ function createConsoleLogger(OutputInterface $output): LoggerInterface
 }
 
 return function (callable $do) {
-    $input = new ArgvInput();
+    $inputDefinition = new InputDefinition([
+        new InputArgument('context', InputArgument::OPTIONAL),
+        new InputOption('verbose', 'v'),
+    ]);
+
+    $input = new ArgvInput(null, $inputDefinition);
+    $context = $input->getArgument('context');
+    if (is_string($context) && file_exists($context)) {
+        $context = file_get_contents($context);
+    }
+
     $output = new ConsoleOutput($input->hasParameterOption('-v', true) ? ConsoleOutput::VERBOSITY_DEBUG : ConsoleOutput::VERBOSITY_NORMAL);
 
     $logger = createConsoleLogger($output);
@@ -50,5 +63,5 @@ return function (callable $do) {
         logger: $logger,
     );
 
-    $do($instructrice, $output);
+    $do($instructrice, $context, $output);
 };

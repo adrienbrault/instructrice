@@ -16,10 +16,10 @@ class Character
 }
 
 $demo = require __DIR__ . '/bootstrap.php';
-$demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
+$demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInterface $output) {
     $characters = $instructrice->getList(
         Character::class,
-        'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
+        $context ?? 'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     );
 });

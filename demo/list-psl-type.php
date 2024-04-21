@@ -9,7 +9,7 @@ use function Psl\Type\shape;
 use function Psl\Type\string;
 
 $demo = require __DIR__ . '/bootstrap.php';
-$demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
+$demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInterface $output) {
     $type = shape([
         'name' => string(),
         'bio' => string(),
@@ -17,7 +17,7 @@ $demo(function (Instructrice $instructrice, ConsoleOutputInterface $output) {
 
     $persons = $instructrice->getList(
         type: $type,
-        context: 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
+        context: $context ?? 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         options: [
             'all_required' => true,
         ],
