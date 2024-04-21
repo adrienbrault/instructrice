@@ -95,6 +95,7 @@ class OpenAiCompatibleLLM implements LLMInterface
                 $completionTokensEstimate = $this->tokenizer->count($content);
 
                 $chunk = new LLMChunk(
+                    $content,
                     $this->parser->parse($content),
                     $promptTokensEstimate,
                     $completionTokensEstimate,

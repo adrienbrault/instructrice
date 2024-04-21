@@ -128,6 +128,7 @@ class AnthropicLLM implements LLMInterface
 
             if ($onChunk !== null) {
                 $chunk = new LLMChunk(
+                    $content,
                     $this->parser->parse($content),
                     $promptTokens,
                     $completionTokens ?? $completionTokensEstimate,

@@ -186,14 +186,14 @@ class InstructriceFactory
 
             dump(
                 $data,
+                $chunk->propertyPath,
                 sprintf(
-                    '[Prompt: %d tokens - %s] -> [TTFT: %s] -> [Completion: %d tokens - %s - %s - %.1f tokens/s] -> [Total: %d tokens - %s]',
+                    '[Prompt: %d tokens - %s] -> [TTFT: %s] -> [Completion: %d tokens - %s - %.1f tokens/s] -> [Total: %d tokens - %s]',
                     $chunk->promptTokens,
                     $chunk->getFormattedCost(),
                     $chunk->getTimeToFirstToken()->forHumans(),
                     $chunk->completionTokens,
                     $chunk->getFormattedCompletionCost(),
-                    $chunk->propertyPath,
                     $chunk->getTokensPerSecond(),
                     $chunk->getTokens(),
                     $chunk->getFormattedCost()
