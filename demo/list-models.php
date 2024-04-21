@@ -15,7 +15,7 @@ class Model
     public ?string $slug = null;
 
     #[Instruction('The context length/window.')]
-    public int $context;
+    public ?int $context = null;
 
     #[Instruction('$ per million tokens')]
     public ?float $promptCost = null;
