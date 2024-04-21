@@ -35,6 +35,7 @@ enum Together: string implements ProviderModel
     {
         return match ($this) {
             self::MIXTRAL_8x22B => 65000,
+            self::MIXTRAL_8x7B => 30000,
             self::WIZARDLM2_8x22B => 65000,
             self::CODE_LLAMA_34B => 16000,
             self::LLAMA3_8B, self::LLAMA3_70B, self::GEMMA_7B, self::GEMMA_2B => 8000,
