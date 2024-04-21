@@ -111,8 +111,8 @@ You can find the list of supported models within each ProviderModel.
 | [Llama3 70B][hf_l3_70] | [Llama 3][llama3_license]        | 8k      | ✅     |            | ✅ 116/s| 🆗 800/s   | 🆗 105/s    | ✅ 26/s    |
 | [Gemma 7B][hf_g7]      | Gemma                            | 8k      |        |            |        | 🆗 800/s   |             |           |
 | [DBRX][hf_dbrx]        | [Databricks OML][databricks_oml] | 32k     |        |            | ✅ 50/s |            | 🆗 72/s  | ✅         |
-| [Command R][hf_cr]           | [CC-BY-NC][cc_nc]                |         | 🆗     |            |             |            |             |           |
-| [Command R+][hf_crp]         | [CC-BY-NC][cc_nc]                |         | 🆗     |            |             |            |             |           |
+| [Command R][hf_cr]           | [CC-BY-NC][cc_nc]                | 128k    | 🆗     |            |             |            |             |           |
+| [Command R+][hf_crp]         | [CC-BY-NC][cc_nc]                | 128k    | 🆗     |            |             |            |             |           |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
