@@ -70,6 +70,11 @@ enum Anthropic: string implements ProviderModel
                 <instructions>
                 {$instructions}
                 </instructions>
+
+                Reply with:
+                ```json
+                {"...
+                ```
                 PROMPT;
         };
 
