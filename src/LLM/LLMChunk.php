@@ -84,8 +84,8 @@ class LLMChunk
             0.0 => 'Free',
             default => '$' . replace(
                 number_format($cost, 10),
-                '#0+$#',
-                ''
+                '#(0[.]0*[0-9]{2}).+$#',
+                '\1'
             )
         };
     }
