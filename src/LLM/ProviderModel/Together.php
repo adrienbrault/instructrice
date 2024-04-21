@@ -23,8 +23,8 @@ enum Together: string implements ProviderModel
     case QWEN_15_72B = 'Qwen/Qwen1.5-72B-Chat';
     case GEMMA_7B = 'google/gemma-7b-it';
     case GEMMA_2B = 'google/gemma-2b-it';
-    case LLAMA3_8B = 'meta-llama/Meta-Llama-3-8B-Instruct';
-    case LLAMA3_70B = 'meta-llama/Meta-Llama-3-70B-Instruct';
+    case LLAMA3_8B = 'meta-llama/Llama-3-8b-chat-hf';
+    case LLAMA3_70B = 'meta-llama/Llama-3-70b-chat-hf';
 
     public function getApiKeyEnvVar(): ?string
     {
