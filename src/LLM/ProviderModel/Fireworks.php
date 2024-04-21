@@ -17,6 +17,7 @@ enum Fireworks: string implements ProviderModel
     case DBRX = 'dbrx-instruct';
     case HERMES_2_PRO = 'hermes-2-pro-mistral-7b';
     case CAPYBARA_34 = 'yi-34b-200k-capybara';
+    case GEMMA_7B = 'gemma-7b-it';
     case LLAMA3_8B = 'llama-v3-8b-instruct';
     case LLAMA3_70B = 'llama-v3-70b-instruct';
 
@@ -34,7 +35,7 @@ enum Fireworks: string implements ProviderModel
             self::DBRX => 32768,
             self::HERMES_2_PRO => 4000,
             self::CAPYBARA_34 => 200000,
-            self::LLAMA3_8B, self::LLAMA3_70B => 8000,
+            self::LLAMA3_8B, self::LLAMA3_70B, self::GEMMA_7B => 8000,
         };
     }
 
@@ -52,6 +53,7 @@ enum Fireworks: string implements ProviderModel
             self::DBRX => 1.6,
             self::HERMES_2_PRO => 0.2,
             self::CAPYBARA_34 => 0.9,
+            self::GEMMA_7B => 0.2,
             self::LLAMA3_8B => 0.2,
             self::LLAMA3_70B => 0.9,
         });
@@ -66,6 +68,7 @@ enum Fireworks: string implements ProviderModel
             self::DBRX => 'DBRX',
             self::HERMES_2_PRO => 'Hermes 2 Pro',
             self::CAPYBARA_34 => 'Capybara 34B',
+            self::GEMMA_7B => 'Gemma 7B',
             self::LLAMA3_8B => 'Llama3 8B',
             self::LLAMA3_70B => 'Llama3 70B',
         };
