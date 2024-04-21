@@ -104,8 +104,6 @@ Legend:
 
 #### Foundation
 
-
-
 |                          | 💼       | ctx  | [Ollama][ollama_models] | [Mistral][mistral_models] | [Fireworks][fireworks_models] | [Groq][groq_models] | [Together][together_models] | [Deepinfra][deepinfra_models] |
 |--------------------------|----------------------|------|-------------------------|---------------------------|-------------------------------|---------------------|-----------------------------|-------------------------------|
 | [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |                         | 🧩 68/s                   |                               |                     | 📄                          |                               |
