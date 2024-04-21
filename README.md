@@ -122,7 +122,7 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 #### Fine Tune
 
-|                          | Commercial   | Parent        | Ollama | Fireworks   | Together   | Deepinfra |
+|                          | 💼           | Parent        | Ollama | Fireworks   | Together   | Deepinfra |
 |--------------------------|--------------|---------------|--------|-------------|------------|-----------|
 | [Hermes 2 Pro][hf_h2p]   | [✅][apache2] | Mistral 7B    | 🧩      | 🧩           |            |           |
 | [FireFunction V1][hf_ff] | [✅][apache2] | Mixtral 8x7B  |        | 🚀          |            |           |
