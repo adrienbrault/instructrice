@@ -106,7 +106,7 @@ Legend:
 
 |                          | 💼       | ctx  | [Ollama][ollama_models] | [Mistral][mistral_models] | [Fireworks][fireworks_models] | [Groq][groq_models] | [Together][together_models] | [Deepinfra][deepinfra_models] |
 |--------------------------|----------------------|------|-------------------------|---------------------------|-------------------------------|---------------------|-----------------------------|-------------------------------|
-| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |                         | 🧩 68/s                   |                               |                     | 📄                          |                               |
+| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |                         | 🧩 68/s                   |                               |                     | 📄 98/s                     |                               |
 | [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |                         | 🧩 44/s                   | 🧩 237/s                      | 📄 560/s            | 🚀 99/s                     |                               |
 | [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |                         | 🧩 77/s                   | 🧩 77/s                       |                     | 📄 52/s                     | 🧩 40/s                       |
 | [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 📄                      |                           | 🧩 280/s                      | 📄 270/s            | 📄 194/s                    | 🧩 133/s                      |
