@@ -10,6 +10,10 @@ Features and design choices:
 - [symfony/serializer][sf_serializer] integration to deserialize LLMs outputs
 - Streaming first/only. Partial JSON parsing/deserialization.
 - A set of pre-configured LLMs with the best settings. Just set your API keys and try the different models. No need to know about json mode, function calling, etc.
+  - Start for free offline with Ollama with models like Llama3, Mixtral, Hermes2Pro.
+  - Then move on to GPT-4, Claude
+  - Try crazy fast providers like Groq or Fireworks
+  - Without worrying about the differences in APIs and availabilities of json/tools/streaming. 
 
 ## Installation and Usage
 
