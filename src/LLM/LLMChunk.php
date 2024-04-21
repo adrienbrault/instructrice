@@ -30,7 +30,7 @@ class LLMChunk
     {
         $elapsed = abs(Carbon::now()->diff($this->requestedAt)->totalSeconds ?? 1);
 
-        return $this->promptTokens / $elapsed;
+        return $this->completionTokens / $elapsed;
     }
 
     private static function getDataLastPropertyPath(mixed $data = null, string $currentPath = ''): string
