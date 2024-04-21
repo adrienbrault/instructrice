@@ -73,15 +73,6 @@ class SchemaFactory
             ];
             $node['required'] = $required;
         }
-        if ($makeAllRequired
-            && \is_array($node['type'] ?? null)
-        ) {
-            $node['type'] = array_diff($node['type'], ['null']);
-
-            if (\count($node['type']) === 1) {
-                $node['type'] = $node['type'][0];
-            }
-        }
 
         if ($makeAllRequired
             && \is_array($node['anyOf'] ?? null)
