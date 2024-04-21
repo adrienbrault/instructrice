@@ -12,14 +12,18 @@ use function Psl\Regex\replace;
 
 class LLMChunk
 {
+    public readonly string $propertyPath;
+
     public function __construct(
-        public mixed $data,
-        public int $promptTokens,
-        public int $completionTokens,
-        public Cost $cost,
-        public DateTimeImmutable $requestedAt,
-        public DateTimeImmutable $firstTokenReceivedAt,
+        public readonly string $content,
+        public readonly mixed $data,
+        public readonly int $promptTokens,
+        public readonly int $completionTokens,
+        public readonly Cost $cost,
+        public readonly DateTimeImmutable $requestedAt,
+        public readonly DateTimeImmutable $firstTokenReceivedAt,
     ) {
+        $this->propertyPath = self::getDataLastPropertyPath($data);
     }
 
     public function getTokensPerSecond(): float
@@ -29,12 +33,8 @@ class LLMChunk
         return $this->promptTokens / $elapsed;
     }
 
-    public function getDataLastPropertyPath(mixed $data = null, string $currentPath = ''): string
+    private static function getDataLastPropertyPath(mixed $data = null, string $currentPath = ''): string
     {
-        if ($currentPath === '') {
-            $data = $this->data;
-        }
-
         if (\is_object($data)) {
             $data = (array) $data;
         }
@@ -48,7 +48,7 @@ class LLMChunk
             if ($lastKey !== null) {
                 $newPath = $currentPath . (\is_array($data) && ! \is_string($lastKey) ? '[' . $lastKey . ']' : '.' . $lastKey);
 
-                return $this->getDataLastPropertyPath($data[$lastKey], $newPath);
+                return self::getDataLastPropertyPath($data[$lastKey], $newPath);
             }
         }
 

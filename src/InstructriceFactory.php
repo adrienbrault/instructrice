@@ -172,7 +172,7 @@ class InstructriceFactory
 
         return function (mixed $data, LLMChunk $chunk) use ($section, &$lastPropertyPath, $renderOnEveryUpdate) {
             if (! $renderOnEveryUpdate) {
-                $propertyPath = $chunk->getDataLastPropertyPath();
+                $propertyPath = $chunk->propertyPath;
                 if ($lastPropertyPath === $propertyPath) {
                     return;
                 }
