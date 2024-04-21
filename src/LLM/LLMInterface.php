@@ -14,6 +14,7 @@ interface LLMInterface
         array $schema,
         string $context,
         string $instructions,
+        bool $truncateAutomatically = false,
         ?callable $onChunk = null,
     ): mixed;
 }

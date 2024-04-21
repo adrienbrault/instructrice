@@ -31,6 +31,7 @@ class AnthropicLLM implements LLMInterface
         array $schema,
         string $context,
         string $instructions,
+        bool $truncateAutomatically = false,
         ?callable $onChunk = null
     ): mixed {
         $messages = [

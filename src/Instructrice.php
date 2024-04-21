@@ -16,7 +16,8 @@ use function Psl\Type\vec;
 
 /**
  * @phpstan-type InstructriceOptions array{
- *     all_required?: bool
+ *     all_required?: bool,
+ *     truncate_automatically?: bool,
  * }
  * @phpstan-type Schema array<string, mixed>
  */
@@ -62,6 +63,7 @@ class Instructrice
             $context,
             $type,
             $instructions ?? 'Extract all relevant information',
+            $options['truncate_automatically'] ?? false,
             $onChunk,
         );
     }
@@ -111,6 +113,7 @@ class Instructrice
             $context,
             $type,
             $instructions ?? 'Extract all relevant information',
+            $options['truncate_automatically'] ?? false,
             $onChunk,
         ) ?? [];
     }
@@ -132,6 +135,7 @@ class Instructrice
         string $context,
         string|TypeInterface|array $type,
         string $instructions,
+        bool $truncateAutomatically = false,
         ?callable $onChunk = null,
     ): mixed {
         if (($schema['type'] ?? null) !== 'object') {
@@ -177,6 +181,7 @@ class Instructrice
             $schema,
             $context,
             $instructions,
+            $truncateAutomatically,
             $llmOnChunk,
         );
 

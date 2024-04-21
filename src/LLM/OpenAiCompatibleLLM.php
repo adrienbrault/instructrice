@@ -38,12 +38,25 @@ class OpenAiCompatibleLLM implements LLMInterface
         array $schema,
         string $context,
         string $instructions,
+        bool $truncateAutomatically = false,
         ?callable $onChunk = null,
     ): mixed {
+        $system = $this->getSystemPrompt()($schema, $instructions);
+        $systemTokens = $this->tokenizer->count($system);
+
+        if ($truncateAutomatically) {
+            $promptCompletionRatio = 0.7;
+            $contextMaxTokens = (int) ceil(
+                ($this->config->providerModel->getContextWindow() - $systemTokens)
+                * (1 - $promptCompletionRatio)
+            );
+            $context = $this->tokenizer->chunk($context, $contextMaxTokens)[0];
+        }
+
         $messages = [
             [
                 'role' => 'system',
-                'content' => $this->getSystemPrompt()($schema, $instructions),
+                'content' => $system,
             ],
             [
                 'role' => 'user',
