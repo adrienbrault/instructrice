@@ -7,12 +7,16 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 $demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInterface $output) {
+    if ($context === null) {
+        $context = 'The worst product I have ever reviewed? The opposite!!!';
+        dump($context);
+    }
     dump($instructrice->get(
         type: [
             'type' => 'string',
             'enum' => ['positive', 'neutral', 'negative'],
         ],
-        context: $context ?? dump('The worst product I have ever reviewed? The opposite!!!'),
+        context: $context,
         instructions: 'Sentiment analysis',
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     ));
