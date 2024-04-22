@@ -26,6 +26,71 @@ class SchemaFactory
     }
 
     /**
+     * @template T
+     *
+     * @param TypeNode|TypeInterface<T>|class-string<T> $type
+     *
+     * @return array<string, mixed>
+     */
+    public function createSchema(TypeNode|TypeInterface|string $type, bool $makeAllRequired): array
+    {
+        if (\is_string($type)) {
+            $schema = $this->schemaFactory->buildSchema($type);
+
+            return $this->mapSchema(
+                $schema->getArrayCopy(),
+                $schema,
+                $makeAllRequired
+            );
+        }
+
+        if (! $type instanceof TypeNode) {
+            $typeAsString = $type->toString();
+            $typeAsString = replace($typeAsString, '#"#', "'");
+
+            $type = (new TypeParser())->parse(
+                new TokenIterator((new Lexer())->tokenize($typeAsString))
+            );
+        }
+
+        return $this->createSchemaFromPhpStanType($type, $makeAllRequired);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function createSchemaFromPhpStanType(TypeNode $phpstanType, bool $makeAllRequired): array
+    {
+        if ($phpstanType instanceof ArrayShapeNode) {
+            $schema = [
+                'type' => 'object',
+                'properties' => [],
+            ];
+
+            foreach ($phpstanType->items as $item) {
+                if ($item->keyName === null) {
+                    continue;
+                }
+
+                $schema['properties'][(string) $item->keyName] = $this->createSchema($item->valueType, $makeAllRequired);
+
+                if (! $item->optional) {
+                    $schema['required'][] = (string) $item->keyName;
+                }
+            }
+
+            return $schema;
+        }
+
+        \assert($phpstanType instanceof IdentifierTypeNode);
+
+        // todo support more complex types
+        return [
+            'type' => $phpstanType->name,
+        ];
+    }
+
+    /**
      * @param array<string, mixed>|ArrayObject<string, mixed> $node
      *
      * @return array<string, mixed>
@@ -99,70 +164,5 @@ class SchemaFactory
             },
             $node,
         );
-    }
-
-    /**
-     * @template T
-     *
-     * @param TypeNode|TypeInterface<T>|class-string<T> $type
-     *
-     * @return array<string, mixed>
-     */
-    public function createSchema(TypeNode|TypeInterface|string $type, bool $makeAllRequired): array
-    {
-        if (\is_string($type)) {
-            $schema = $this->schemaFactory->buildSchema($type);
-
-            return $this->mapSchema(
-                $schema->getArrayCopy(),
-                $schema,
-                $makeAllRequired
-            );
-        }
-
-        if (! $type instanceof TypeNode) {
-            $typeAsString = $type->toString();
-            $typeAsString = replace($typeAsString, '#"#', "'");
-
-            $type = (new TypeParser())->parse(
-                new TokenIterator((new Lexer())->tokenize($typeAsString))
-            );
-        }
-
-        return $this->createSchemaFromPhpStanType($type, $makeAllRequired);
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function createSchemaFromPhpStanType(TypeNode $phpstanType, bool $makeAllRequired): array
-    {
-        if ($phpstanType instanceof ArrayShapeNode) {
-            $schema = [
-                'type' => 'object',
-                'properties' => [],
-            ];
-
-            foreach ($phpstanType->items as $item) {
-                if ($item->keyName === null) {
-                    continue;
-                }
-
-                $schema['properties'][(string) $item->keyName] = $this->createSchema($item->valueType, $makeAllRequired);
-
-                if (! $item->optional) {
-                    $schema['required'][] = (string) $item->keyName;
-                }
-            }
-
-            return $schema;
-        }
-
-        \assert($phpstanType instanceof IdentifierTypeNode);
-
-        // todo support more complex types
-        return [
-            'type' => $phpstanType->name,
-        ];
     }
 }
