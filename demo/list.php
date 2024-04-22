@@ -34,3 +34,28 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     );
 });
+
+/*
+array:2 [
+  0 => Person^ {#291
+    +name: "David Heinemeier Hansson"
+    +biography: null
+    +interests: array:1 [
+      0 => Interest^ {#277
+        +name: "Ruby on Rails"
+        +searchQueryToLearnMore: "ruby on rails créer un site web"
+      }
+    ]
+  }
+  1 => Person^ {#293
+    +name: "David Cramer"
+    +biography: null
+    +interests: array:1 [
+      0 => Interest^ {#289
+        +name: "Sentry"
+        +searchQueryToLearnMore: "sentry error tracking tool"
+      }
+    ]
+  }
+]
+*/

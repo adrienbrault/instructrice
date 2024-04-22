@@ -24,7 +24,7 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
 });
 
 /*
-1 array:4 [
+array:4 [
   "name" => "Marie Curie"
   "dateOfBirth" => "1867-11-07"
   "isAlive" => false

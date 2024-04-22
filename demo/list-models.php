@@ -45,3 +45,52 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         onChunk: InstructriceFactory::createOnChunkDump($output->section(), false),
     );
 });
+
+/*
+php demo/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
+
+array:6 [
+  0 => Model^ {#260
+    +name: "Lynn: Llama 3 Soliloquy 8B"
+    +slug: "lynn/soliloquy-l3"
+    +context: 24576
+    +promptCost: 0.0
+    +completionCost: 0.0
+  }
+  1 => Model^ {#263
+    +name: "Nous: Capybara 7B (free)"
+    +slug: "nousresearch/nous-capybara-7b:free"
+    +context: 4096
+    +promptCost: 0.0
+    +completionCost: 0.0
+  }
+  2 => Model^ {#293
+    +name: "Mistral 7B Instruct (free)"
+    +slug: "mistralai/mistral-7b-instruct:free"
+    +context: 32768
+    +promptCost: 0.0
+    +completionCost: 0.0
+  }
+  3 => Model^ {#241
+    +name: "OpenChat 3.5 (free)"
+    +slug: "openchat/openchat-7b:free"
+    +context: 8192
+    +promptCost: 0.0
+    +completionCost: 0.0
+  }
+  4 => Model^ {#244
+    +name: "MythoMist 7B (free)"
+    +slug: "gryphe/mythomist-7b:free"
+    +context: 32768
+    +promptCost: 0.0
+    +completionCost: 0.0
+  }
+  5 => Model^ {#304
+    +name: "Toppy M 7B (free)"
+    +slug: null
+    +context: null
+    +promptCost: null
+    +completionCost: null
+  }
+]
+*/

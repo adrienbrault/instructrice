@@ -17,3 +17,17 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     ));
 });
+
+/*
+php demo/classification.php 'LFG'
+
+"positive"
+
+php demo/classification.php 'decel'
+
+"negative"
+
+php demo/classification.php 'normy'
+
+"neutral"
+*/

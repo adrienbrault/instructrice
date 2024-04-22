@@ -23,3 +23,20 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     );
 });
+
+/*
+array:3 [
+  0 => Character^ {#225
+    +name: "Jack"
+    +rank: "Colonel"
+  }
+  1 => Character^ {#298
+    +name: "Samanta"
+    +rank: "Major"
+  }
+  2 => Character^ {#296
+    +name: "Teal'c"
+    +rank: null
+  }
+]
+*/

@@ -26,3 +26,10 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     );
 });
+
+/*
+Character^ {#294
+  +name: "Jack"
+  +rank: "Colonel"
+}
+*/

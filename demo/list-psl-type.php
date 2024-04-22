@@ -24,3 +24,16 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     );
 });
+
+/*
+array:2 [
+  0 => array:2 [
+    "name" => "David Heinemeier Hansson"
+    "bio" => "also known as @DHH"
+  ]
+  1 => array:2 [
+    "name" => "David Cramer"
+    "bio" => "also known as @zeeg"
+  ]
+]
+*/
