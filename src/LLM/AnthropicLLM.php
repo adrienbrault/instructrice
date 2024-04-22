@@ -133,7 +133,7 @@ class AnthropicLLM implements LLMInterface
                     $this->parser->parse($content),
                     $promptTokens,
                     $completionTokens ?? $completionTokensEstimate,
-                    $this->config->providerModel->getCost(),
+                    $this->config->cost,
                     $requestedAt,
                     $firstTokenReceivedAt
                 );

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM\ProviderModel;
+namespace AdrienBrault\Instructrice\LLM\Provider;
 
 use AdrienBrault\Instructrice\LLM\Cost;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
@@ -18,41 +18,6 @@ enum Anthropic: string implements ProviderModel
     public function getApiKeyEnvVar(): ?string
     {
         return 'ANTHROPIC_API_KEY';
-    }
-
-    public function getContextWindow(): int
-    {
-        return 200000;
-    }
-
-    public function getMaxTokens(): int
-    {
-        return 4096;
-    }
-
-    public function getCost(): Cost
-    {
-        return match ($this) {
-            self::CLAUDE3_HAIKU => new Cost(0.25, 1.25),
-            self::CLAUDE3_SONNET => new Cost(3, 15),
-            self::CLAUDE3_OPUS => new Cost(15, 75),
-        };
-    }
-
-    public function getLabel(bool $prefixed = true): string
-    {
-        $label = match ($this) {
-            self::CLAUDE3_HAIKU => 'Claude 3 Haiku',
-            self::CLAUDE3_SONNET => 'Claude 3 Sonnet',
-            self::CLAUDE3_OPUS => 'Claude 3 Opus',
-        };
-
-        return $prefixed ? 'Anthropic - ' . $label : $label;
-    }
-
-    public function getDocUrl(): string
-    {
-        return 'https://docs.anthropic.com/claude/docs/models-overview';
     }
 
     public function createConfig(string $apiKey): LLMConfig
@@ -79,14 +44,26 @@ enum Anthropic: string implements ProviderModel
         };
 
         return new LLMConfig(
-            $this,
             'https://api.anthropic.com/v1/messages',
             $this->value,
-            null,
-            $systemPrompt,
-            [
+            200000,
+            match ($this) {
+                self::CLAUDE3_HAIKU => 'Claude 3 Haiku',
+                self::CLAUDE3_SONNET => 'Claude 3 Sonnet',
+                self::CLAUDE3_OPUS => 'Claude 3 Opus',
+            },
+            'Anthropic',
+            match ($this) {
+                self::CLAUDE3_HAIKU => new Cost(0.25, 1.25),
+                self::CLAUDE3_SONNET => new Cost(3, 15),
+                self::CLAUDE3_OPUS => new Cost(15, 75),
+            },
+            maxTokens: 4096,
+            systemPrompt: $systemPrompt,
+            headers: [
                 'x-api-key' => $apiKey,
             ],
+            docUrl: 'https://docs.anthropic.com/claude/docs/models-overview'
         );
     }
 }

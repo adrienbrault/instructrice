@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice;
 
 use AdrienBrault\Instructrice\LLM\LLMChunk;
+use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\LLMFactory;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
 use Psl\Type\TypeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -24,7 +27,8 @@ use function Psl\Type\vec;
 class Instructrice
 {
     public function __construct(
-        private readonly LLMInterface $llm,
+        private readonly ProviderModel $defaultLlm,
+        private readonly LLMFactory $llmFactory,
         private readonly LoggerInterface $logger,
         private readonly SchemaFactory $schemaFactory,
         private readonly SerializerInterface&DenormalizerInterface $serializer,
@@ -46,6 +50,7 @@ class Instructrice
         ?string $instructions = null,
         array $options = [],
         ?callable $onChunk = null,
+        LLMInterface|LLMConfig|ProviderModel|null $llm = null,
     ) {
         $denormalize = fn (mixed $data) => $data;
         $schema = $type;
@@ -65,6 +70,7 @@ class Instructrice
             $instructions ?? 'Extract all relevant information',
             $options['truncate_automatically'] ?? false,
             $onChunk,
+            $llm
         );
     }
 
@@ -77,12 +83,13 @@ class Instructrice
      *
      * @return list<T>
      */
-    public function getList(
+    public function list(
         string|TypeInterface $type,
         string $context,
         ?string $instructions = null,
         array $options = [],
         ?callable $onChunk = null,
+        LLMInterface|LLMConfig|ProviderModel|null $llm = null,
     ): array {
         $wrappedWithProperty = 'list';
         $schema = [
@@ -115,6 +122,7 @@ class Instructrice
             $instructions ?? 'Extract all relevant information',
             $options['truncate_automatically'] ?? false,
             $onChunk,
+            $llm,
         ) ?? [];
     }
 
@@ -137,6 +145,7 @@ class Instructrice
         string $instructions,
         bool $truncateAutomatically = false,
         ?callable $onChunk = null,
+        LLMInterface|LLMConfig|ProviderModel|null $llm = null,
     ): mixed {
         if (($schema['type'] ?? null) !== 'object') {
             $wrappedWithProperty = 'inner';
@@ -177,7 +186,12 @@ class Instructrice
             };
         }
 
-        $data = $this->llm->get(
+        $llm ??= $this->defaultLlm;
+        if (! $llm instanceof LLMInterface) {
+            $llm = $this->llmFactory->create($llm);
+        }
+
+        $data = $llm->get(
             $schema,
             $context,
             $instructions,

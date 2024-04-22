@@ -34,7 +34,11 @@ php demo/list-models.php <(curl -s https://r.jina.ai/https://docs.together.ai/do
 
 $demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInterface $output) {
-    $instructrice->getList(
+    if ($context === null) {
+        throw new InvalidArgumentException('Missing context');
+    }
+
+    $instructrice->list(
         Model::class,
         $context,
         'Extract information present in the context about ALL the language models. Omit values you arent sure about.',

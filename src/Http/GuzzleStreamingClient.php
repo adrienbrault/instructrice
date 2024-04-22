@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\Http;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class GuzzleStreamingClient implements StreamingClientInterface
 {
     public function __construct(
-        private readonly ClientInterface $client,
-        private readonly LoggerInterface $logger,
+        private readonly ClientInterface $client = new Client(),
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

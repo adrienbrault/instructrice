@@ -15,7 +15,7 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         'bio' => string(),
     ]);
 
-    $persons = $instructrice->getList(
+    $persons = $instructrice->list(
         type: $type,
         context: $context ?? 'DAVID HEINEMEIER HANSSON aka @DHH, david cramer aka @zeeg',
         options: [

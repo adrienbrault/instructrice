@@ -12,6 +12,7 @@ use Exception;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 use function Psl\Json\encode;
 use function Psl\Json\typed;
@@ -26,9 +27,9 @@ use function Psl\Type\vec;
 class OpenAiCompatibleLLM implements LLMInterface
 {
     public function __construct(
-        private readonly StreamingClientInterface $client,
-        private readonly LoggerInterface $logger,
         private readonly LLMConfig $config,
+        private readonly StreamingClientInterface $client,
+        private readonly LoggerInterface $logger = new NullLogger(),
         private readonly Gpt3Tokenizer $tokenizer = new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
         private readonly ParserInterface $parser = new JsonParser(),
     ) {
@@ -47,7 +48,7 @@ class OpenAiCompatibleLLM implements LLMInterface
         if ($truncateAutomatically) {
             $promptCompletionRatio = 0.7;
             $contextMaxTokens = (int) ceil(
-                ($this->config->providerModel->getContextWindow() - $systemTokens)
+                ($this->config->contextWindow - $systemTokens)
                 * (1 - $promptCompletionRatio)
             );
             $context = $this->tokenizer->chunk($context, $contextMaxTokens)[0];
@@ -86,8 +87,8 @@ class OpenAiCompatibleLLM implements LLMInterface
         );
 
         $request['max_tokens'] = min(
-            $this->config->providerModel->getContextWindow() - $promptTokensEstimate,
-            $this->config->providerModel->getMaxTokens() ?? $this->config->providerModel->getContextWindow()
+            $this->config->contextWindow - $promptTokensEstimate,
+            $this->config->maxTokens ?? $this->config->contextWindow
         );
 
         $this->logger->debug('OpenAI Request', $request);
@@ -114,7 +115,7 @@ class OpenAiCompatibleLLM implements LLMInterface
                     $this->parser->parse($content),
                     $promptTokensEstimate,
                     $completionTokensEstimate,
-                    $this->config->providerModel->getCost(),
+                    $this->config->cost,
                     $requestedAt,
                     $firstTokenReceivedAt
                 );

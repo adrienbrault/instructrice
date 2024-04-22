@@ -4,7 +4,7 @@ declare(strict_types=1);
 use AdrienBrault\Instructrice\Attribute\Instruction;
 use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\ProviderModel\Perplexity;
+use AdrienBrault\Instructrice\LLM\Provider\Perplexity;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 class Product
@@ -29,7 +29,7 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
         dump('Context: ' . $context);
     }
 
-    $instructrice->getList(
+    $instructrice->list(
         Product::class,
         $context,
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),

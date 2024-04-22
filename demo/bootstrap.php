@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\ProviderModel\ProviderModel;
+use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
@@ -41,11 +41,12 @@ return function (callable $do, ?ProviderModel $llm = null) {
     $output = new ConsoleOutput($input->hasParameterOption('-v', true) ? ConsoleOutput::VERBOSITY_DEBUG : ConsoleOutput::VERBOSITY_NORMAL);
 
     $logger = createConsoleLogger($output);
+    $llmFactory = InstructriceFactory::createLLMFactory();
 
     if ($llm === null) {
         $providerModels = reindex(
-            InstructriceFactory::createAvailableProviderModels(),
-            fn (ProviderModel $providerModel) => $providerModel->getLabel(),
+            $llmFactory->getAvailableProviderModels(),
+            fn (ProviderModel $providerModel) => $providerModel->createConfig('123')->getLabel(),
         );
 
         $questionSection = $output->section();
@@ -57,16 +58,16 @@ return function (callable $do, ?ProviderModel $llm = null) {
         ));
         $questionSection->clear();
         $llm = $providerModels[$llmToUse];
-    } else {
-        $llmToUse = $llm->getLabel();
+        assert($llm instanceof ProviderModel);
     }
 
-    $output->writeln(sprintf('Using LLM: <info>%s</info>', $llmToUse));
+    $output->writeln(sprintf('Using LLM: <info>%s</info>', $llm->createConfig('123')->getLabel()));
     $output->writeln('');
 
     $instructrice = InstructriceFactory::create(
-        llm: $llm,
+        defaultLlm: $llm,
         logger: $logger,
+        llmFactory: $llmFactory
     );
 
     $do($instructrice, $context, $output);

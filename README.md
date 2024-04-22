@@ -19,7 +19,7 @@ $ composer require adrienbrault/instructrice:@dev
 
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\ProviderModel\Ollama;
+use AdrienBrault\Instructrice\LLM\Provider\Ollama;
 
 $instructrice = InstructriceFactory::create(
     llm: Ollama::HERMES2PRO
@@ -97,37 +97,98 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 
 ## Supported providers
 
-| Provider                          | API Key Environment Variable       | ProviderModel                                     | API Key Creation URL                           |
-|-----------------------------------|------------------------------------|---------------------------------------------------|------------------------------------------------|
-| [Ollama][ollama]                  | Default. You can set `OLLAMA_HOST` | [Ollama](src/LLM/ProviderModel/Ollama.php)        |                                                |
-| [OpenAI][openai_pricing]          | `OPENAI_API_KEY`                   | [OpenAi](src/LLM/ProviderModel/OpenAi.php)        | [API Key Management][openai_apikey_create]     |
-| [Anthropic][anthropic_pricing]    | `ANTHROPIC_API_KEY`                | [Anthropic](src/LLM/ProviderModel/Anthropic.php)  | [API Key Management][anthropic_apikey_create]  |
-| [Mistral][mistral_pricing]        | `MISTRAL_API_KEY`                  | [Mistral](src/LLM/ProviderModel/Mistral.php)      | [API Key Management][mistral_apikey_create]    |
-| [Fireworks AI][fireworks_pricing] | `FIREWORKS_API_KEY`                | [Fireworks](src/LLM/ProviderModel/Fireworks.php)  | [API Key Management][fireworks_apikey_create]  |
-| [Groq][groq_pricing]              | `GROQ_API_KEY`                     | [Groq](src/LLM/ProviderModel/Groq.php)            | [API Key Management][groq_apikey_create]       |
-| [Together AI][together_pricing]   | `TOGETHER_API_KEY`                 | [Together](src/LLM/ProviderModel/Together.php)    | [API Key Management][together_apikey_create]   |
-| [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/ProviderModel/Deepinfra.php)  | [API Key Management][deepinfra_apikey_create]  |
-| [Perplexity][perplexity_pricing]  | `PERPLEXITY_API_KEY`               | [Perplexity](src/LLM/ProviderModel/Perplexity.php) | [API Key Management][perplexity_apikey_create] |
+| Provider                          | API Key Environment Variable       | Enum                                          | API Key Creation URL                           |
+|-----------------------------------|------------------------------------|-----------------------------------------------|------------------------------------------------|
+| [Ollama][ollama]                  | Default. You can set `OLLAMA_HOST` | [Ollama](src/LLM/Provider/Ollama.php)         |                                                |
+| [OpenAI][openai_pricing]          | `OPENAI_API_KEY`                   | [OpenAi](src/LLM/Provider/OpenAi.php)         | [API Key Management][openai_apikey_create]     |
+| [Anthropic][anthropic_pricing]    | `ANTHROPIC_API_KEY`                | [Anthropic](src/LLM/Provider/Anthropic.php)   | [API Key Management][anthropic_apikey_create]  |
+| [Mistral][mistral_pricing]        | `MISTRAL_API_KEY`                  | [Mistral](src/LLM/Provider/Mistral.php)       | [API Key Management][mistral_apikey_create]    |
+| [Fireworks AI][fireworks_pricing] | `FIREWORKS_API_KEY`                | [Fireworks](src/LLM/Provider/Fireworks.php)   | [API Key Management][fireworks_apikey_create]  |
+| [Groq][groq_pricing]              | `GROQ_API_KEY`                     | [Groq](src/LLM/Provider/Groq.php)             | [API Key Management][groq_apikey_create]       |
+| [Together AI][together_pricing]   | `TOGETHER_API_KEY`                 | [Together](src/LLM/Provider/Together.php)     | [API Key Management][together_apikey_create]   |
+| [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/Provider/Deepinfra.php)   | [API Key Management][deepinfra_apikey_create]  |
+| [Perplexity][perplexity_pricing]  | `PERPLEXITY_API_KEY`               | [Perplexity](src/LLM/Provider/Perplexity.php) | [API Key Management][perplexity_apikey_create] |
 
-You can find the list of supported models within each ProviderModel.
+The supported providers are Enums, which you can pass to the `llm` argument of `InstructriceFactory::create`:
 
-You can specify which provider to use with the `llm` argument:
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\ProviderModel\OpenAi;
+use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
 
-InstructriceFactory::create(
-    llm: OpenAi::GPT_4T, // will use environment variable
+$instructrice->get(
+    ...,
+    llm: OpenAi::GPT_4T, // API Key will be fetched from the environment variable
 );
 ```
 
-If you want to inject the API key directly, all `ProviderModel` have a `createConfig` method:
+If you want to inject the API key directly, instead of relying on environment variables:
+
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\ProviderModel\OpenAi;
+use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
+use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
+use AdrienBrault\Instructrice\LLM\LLMFactory;
 
 InstructriceFactory::create(
-    llm: OpenAi::GPT_4T->createConfig($myOpenAiApiKey),
+    apiKeys: [
+        OpenAi::class => $openAiApiKey,
+        Anthropic::class => $anthropicApiKey,
+    ],
+);
+```
+
+You can also use any OpenAI compatible api by passing an [LLMConfig](src/LLM/LLMConfig.php):
+
+```php
+use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
+use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
+use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
+use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
+use GuzzleHttp\Client;
+
+$instructrice->get(
+    ...,
+    llm: new LLMConfig(
+        uri: 'https://api.together.xyz/v1/chat/completions',
+        model: 'meta-llama/Llama-3-70b-chat-hf',
+        contextWindow: 8000,
+        label: 'Llama 3 70B',
+        provider: 'Together',
+        cost: Cost::create(0.9),
+        strategy: OpenAiJsonStrategy::JSON,
+        headers: [
+            'Authorization' => 'Bearer ' . $apiKey,
+        ]
+    ),
+);
+```
+
+You may also implement your own LLM with the [LLMInterface](src/LLM/LLMInterface.php):
+
+```php
+use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\LLMInterface;
+
+InstructriceFactory::create(
+    llm: new class implements LLMInterface {
+        /**
+         * @param array<string, mixed>                 $schema
+         * @param callable(mixed, LLMChunk): void|null $onChunk
+         */
+        public function get(
+            array $schema,
+            string $context,
+            string $instructions,
+            bool $truncateAutomatically = false,
+            ?callable $onChunk = null,
+        ): mixed
+        {
+            // See \AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM
+            // See \AdrienBrault\Instructrice\LLM\AnthropicCompatibleLLM
+        }
+    }
 );
 ```
 

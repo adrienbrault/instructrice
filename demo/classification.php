@@ -12,7 +12,7 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
             'type' => 'string',
             'enum' => ['positive', 'neutral', 'negative'],
         ],
-        context: $context,
+        context: $context ?? dump('The worst product I have ever reviewed? The opposite!!!'),
         instructions: 'Sentiment analysis',
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     ));

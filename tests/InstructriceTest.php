@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\Tests;
 
 use AdrienBrault\Instructrice\Instructrice;
+use AdrienBrault\Instructrice\LLM\LLMFactory;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
 use AdrienBrault\Instructrice\SchemaFactory;
 use AdrienBrault\Instructrice\Tests\Fixtures\Person;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -59,15 +61,17 @@ class InstructriceTest extends TestCase
             ->willReturn($deserializedList = [new Person('John')]);
 
         $instructrice = new Instructrice(
-            $llm,
+            $this->createMock(ProviderModel::class),
+            $this->createMock(LLMFactory::class),
             new NullLogger(),
             $schemaFactory,
             $serializer,
         );
 
-        $list = $instructrice->getList(
+        $list = $instructrice->list(
             Person::class,
             'context',
+            llm: $llm,
         );
 
         $this->assertSame($deserializedList, $list);
