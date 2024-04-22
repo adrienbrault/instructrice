@@ -26,7 +26,7 @@ function createConsoleLogger(OutputInterface $output): LoggerInterface
     ]);
 }
 
-return function (callable $do) {
+return function (callable $do, ?ProviderModel $llm = null) {
     $inputDefinition = new InputDefinition([
         new InputArgument('context', InputArgument::OPTIONAL),
         new InputOption('verbose', 'v'),
@@ -42,24 +42,30 @@ return function (callable $do) {
 
     $logger = createConsoleLogger($output);
 
-    $providerModels = reindex(
-        InstructriceFactory::createAvailableProviderModels(),
-        fn (ProviderModel $providerModel) => $providerModel->getLabel(),
-    );
+    if ($llm === null) {
+        $providerModels = reindex(
+            InstructriceFactory::createAvailableProviderModels(),
+            fn (ProviderModel $providerModel) => $providerModel->getLabel(),
+        );
 
-    $questionSection = $output->section();
-    $questionHelper = new QuestionHelper();
-    $llmToUse = $questionHelper->ask($input, $questionSection, new ChoiceQuestion(
-        'Which LLM do you want to use?',
-        array_keys($providerModels),
-        0,
-    ));
-    $questionSection->clear();
+        $questionSection = $output->section();
+        $questionHelper = new QuestionHelper();
+        $llmToUse = $questionHelper->ask($input, $questionSection, new ChoiceQuestion(
+            'Which LLM do you want to use?',
+            array_keys($providerModels),
+            0,
+        ));
+        $questionSection->clear();
+        $llm = $providerModels[$llmToUse];
+    } else {
+        $llmToUse = $llm->getLabel();
+    }
+
     $output->writeln(sprintf('Using LLM: <info>%s</info>', $llmToUse));
     $output->writeln('');
 
     $instructrice = InstructriceFactory::create(
-        llm: $providerModels[$llmToUse],
+        llm: $llm,
         logger: $logger,
     );
 
