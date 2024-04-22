@@ -79,16 +79,17 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 
 ## Supported providers
 
-| Provider                          | API Key Environment Variable       | ProviderModel                                    | API Key Creation URL                          |
-|-----------------------------------|------------------------------------|--------------------------------------------------|-----------------------------------------------|
-| [Ollama][ollama]                  | Default. You can set `OLLAMA_HOST` | [Ollama](src/LLM/ProviderModel/Ollama.php)       |                                               |
-| [OpenAI][openai_pricing]          | `OPENAI_API_KEY`                   | [OpenAi](src/LLM/ProviderModel/OpenAi.php)       | [API Key Management][openai_apikey_create]    |
-| [Anthropic][anthropic_pricing]    | `ANTHROPIC_API_KEY`                | [Anthropic](src/LLM/ProviderModel/Anthropic.php) | [API Key Management][anthropic_apikey_create] |
-| [Mistral][mistral_pricing]        | `MISTRAL_API_KEY`                  | [Mistral](src/LLM/ProviderModel/Mistral.php)     | [API Key Management][mistral_apikey_create]   |
-| [Fireworks AI][fireworks_pricing] | `FIREWORKS_API_KEY`                | [Fireworks](src/LLM/ProviderModel/Fireworks.php) | [API Key Management][fireworks_apikey_create] |
-| [Groq][groq_pricing]              | `GROQ_API_KEY`                     | [Groq](src/LLM/ProviderModel/Groq.php)           | [API Key Management][groq_apikey_create]      |
-| [Together AI][together_pricing]   | `TOGETHER_API_KEY`                 | [Together](src/LLM/ProviderModel/Together.php)   | [API Key Management][together_apikey_create]  |
-| [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/ProviderModel/Deepinfra.php) | [API Key Management][deepinfra_apikey_create] |
+| Provider                          | API Key Environment Variable       | ProviderModel                                     | API Key Creation URL                           |
+|-----------------------------------|------------------------------------|---------------------------------------------------|------------------------------------------------|
+| [Ollama][ollama]                  | Default. You can set `OLLAMA_HOST` | [Ollama](src/LLM/ProviderModel/Ollama.php)        |                                                |
+| [OpenAI][openai_pricing]          | `OPENAI_API_KEY`                   | [OpenAi](src/LLM/ProviderModel/OpenAi.php)        | [API Key Management][openai_apikey_create]     |
+| [Anthropic][anthropic_pricing]    | `ANTHROPIC_API_KEY`                | [Anthropic](src/LLM/ProviderModel/Anthropic.php)  | [API Key Management][anthropic_apikey_create]  |
+| [Mistral][mistral_pricing]        | `MISTRAL_API_KEY`                  | [Mistral](src/LLM/ProviderModel/Mistral.php)      | [API Key Management][mistral_apikey_create]    |
+| [Fireworks AI][fireworks_pricing] | `FIREWORKS_API_KEY`                | [Fireworks](src/LLM/ProviderModel/Fireworks.php)  | [API Key Management][fireworks_apikey_create]  |
+| [Groq][groq_pricing]              | `GROQ_API_KEY`                     | [Groq](src/LLM/ProviderModel/Groq.php)            | [API Key Management][groq_apikey_create]       |
+| [Together AI][together_pricing]   | `TOGETHER_API_KEY`                 | [Together](src/LLM/ProviderModel/Together.php)    | [API Key Management][together_apikey_create]   |
+| [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/ProviderModel/Deepinfra.php)  | [API Key Management][deepinfra_apikey_create]  |
+| [Perplexity][perplexity_pricing]  | `PERPLEXITY_API_KEY`               | [Perplexity](src/LLM/ProviderModel/Perplexity.php) | [API Key Management][perplexity_apikey_create] |
 
 You can find the list of supported models within each ProviderModel.
 
@@ -104,40 +105,44 @@ Legend:
 
 #### Foundation
 
-|                          | 💼       | ctx  | [Ollama][ollama_models] | [Mistral][mistral_models] | [Fireworks][fireworks_models] | [Groq][groq_models] | [Together][together_models] | [Deepinfra][deepinfra_models] |
-|--------------------------|----------------------|------|-------------------------|---------------------------|-------------------------------|---------------------|-----------------------------|-------------------------------|
-| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |                         | 🧩 68/s                   |                               |                     | 📄 98/s                     |                               |
-| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |                         | 🧩 44/s                   | 🧩 237/s                      | 📄 560/s            | 🚀 99/s                     |                               |
-| [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |                         | 🧩 77/s                   | 🧩 77/s                       |                     | 📄 52/s                     | 🧩 40/s                       |
-| [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 📄                      |                           | 🧩 280/s                      | 📄 270/s            | 📄 194/s                    | 🧩 133/s                      |
-| [Llama3 70B][hf_l3_70]   | [⚠️][llama3_license] | 8k   | 🧩                      |                           | 🧩 116/s                      | 📄 800/s            | 📄 105/s                    | 🧩 26/s                       |
-| [Gemma 7B][hf_g7]        | ⚠️                   | 8k   |                         |                           |                               | 📄 800/s            | 📄 118/s                    | 🧩 64/s                       |
-| [DBRX][hf_dbrx]          | [⚠️][databricks_oml] | 32k  |                         |                           | 🧩 50/s                       |                     | 📄 72/s                     | 🧩                            |
-| [Command R][hf_cr]       | [❌][cc_nc]           | 128k | 📄                      |                           |                               |                     |                             |                               |
-| [Command R+][hf_crp]     | [❌][cc_nc]           | 128k | 📄                      |                           |                               |                     |                             |                               |
+|                          | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [Deepinfra][d_m] | [Perplexity][p_m]  |
+|--------------------------|----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|
+| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |               | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  |
+| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |               | 🧩 44/s        | 🧩 237/s         | 📄 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! |
+| [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |               | 🧩 77/s        | 🧩 77/s          |             | 📄 52/s         | 🧩 40/s          | 📄 62/s !ctx=16k!  |
+| [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 📄            |                | 🧩 280/s         | 📄 270/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           |
+| [Llama3 70B][hf_l3_70]   | [⚠️][llama3_license] | 8k   | 🧩            |                | 🧩 116/s         | 📄 800/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            |
+| [Gemma 7B][hf_g7]        | ⚠️                   | 8k   |               |                |                  | 📄 800/s    | 📄 118/s        | 🧩 64/s          |                    |
+| [DBRX][hf_dbrx]          | [⚠️][databricks_oml] | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |
+| [Command R][hf_cr]       | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |
+| [Command R+][hf_crp]     | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
-#### Fine Tune 
+#### Fine Tune
 
-|                          | 💼           | ctx  |Parent       | Ollama | Fireworks   | Together | Deepinfra |
-|--------------------------|--------------|------|--------------|--------|-------------|----------|-----------|
-| [Hermes 2 Pro][hf_h2p]   | [✅][apache2] |      | Mistral 7B   | 🧩      | 🧩           |          |           |
-| [FireFunction V1][hf_ff] | [✅][apache2] |      | Mixtral 8x7B |        | 🚀          |          |           |
-| WizardLM 2 7B            | [✅][apache2] |      | Mistral 7B   |        |            |          | 🧩        |
-| WizardLM 2 8x22B         | [✅][apache2] |      | Mixtral 8x7B |        |            | 📄       | 🧩        |
-| [Capybara 34B][hf_capy]  | [✅][apache2] | 200k | Yi 34B       |        | 🧩          |          |           |
+|                          | 💼           | ctx  | Parent       | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [Deepinfra][d_m] |
+|--------------------------|--------------|------|--------------|---------------|------------------|-----------------|------------------|
+| [Hermes 2 Pro][hf_h2p]   | [✅][apache2] |      | Mistral 7B   | 🧩            | 🧩               |                 |                  |
+| [FireFunction V1][hf_ff] | [✅][apache2] |      | Mixtral 8x7B |               | 🚀               |                 |                  |
+| WizardLM 2 7B            | [✅][apache2] |      | Mistral 7B   |               |                  |                 | 🧩               |
+| WizardLM 2 8x22B         | [✅][apache2] |      | Mixtral 8x7B |               |                  | 📄              | 🧩               |
+| [Capybara 34B][hf_capy]  | [✅][apache2] | 200k | Yi 34B       |               | 🧩               |                 |                  |
 
 ### Proprietary
 
-| Model           | ctx  | OpenAI  | Anthropic | Mistral |
-|-----------------|------|---------|-----------|---------|
-| Mistral Large   | 32k  |         |           | ✅ 26/s  |
-| GPT-4 Turbo     | 128k | 🚀 24/s |           |         |
-| GPT-3.5 Turbo   | 16k  | 🚀 72/s |           |         |
-| Claude 3 Haiku  | 200k |         | 🆗 88/s   |         |
-| Claude 3 Sonnet | 200k |         | 🆗 59/s   |         |
-| Claude 3 Opus   | 200k |         | 🆗 26/s   |         |
+| Model               | ctx  | OpenAI  | Anthropic | Mistral | [Perplexity][p_m] |
+|---------------------|------|---------|-----------|---------|-------------------|
+| Mistral Large       | 32k  |         |           | ✅ 26/s  |                   |
+| GPT-4 Turbo         | 128k | 🚀 24/s |           |         |                   |
+| GPT-3.5 Turbo       | 16k  | 🚀 72/s |           |         |                   |
+| Claude 3 Haiku      | 200k |         | 🆗 88/s   |         |                   |
+| Claude 3 Sonnet     | 200k |         | 🆗 59/s   |         |                   |
+| Claude 3 Opus       | 200k |         | 🆗 26/s   |         |                   |
+| Sonar Small Chat    | 16k  |         |           |         | 📄                |
+| Sonar Small Online  | 12k  |         |           |         | 📄                |
+| Sonar Medium Chat   | 16k  |         |           |         | 📄                |
+| Sonar Medium Online | 12k  |         |           |         | 📄                |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
@@ -216,33 +221,32 @@ Use this lib to generate a table of provider/model prices by scraping!
 [ollama_h2p]: https://ollama.com/adrienbrault/nous-hermes2pro
 [ollama_command_r]: https://ollama.com/library/command-r
 [ollama_command_r_plus]: https://ollama.com/library/command-r-plus
-[ollama_models]: https://ollama.com/library
+[o_m]: https://ollama.com/library
 [mistral_pricing]: https://mistral.ai/technology/#pricing
-[mistral_models]: https://docs.mistral.ai/getting-started/models/
+[m_m]: https://docs.mistral.ai/getting-started/models/
 [mistral_apikey_create]: https://console.mistral.ai/api-keys/
 [fireworks_pricing]: https://fireworks.ai/pricing
-[fireworks_models]: https://fireworks.ai/models
+[f_m]: https://fireworks.ai/models
 [fireworks_apikey_create]: https://fireworks.ai/api-keys
 [groq_pricing]: https://wow.groq.com
-[groq_models]: https://console.groq.com/docs/models
+[g_m]: https://console.groq.com/docs/models
 [groq_apikey_create]: https://console.groq.com/keys
 [together_pricing]: https://www.together.ai/pricing
-[together_models]: https://docs.together.ai/docs/inference-models
+[t_m]: https://docs.together.ai/docs/inference-models
 [together_apikey_create]: https://api.together.xyz/settings/api-keys
 [oooas]: https://github.com/goldspecdigital/oooas
 [anthropic_pricing]: https://www.anthropic.com/api
-[anthropic_models]: https://docs.anthropic.com/claude/docs/models-overview
+[anthropic_m]: https://docs.anthropic.com/claude/docs/models-overview
 [anthropic_apikey_create]: https://console.anthropic.com/settings/keys
 [deepinfra_pricing]: https://deepinfra.com/pricing
-[deepinfra_mixtral]: https://deepinfra.com/mistralai/Mixtral-8x22B-Instruct-v0.1
-[deepinfra_models]: https://deepinfra.com/models/text-generation
+[d_mixtral]: https://deepinfra.com/mistralai/Mixtral-8x22B-Instruct-v0.1
+[d_m]: https://deepinfra.com/models/text-generation
 [deepinfra_wizardlm2_22]: https://deepinfra.com/microsoft/WizardLM-2-8x22B
 [deepinfra_wizardlm2_7]: https://deepinfra.com/microsoft/WizardLM-2-8x7B
 [deepinfra_dbrx]: https://deepinfra.com/databricks/dbrx-instruct
-
-
-
-
+[perplexity_pricing]: https://docs.perplexity.ai/docs/pricing
+[p_m]: https://docs.perplexity.ai/docs/model-cards
+[perplexity_apikey_create]: https://www.perplexity.ai/settings/api
 
 
 [deepinfra_apikey_create]: https://deepinfra.com/dash/api_keys

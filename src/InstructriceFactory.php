@@ -20,6 +20,7 @@ use AdrienBrault\Instructrice\LLM\ProviderModel\Groq;
 use AdrienBrault\Instructrice\LLM\ProviderModel\Mistral;
 use AdrienBrault\Instructrice\LLM\ProviderModel\Ollama;
 use AdrienBrault\Instructrice\LLM\ProviderModel\OpenAi;
+use AdrienBrault\Instructrice\LLM\ProviderModel\Perplexity;
 use AdrienBrault\Instructrice\LLM\ProviderModel\ProviderModel;
 use AdrienBrault\Instructrice\LLM\ProviderModel\Together;
 use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
@@ -137,6 +138,7 @@ class InstructriceFactory
             ...Fireworks::cases(),
             ...Together::cases(),
             ...Deepinfra::cases(),
+            ...Perplexity::cases(),
         ];
 
         return filter(

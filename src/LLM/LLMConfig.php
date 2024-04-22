@@ -9,9 +9,9 @@ use AdrienBrault\Instructrice\LLM\ProviderModel\ProviderModel;
 class LLMConfig
 {
     /**
-     * @var list<string>
+     * @var list<string>|null
      */
-    public readonly array $stopTokens;
+    public readonly ?array $stopTokens;
 
     /**
      * @param callable(mixed, string): string $systemPrompt
@@ -25,8 +25,12 @@ class LLMConfig
         public readonly OpenAiToolStrategy|OpenAiJsonStrategy|null $strategy = null,
         public $systemPrompt = null,
         public readonly array $headers = [],
-        ?array $stopTokens = null,
+        array|false|null $stopTokens = null,
     ) {
-        $this->stopTokens = $stopTokens ?? ["```\n\n", '<|im_end|>', "\n\n\n", "\t\n\t\n"];
+        if ($stopTokens !== false) {
+            $this->stopTokens = $stopTokens ?? ["```\n\n", '<|im_end|>', "\n\n\n", "\t\n\t\n"];
+        } else {
+            $this->stopTokens = null;
+        }
     }
 }

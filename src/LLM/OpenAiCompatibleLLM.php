@@ -53,15 +53,17 @@ class OpenAiCompatibleLLM implements LLMInterface
             $context = $this->tokenizer->chunk($context, $contextMaxTokens)[0];
         }
 
-        $messages = [
-            [
+        $messages = [];
+        if ($system !== '') {
+            $messages[] = [
                 'role' => 'system',
                 'content' => $system,
-            ],
-            [
-                'role' => 'user',
-                'content' => $context,
-            ],
+            ];
+        }
+
+        $messages[] = [
+            'role' => 'user',
+            'content' => $context,
         ];
 
         $request = [
@@ -77,7 +79,7 @@ class OpenAiCompatibleLLM implements LLMInterface
                 "\n",
                 [
                     $messages[0]['content'],
-                    $messages[1]['content'],
+                    $messages[1]['content'] ?? '',
                     encode($request['tools'] ?? []),
                 ]
             )
@@ -256,7 +258,7 @@ class OpenAiCompatibleLLM implements LLMInterface
             }
         }
 
-        if ($this->config->strategy === null) {
+        if ($this->config->strategy === null && $this->config->stopTokens !== null) {
             $request['stop'] = $this->config->stopTokens;
         }
 
