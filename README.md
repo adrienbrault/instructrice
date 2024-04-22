@@ -75,6 +75,9 @@ $label = $instructrice->get(
 assert($label === 'positive');
 ```
 
+You can also use third party json schema libraries like [goldspecdigital/oooas][oooas] to generate the schema:
+- [demo/oooas.php](demo/oooas.php)
+
 https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2ef-c5e306a56de2
 
 ## Supported providers
