@@ -1,6 +1,6 @@
 # Instructrice
 
-A PHP library to make structured data extraction as easy and accessible as possible.
+Structured Data Extraction in PHP.
 
 Features and design choices:
 - Flexible JSON-Schema options
@@ -92,6 +92,26 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 | [Perplexity][perplexity_pricing]  | `PERPLEXITY_API_KEY`               | [Perplexity](src/LLM/ProviderModel/Perplexity.php) | [API Key Management][perplexity_apikey_create] |
 
 You can find the list of supported models within each ProviderModel.
+
+You can specify which provider to use with the `llm` argument:
+```php
+use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\ProviderModel\OpenAi;
+
+InstructriceFactory::create(
+    llm: OpenAi::GPT_4T, // will use environment variable
+);
+```
+
+If you want to inject the API key directly, all `ProviderModel` have a `createConfig` method:
+```php
+use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\ProviderModel\OpenAi;
+
+InstructriceFactory::create(
+    llm: OpenAi::GPT_4T->createConfig($myOpenAiApiKey),
+);
+```
 
 ## Supported models
 
