@@ -25,7 +25,7 @@ class Model
 }
 
 /*
-php demo/list-models.php <(curl -s https://r.jina.ai/https://r.jina.ai/openrouter.ai/docs)
+php demo/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
 php demo/list-models.php <(curl -s https://r.jina.ai/https://deepinfra.com/models/text-generation)
 php demo/list-models.php <(curl -s https://r.jina.ai/https://fireworks.ai/models)
 php demo/list-models.php <(curl -s https://r.jina.ai/https://docs.mistral.ai/getting-started/models/)
