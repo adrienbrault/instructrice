@@ -22,7 +22,11 @@ use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\Provider\Ollama;
 
 $instructrice = InstructriceFactory::create(
-    llm: Ollama::HERMES2PRO
+    Ollama::HERMES2PRO,
+    apiKeys: [ // Unless you inject keys here, api keys will be fetched from environment variables
+        OpenAi::class => $openAiApiKey,
+        Anthropic::class => $anthropicApiKey,
+    ],
 );
 ```
 
@@ -121,22 +125,6 @@ $instructrice->get(
 );
 ```
 
-If you want to inject the API key directly, instead of relying on environment variables:
-
-```php
-use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
-use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
-use AdrienBrault\Instructrice\LLM\LLMFactory;
-
-InstructriceFactory::create(
-    apiKeys: [
-        OpenAi::class => $openAiApiKey,
-        Anthropic::class => $anthropicApiKey,
-    ],
-);
-```
-
 You can also use any OpenAI compatible api by passing an [LLMConfig](src/LLM/LLMConfig.php):
 
 ```php
@@ -167,12 +155,12 @@ $instructrice->get(
 ```
 
 You may also implement your own LLM with the [LLMInterface](src/LLM/LLMInterface.php):
-
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\LLMInterface;
 
-InstructriceFactory::create(
+$instructrice->get(
+    ...,
     llm: new class implements LLMInterface {
         /**
          * @param array<string, mixed>                 $schema
