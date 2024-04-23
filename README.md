@@ -113,7 +113,7 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 | [Together AI][together_pricing]   | `TOGETHER_API_KEY`                 | [Together](src/LLM/Provider/Together.php)     | [API Key Management][together_apikey_create]   |
 | [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`                | [Deepinfra](src/LLM/Provider/Deepinfra.php)   | [API Key Management][deepinfra_apikey_create]  |
 | [Perplexity][perplexity_pricing]  | `PERPLEXITY_API_KEY`               | [Perplexity](src/LLM/Provider/Perplexity.php) | [API Key Management][perplexity_apikey_create] |
-| [Anyscale][anyscale_pricing]      | `ANYSCALE_API_KEY`                 | [Perplexity](src/LLM/Provider/Anyscale.php)   | [API Key Management][anyscale_apikey_create]   |
+| [Anyscale][anyscale_pricing]      | `ANYSCALE_API_KEY`                 | [Anyscale](src/LLM/Provider/Anyscale.php)   | [API Key Management][anyscale_apikey_create]   |
 
 The supported providers are Enums, which you can pass to the `llm` argument of `InstructriceFactory::create`:
 
