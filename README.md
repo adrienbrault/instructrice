@@ -187,13 +187,14 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 #### Fine Tune
 
-|                          | 💼           | ctx  | Parent       | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [Deepinfra][d_m] |
-|--------------------------|--------------|------|--------------|---------------|------------------|-----------------|------------------|
-| [Hermes 2 Pro][hf_h2p]   | [✅][apache2] |      | Mistral 7B   | 🧩            | 🧩               |                 |                  |
-| [FireFunction V1][hf_ff] | [✅][apache2] |      | Mixtral 8x7B |               | 🚀               |                 |                  |
-| WizardLM 2 7B            | [✅][apache2] |      | Mistral 7B   |               |                  |                 | 🧩               |
-| WizardLM 2 8x22B         | [✅][apache2] |      | Mixtral 8x7B |               |                  | 📄              | 🧩               |
-| [Capybara 34B][hf_capy]  | [✅][apache2] | 200k | Yi 34B       |               | 🧩               |                 |                  |
+|                          | 💼                   | ctx  | Base         | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [Deepinfra][d_m] |
+|--------------------------|----------------------|------|--------------|---------------|------------------|-----------------|------------------|
+| [Hermes 2 Pro][hf_h2p]   | [✅][apache2]         |      | Mistral 7B   | 🧩            | 🧩               |                 |                  |
+| [FireFunction V1][hf_ff] | [✅][apache2]         |      | Mixtral 8x7B |               | 🚀               |                 |                  |
+| WizardLM 2 7B            | [✅][apache2]         |      | Mistral 7B   |               |                  |                 | 🧩               |
+| WizardLM 2 8x22B         | [✅][apache2]         |      | Mixtral 8x7B |               |                  | 📄              | 🧩               |
+| [Capybara 34B][hf_capy]  | [✅][apache2]         | 200k | Yi 34B       |               | 🧩               |                 |                  |
+| [Dolphin 2.9][hf_d29]    | [⚠️][llama3_license] | 8k   | Llama3 8B    | 🧩            |                  | 📄              | 🧩               |
 
 ### Proprietary
 
@@ -332,3 +333,4 @@ Use this lib to generate a table of provider/model prices by scraping!
 [hf_crp]: https://huggingface.co/CohereForAI/c4ai-command-r-plus
 [hf_cr]: https://huggingface.co/CohereForAI/c4ai-command-r
 [hf_capy]: https://huggingface.co/NousResearch/Nous-Capybara-34B
+[hf_d29]: https://huggingface.co/cognitivecomputations/dolphin-2.9-llama3-8b
