@@ -43,7 +43,7 @@
     "autoload-dev": {
         "psr-4": {
             "AdrienBrault\\Instructrice\\Tests\\": "tests/",
-            "Demo\\": "demo/"
+            "Examples\\": "examples/"
         }
     },
     "config": {
