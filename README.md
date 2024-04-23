@@ -70,8 +70,8 @@ array:3 [
 
 ```php
 $character = $instructrice->get(
-    Character::class,
-    'Colonel Jack O\'Neil.',
+    type: Character::class,
+    context: 'Colonel Jack O\'Neil.',
 );
 
 Character^ {#294
@@ -84,12 +84,12 @@ Character^ {#294
 
 ```php
 $label = $instructrice->get(
-    [
+    type: [
         'type' => 'string',
         'enum' => ['positive', 'neutral', 'negative'],
     ],
-    'Amazing great cool nice',
-    'Sentiment analysis',
+    context: 'Amazing great cool nice',
+    instructions: 'Sentiment analysis',
 );
 
 "positive"
