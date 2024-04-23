@@ -221,18 +221,18 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 ### Proprietary
 
-| Model               | ctx  | OpenAI  | Anthropic | Mistral | [Perplexity][p_m] |
-|---------------------|------|---------|-----------|---------|-------------------|
-| Mistral Large       | 32k  |         |           | ✅ 26/s  |                   |
-| GPT-4 Turbo         | 128k | 🚀 24/s |           |         |                   |
-| GPT-3.5 Turbo       | 16k  | 🚀 72/s |           |         |                   |
-| Claude 3 Haiku      | 200k |         | 🆗 88/s   |         |                   |
-| Claude 3 Sonnet     | 200k |         | 🆗 59/s   |         |                   |
-| Claude 3 Opus       | 200k |         | 🆗 26/s   |         |                   |
-| Sonar Small Chat    | 16k  |         |           |         | 📄                |
-| Sonar Small Online  | 12k  |         |           |         | 📄                |
-| Sonar Medium Chat   | 16k  |         |           |         | 📄                |
-| Sonar Medium Online | 12k  |         |           |         | 📄                |
+| Model               | ctx  |         | 
+|---------------------|------|---------|
+| Mistral Large       | 32k  | ✅ 26/s  | 
+| GPT-4 Turbo         | 128k | 🚀 24/s |  
+| GPT-3.5 Turbo       | 16k  | 🚀 72/s |  
+| Claude 3 Haiku      | 200k | 🆗 88/s |  
+| Claude 3 Sonnet     | 200k | 🆗 59/s |  
+| Claude 3 Opus       | 200k | 🆗 26/s |  
+| Sonar Small Chat    | 16k  | 📄      |  
+| Sonar Small Online  | 12k  | 📄      |  
+| Sonar Medium Chat   | 16k  | 📄      |  
+| Sonar Medium Online | 12k  | 📄      |  
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
