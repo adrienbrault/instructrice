@@ -10,9 +10,7 @@ Features and design choices:
 - [symfony/serializer][sf_serializer] integration to deserialize LLMs outputs
 - Streaming first/only.
 - Correctly parses/deserializes incomplete JSON during streaming.
-- A set of pre-configured LLMs with the best settings.
-  - Just set your API keys and try the different models.
-  - No need to think about the model name, json mode, function calling, etc.
+- A set of pre-configured LLMs with the best settings. Set your API keys and switch between different providers and models without having to think about the model name, json mode, function calling, etc.
 
 ## Installation and Usage
 
