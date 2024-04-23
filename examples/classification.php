@@ -23,15 +23,15 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
 });
 
 /*
-php demo/classification.php 'LFG'
+php examples/classification.php 'LFG'
 
 "positive"
 
-php demo/classification.php 'decel'
+php examples/classification.php 'decel'
 
 "negative"
 
-php demo/classification.php 'normy'
+php examples/classification.php 'normy'
 
 "neutral"
 */

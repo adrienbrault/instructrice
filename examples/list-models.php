@@ -25,11 +25,11 @@ class Model
 }
 
 /*
-php demo/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
-php demo/list-models.php <(curl -s https://r.jina.ai/https://deepinfra.com/models/text-generation)
-php demo/list-models.php <(curl -s https://r.jina.ai/https://fireworks.ai/models)
-php demo/list-models.php <(curl -s https://r.jina.ai/https://docs.mistral.ai/getting-started/models/)
-php demo/list-models.php <(curl -s https://r.jina.ai/https://docs.together.ai/docs/inference-models)
+php examples/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
+php examples/list-models.php <(curl -s https://r.jina.ai/https://deepinfra.com/models/text-generation)
+php examples/list-models.php <(curl -s https://r.jina.ai/https://fireworks.ai/models)
+php examples/list-models.php <(curl -s https://r.jina.ai/https://docs.mistral.ai/getting-started/models/)
+php examples/list-models.php <(curl -s https://r.jina.ai/https://docs.together.ai/docs/inference-models)
 */
 
 $demo = require __DIR__ . '/bootstrap.php';
@@ -51,7 +51,7 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
 });
 
 /*
-php demo/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
+php examples/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
 
 array:6 [
   0 => Model^ {#260
