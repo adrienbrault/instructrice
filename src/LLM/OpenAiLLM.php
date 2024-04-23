@@ -24,7 +24,7 @@ use function Psl\Type\string;
 use function Psl\Type\union;
 use function Psl\Type\vec;
 
-class OpenAiCompatibleLLM implements LLMInterface
+class OpenAiLLM implements LLMInterface
 {
     public function __construct(
         private readonly LLMConfig $config,

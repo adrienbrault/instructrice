@@ -56,7 +56,7 @@ class LLMFactory
             );
         }
 
-        return new OpenAiCompatibleLLM(
+        return new OpenAiLLM(
             $config,
             $this->client,
             $this->logger,

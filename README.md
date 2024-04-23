@@ -134,7 +134,7 @@ You can also use any OpenAI compatible api by passing an [LLMConfig](src/LLM/LLM
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 use AdrienBrault\Instructrice\LLM\Cost;
-use AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM;
+use AdrienBrault\Instructrice\LLM\OpenAiLLM;
 use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
 use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
 use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
