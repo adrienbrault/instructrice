@@ -210,6 +210,9 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 | Sonar Small Online  | 12k  | 📄      |  
 | Sonar Medium Chat   | 16k  | 📄      |  
 | Sonar Medium Online | 12k  | 📄      |  
+| Reka Edge           | 128k | 📄      |  
+| Reka Flash          | 128k | 📄      |  
+| Reka Edge           | 128k | 📄      |  
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
