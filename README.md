@@ -156,32 +156,7 @@ $instructrice->get(
 );
 ```
 
-You may also implement your own LLM with the [LLMInterface](src/LLM/LLMInterface.php):
-```php
-use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\LLMInterface;
-
-$instructrice->get(
-    ...,
-    llm: new class implements LLMInterface {
-        /**
-         * @param array<string, mixed>                 $schema
-         * @param callable(mixed, LLMChunk): void|null $onChunk
-         */
-        public function get(
-            array $schema,
-            string $context,
-            string $instructions,
-            bool $truncateAutomatically = false,
-            ?callable $onChunk = null,
-        ): mixed
-        {
-            // See \AdrienBrault\Instructrice\LLM\OpenAiCompatibleLLM
-            // See \AdrienBrault\Instructrice\LLM\AnthropicCompatibleLLM
-        }
-    }
-);
-```
+You may also implement [LLMInterface](src/LLM/LLMInterface.php).
 
 ## Supported models
 
