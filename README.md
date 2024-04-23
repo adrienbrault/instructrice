@@ -12,7 +12,7 @@ Features and design choices:
 - Correctly parses/deserializes incomplete JSON during streaming.
 - A set of pre-configured LLMs with the best settings.
   - Just set your API keys and try the different models.
-  - No need to know about json mode, function calling, etc.
+  - No need to think about the model name, json mode, function calling, etc.
 
 ## Installation and Usage
 
