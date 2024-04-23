@@ -165,6 +165,9 @@ Legend:
 - 🧩 JSON
 - 🚀 Function
 - 💼 Commercial usage
+  - ✅ Yes
+  - ⚠️ Yes, but
+  - ❌ Nope
 
 ### Open Weights
 
@@ -314,8 +317,6 @@ Use this lib to generate a table of provider/model prices by scraping!
 [perplexity_apikey_create]: https://www.perplexity.ai/settings/api
 [anyscale_pricing]: https://docs.endpoints.anyscale.com/pricing/
 [anyscale_apikey_create]: https://app.endpoints.anyscale.com/credentials
-
-
 [deepinfra_apikey_create]: https://deepinfra.com/dash/api_keys
 [databricks_oml]: https://www.databricks.com/legal/open-model-license
 [llama3_license]: https://github.com/meta-llama/llama3/blob/main/LICENSE
