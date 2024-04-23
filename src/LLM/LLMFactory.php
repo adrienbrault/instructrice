@@ -8,6 +8,7 @@ use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
+use AdrienBrault\Instructrice\LLM\Provider\Anyscale;
 use AdrienBrault\Instructrice\LLM\Provider\Deepinfra;
 use AdrienBrault\Instructrice\LLM\Provider\Fireworks;
 use AdrienBrault\Instructrice\LLM\Provider\Groq;
@@ -80,6 +81,7 @@ class LLMFactory
             ...Together::cases(),
             ...Deepinfra::cases(),
             ...Perplexity::cases(),
+            ...Anyscale::cases(),
         ];
 
         return filter(
