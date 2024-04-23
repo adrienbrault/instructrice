@@ -8,9 +8,9 @@ use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRect
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/demo',
         __DIR__ . '/src',
         __DIR__ . '/tests',
+        __DIR__ . '/examples',
     ])
     ->withPhpSets(php81: true)
     ->withSkip([

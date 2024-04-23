@@ -3,7 +3,7 @@ parameters:
     paths:
         - src
         - tests
-        - demo
+        - examples
 
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
