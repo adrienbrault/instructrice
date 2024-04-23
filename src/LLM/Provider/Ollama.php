@@ -21,6 +21,10 @@ enum Ollama: string implements ProviderModel
     case LLAMA3_8B = 'llama3:8b-instruct-';
     case LLAMA3_70B = 'llama3:70b-instruct-';
     case LLAMA3_70B_DOLPHIN = 'dolphin-llama3:8b-v2.9-';
+    case CODEQWEN_7B = 'codeqwen:7b-chat-v1.5-';
+    case QWEN_7B = 'qwen:7b-chat-v1.5-';
+    case QWEN_4B = 'qwen:4b-chat-v1.5-';
+    case QWEN_1_8B = 'qwen:1.8b-chat-v1.5-';
 
     public function getApiKeyEnvVar(): ?string
     {
@@ -42,6 +46,7 @@ enum Ollama: string implements ProviderModel
             self::COMMANDRPLUS => 'q2_K_M',
             self::STABLELM2_16 => 'q8_0',
             self::LLAMA3_70B => 'q4_0',
+            self::CODEQWEN_7B => 'q5_1',
             default => 'q4_K_M',
         };
 
@@ -61,6 +66,8 @@ enum Ollama: string implements ProviderModel
                 self::COMMANDR => 128000,
                 self::COMMANDRPLUS => 128000,
                 self::LLAMA3_8B, self::LLAMA3_70B_DOLPHIN, self::LLAMA3_70B => 8000,
+                self::CODEQWEN_7B => 64000,
+                self::QWEN_1_8B, self::QWEN_4B, self::QWEN_7B => 32000,
             },
             match ($this) {
                 self::HERMES2PRO => 'Nous Hermes 2 Pro',
@@ -72,6 +79,14 @@ enum Ollama: string implements ProviderModel
                 self::LLAMA3_8B => 'Llama3 8B',
                 self::LLAMA3_70B => 'Llama3 70B',
                 self::LLAMA3_70B_DOLPHIN => 'Llama3 8B Dolphin 2.9',
+                self::CODEQWEN_7B => 'CodeQwen1.5 7B',
+
+                // TODO support qwen function calling:
+                // https://github.com/QwenLM/Qwen/blob/5352d86eaa11304ecba883bfe40fff4e07557ef4/openai_api.py#L204C9-L230C12
+                // https://github.com/QwenLM/Qwen/blob/5352d86eaa11304ecba883bfe40fff4e07557ef4/openai_api.py#L324-L342
+                self::QWEN_1_8B => 'Qwen1.5 1.8B',
+                self::QWEN_4B => 'Qwen1.5 4B',
+                self::QWEN_7B => 'Qwen1.5 7B',
             },
             'Ollama',
             Cost::create(0),
