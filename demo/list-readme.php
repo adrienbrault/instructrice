@@ -10,8 +10,6 @@ class Character
 {
     #[Instruction('Just the first name.')]
     public string $name;
-
-    #[Instruction('If applicable, the military rank.')]
     public ?string $rank = null;
 }
 
