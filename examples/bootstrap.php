@@ -41,7 +41,7 @@ return function (callable $do, ?ProviderModel $llm = null) {
     $output = new ConsoleOutput($input->hasParameterOption('-v', true) ? ConsoleOutput::VERBOSITY_DEBUG : ConsoleOutput::VERBOSITY_NORMAL);
 
     $logger = createConsoleLogger($output);
-    $llmFactory = InstructriceFactory::createLLMFactory();
+    $llmFactory = InstructriceFactory::createLLMFactory(logger: $logger);
 
     if ($llm === null) {
         $providerModels = reindex(
