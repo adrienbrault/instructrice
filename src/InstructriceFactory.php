@@ -49,8 +49,9 @@ use Symfony\Component\VarDumper\VarDumper;
 class InstructriceFactory
 {
     /**
-     * @param list<string>                               $directories
-     * @param array<class-string<ProviderModel>, string> $apiKeys
+     * @param list<string>                                     $directories
+     * @param array<class-string<ProviderModel>, string>       $apiKeys
+     * @param (SerializerInterface&DenormalizerInterface)|null $serializer
      */
     public static function create(
         ProviderModel|null $defaultLlm = null,
@@ -59,7 +60,7 @@ class InstructriceFactory
         array $directories = [],
         array $apiKeys = [],
         ?PropertyInfoExtractor $propertyInfo = null,
-        (SerializerInterface&DenormalizerInterface)|null $serializer = null,
+        $serializer = null,
     ): Instructrice {
         $propertyInfo ??= self::createPropertyInfoExtractor();
         $serializer ??= self::createSerializer($propertyInfo);
