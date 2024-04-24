@@ -13,6 +13,7 @@ use AdrienBrault\Instructrice\LLM\Provider\Deepinfra;
 use AdrienBrault\Instructrice\LLM\Provider\Fireworks;
 use AdrienBrault\Instructrice\LLM\Provider\Groq;
 use AdrienBrault\Instructrice\LLM\Provider\Mistral;
+use AdrienBrault\Instructrice\LLM\Provider\OctoAI;
 use AdrienBrault\Instructrice\LLM\Provider\Ollama;
 use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
 use AdrienBrault\Instructrice\LLM\Provider\Perplexity;
@@ -82,6 +83,7 @@ class LLMFactory
             ...Deepinfra::cases(),
             ...Perplexity::cases(),
             ...Anyscale::cases(),
+            ...OctoAI::cases(),
         ];
 
         return filter(

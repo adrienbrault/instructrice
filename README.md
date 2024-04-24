@@ -113,7 +113,8 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 | [Together AI][together_pricing]   | `TOGETHER_API_KEY`    | [Together](src/LLM/Provider/Together.php)     | [API Key Management][together_apikey_create]   |
 | [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`   | [Deepinfra](src/LLM/Provider/Deepinfra.php)   | [API Key Management][deepinfra_apikey_create]  |
 | [Perplexity][perplexity_pricing]  | `PERPLEXITY_API_KEY`  | [Perplexity](src/LLM/Provider/Perplexity.php) | [API Key Management][perplexity_apikey_create] |
-| [Anyscale][anyscale_pricing]      | `ANYSCALE_API_KEY`    | [Anyscale](src/LLM/Provider/Anyscale.php)   | [API Key Management][anyscale_apikey_create]   |
+| [Anyscale][anyscale_pricing]      | `ANYSCALE_API_KEY`    | [Anyscale](src/LLM/Provider/Anyscale.php)     | [API Key Management][anyscale_apikey_create]   |
+| [OctoAI][octoai_pricing]          | `OCTOAI_API_KEY`      | [OctoAI](src/LLM/Provider/OctoAI.php)         | [API Key Management][octoai_apikey_create]     |
 
 The supported providers are Enums, which you can pass to the `llm` argument of `InstructriceFactory::create`:
 
@@ -173,30 +174,31 @@ Legend:
 
 #### Foundation
 
-|                          | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [Deepinfra][d_m] | [Perplexity][p_m]  | Anyscale |
-|--------------------------|----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|----------|
-| [Mistral 7B][hf_m7b]     | [✅][apache2]         | 32k  |               | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  | 🧩       |
-| [Mixtral 8x7B][hf_mx7]   | [✅][apache2]         | 32k  |               | 🧩 44/s        | 🧩 237/s         | 📄 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! | 🧩       |
-| [Mixtral 8x22B][hf_mx22] | [✅][apache2]         | 65k  |               | 🧩 77/s        | 🧩 77/s          |             | 📄 52/s         | 🧩 40/s          | 📄 62/s !ctx=16k!  | 🧩       |
-| [Llama3 8B][hf_l3_8]     | [⚠️][llama3_license] | 8k   | 📄            |                | 🧩 280/s         | 📄 270/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           | 🧩       |
-| [Llama3 70B][hf_l3_70]   | [⚠️][llama3_license] | 8k   | 🧩            |                | 🧩 116/s         | 📄 800/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            | 🧩       |
-| [Gemma 7B][hf_g7]        | ⚠️                   | 8k   |               |                |                  | 📄 800/s    | 📄 118/s        | 🧩 64/s          |                    | 🧩       |
-| [DBRX][hf_dbrx]          | [⚠️][databricks_oml] | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          |
-| [Command R][hf_cr]       | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |
-| [Command R+][hf_crp]     | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |
+|                           | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [Deepinfra][d_m] | [Perplexity][p_m]  | Anyscale | [OctoAI][o_m] |
+|---------------------------|----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|----------|---------------|
+| [Mistral 7B][hf_m7b]      | [✅][apache2]         | 32k  |               | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  | 🧩       | 🧩            |
+| [Mixtral 8x7B][hf_mx7]    | [✅][apache2]         | 32k  |               | 🧩 44/s        | 🧩 237/s         | 📄 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! | 🧩       | 🧩            |
+| [Mixtral 8x22B][hf_mx22]  | [✅][apache2]         | 65k  |               | 🧩 77/s        | 🧩 77/s          |             | 📄 52/s         | 🧩 40/s          | 📄 62/s !ctx=16k!  | 🧩       | 🧩            |
+| [Llama3 8B][hf_l3_8]      | [⚠️][llama3_license] | 8k   | 📄            |                | 🧩 280/s         | 📄 270/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           | 🧩       | 🧩            |
+| [Llama3 70B][hf_l3_70]    | [⚠️][llama3_license] | 8k   | 🧩            |                | 🧩 116/s         | 📄 800/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            | 🧩       | 🧩            |
+| [Gemma 7B][hf_g7]         | ⚠️                   | 8k   |               |                |                  | 📄 800/s    | 📄 118/s        | 🧩 64/s          |                    | 🧩       |               |
+| [DBRX][hf_dbrx]           | [⚠️][databricks_oml] | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          |               |
+| [Qwen1.5 32B][hf_qw15_32] | [⚠️][qwen_l]         | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          | 🧩            |
+| [Command R][hf_cr]        | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |               |
+| [Command R+][hf_crp]      | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |               |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 #### Fine Tune
 
-|                          | 💼                   | ctx  | Base         | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [Deepinfra][d_m] |
-|--------------------------|----------------------|------|--------------|---------------|------------------|-----------------|------------------|
-| [Hermes 2 Pro][hf_h2p]   | [✅][apache2]         |      | Mistral 7B   | 🧩            | 🧩               |                 |                  |
-| [FireFunction V1][hf_ff] | [✅][apache2]         |      | Mixtral 8x7B |               | 🚀               |                 |                  |
-| WizardLM 2 7B            | [✅][apache2]         |      | Mistral 7B   |               |                  |                 | 🧩               |
-| WizardLM 2 8x22B         | [✅][apache2]         |      | Mixtral 8x7B |               |                  | 📄              | 🧩               |
-| [Capybara 34B][hf_capy]  | [✅][apache2]         | 200k | Yi 34B       |               | 🧩               |                 |                  |
-| [Dolphin 2.9][hf_d29]    | [⚠️][llama3_license] | 8k   | Llama3 8B    | 🧩            |                  | 📄              | 🧩               |
+|                          | 💼                   | ctx  | Base         | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [Deepinfra][d_m] | [OctoAI][o_m] |
+|--------------------------|----------------------|------|--------------|---------------|------------------|-----------------|------------------|---------------|
+| [Hermes 2 Pro][hf_h2p]   | [✅][apache2]         |      | Mistral 7B   | 🧩            | 🧩               |                 |                  | 🧩            |
+| [FireFunction V1][hf_ff] | [✅][apache2]         |      | Mixtral 8x7B |               | 🚀               |                 |                  |               |
+| WizardLM 2 7B            | [✅][apache2]         |      | Mistral 7B   |               |                  |                 | 🧩               |               |
+| WizardLM 2 8x22B         | [✅][apache2]         |      | Mixtral 8x7B |               |                  | 📄              | 🧩               | 🧩            |
+| [Capybara 34B][hf_capy]  | [✅][apache2]         | 200k | Yi 34B       |               | 🧩               |                 |                  |               |
+| [Dolphin 2.9][hf_d29]    | [⚠️][llama3_license] | 8k   | Llama3 8B    | 🧩            |                  | 📄              | 🧩               |               |
 
 ### Proprietary
 
@@ -319,6 +321,9 @@ Use this lib to generate a table of provider/model prices by scraping!
 [anyscale_pricing]: https://docs.endpoints.anyscale.com/pricing/
 [anyscale_apikey_create]: https://app.endpoints.anyscale.com/credentials
 [deepinfra_apikey_create]: https://deepinfra.com/dash/api_keys
+[octoai_pricing]: https://octo.ai/docs/getting-started/pricing-and-billing#text-gen-solution
+[octoai_apikey_create]: https://octoai.cloud/settings
+[o_m]: https://octoai.cloud/text?selectedTags=Chat
 [databricks_oml]: https://www.databricks.com/legal/open-model-license
 [llama3_license]: https://github.com/meta-llama/llama3/blob/main/LICENSE
 [apache2]: https://www.apache.org/licenses/LICENSE-2.0
@@ -336,3 +341,5 @@ Use this lib to generate a table of provider/model prices by scraping!
 [hf_cr]: https://huggingface.co/CohereForAI/c4ai-command-r
 [hf_capy]: https://huggingface.co/NousResearch/Nous-Capybara-34B
 [hf_d29]: https://huggingface.co/cognitivecomputations/dolphin-2.9-llama3-8b
+[hf_qw15_32]: https://huggingface.co/Qwen/Qwen1.5-32B-Chat
+[qwen_l]: https://github.com/QwenLM/Qwen/blob/main/Tongyi%20Qianwen%20LICENSE%20AGREEMENT
