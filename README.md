@@ -11,6 +11,7 @@ Features and design choices:
 - Streaming first/only.
 - Correctly parses/deserializes incomplete JSON during streaming.
 - [A set of pre-configured LLMs](#supported-providers) with the best settings. Set your API keys and switch between different providers and models without having to think about the model name, json mode, function calling, etc.
+- [Symfony Bundle][sf_bundle]
 
 ## Installation and Usage
 
@@ -343,3 +344,4 @@ Use this lib to generate a table of provider/model prices by scraping!
 [hf_d29]: https://huggingface.co/cognitivecomputations/dolphin-2.9-llama3-8b
 [hf_qw15_32]: https://huggingface.co/Qwen/Qwen1.5-32B-Chat
 [qwen_l]: https://github.com/QwenLM/Qwen/blob/main/Tongyi%20Qianwen%20LICENSE%20AGREEMENT
+[sf_bundle]: https://github.com/adrienbrault/instructrice-bundle
