@@ -1,5 +1,6 @@
 {
     "name": "adrienbrault/instructrice",
+    "description": "Typed LLM Outputs in PHP",
     "license": "MIT",
     "type": "library",
     "authors": [
