@@ -35,10 +35,12 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
@@ -56,13 +58,16 @@ class InstructriceFactory
         ?LLMFactory $llmFactory = null,
         array $directories = [],
         array $apiKeys = [],
+        ?PropertyInfoExtractor $propertyInfo = null,
+        (SerializerInterface&DenormalizerInterface)|null $serializer = null,
     ): Instructrice {
-        $propertyInfo = self::createPropertyInfoExtractor();
+        $propertyInfo ??= self::createPropertyInfoExtractor();
+        $serializer ??= self::createSerializer($propertyInfo);
+        $llmFactory ??= self::createLLMFactory(apiKeys: $apiKeys);
+
         $schemaFactory = new SchemaFactory(
             self::createApiPlatformSchemaFactory($propertyInfo, $directories)
         );
-        $serializer = self::createSerializer($propertyInfo);
-        $llmFactory ??= self::createLLMFactory(apiKeys: $apiKeys);
 
         return new Instructrice(
             $defaultLlm ?? Ollama::HERMES2PRO,
