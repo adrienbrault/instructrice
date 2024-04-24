@@ -124,7 +124,7 @@ use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
 
 $instructrice->get(
     ...,
-    llm: OpenAi::GPT_4T, // API Key will be fetched from the environment variable
+    llm: OpenAi::GPT_4T, // API Key will be fetched from the OPENAI_API_KEY environment variable
 );
 ```
 
