@@ -21,6 +21,8 @@ $ composer require adrienbrault/instructrice:@dev
 ```php
 use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\Provider\Ollama;
+use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
+use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
 
 $instructrice = InstructriceFactory::create(
     Ollama::HERMES2PRO,
