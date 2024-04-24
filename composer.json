@@ -10,10 +10,10 @@
     ],
     "require": {
         "php": "^8.1",
+        "adrienbrault/partial-json": "^1.2",
         "api-platform/json-schema": "^3.0",
         "azjezz/psl": "^2.0",
         "gioni06/gpt3-tokenizer": "^1.0",
-        "adrienbrault/partial-json": "^1.2",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^2 || ^3",
         "phpdocumentor/reflection-docblock": "^5.0",
