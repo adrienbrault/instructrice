@@ -9,7 +9,7 @@ use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
 use AdrienBrault\Instructrice\LLM\Provider\Anyscale;
-use AdrienBrault\Instructrice\LLM\Provider\Deepinfra;
+use AdrienBrault\Instructrice\LLM\Provider\DeepInfra;
 use AdrienBrault\Instructrice\LLM\Provider\Fireworks;
 use AdrienBrault\Instructrice\LLM\Provider\Groq;
 use AdrienBrault\Instructrice\LLM\Provider\Mistral;
@@ -80,7 +80,7 @@ class LLMFactory
             ...Groq::cases(),
             ...Fireworks::cases(),
             ...Together::cases(),
-            ...Deepinfra::cases(),
+            ...DeepInfra::cases(),
             ...Perplexity::cases(),
             ...Anyscale::cases(),
             ...OctoAI::cases(),

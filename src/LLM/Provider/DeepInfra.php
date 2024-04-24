@@ -8,7 +8,7 @@ use AdrienBrault\Instructrice\LLM\Cost;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
 
-enum Deepinfra: string implements ProviderModel
+enum DeepInfra: string implements ProviderModel
 {
     case MIXTRAL_22 = 'mistralai/Mixtral-8x22B-Instruct-v0.1';
     case WIZARDLM2_22 = 'microsoft/WizardLM-2-8x22B';
@@ -44,7 +44,7 @@ enum Deepinfra: string implements ProviderModel
                 self::LLAMA3_8B => 'Llama3 8B',
                 self::LLAMA3_70B => 'Llama3 70B',
             },
-            'Deepinfra',
+            'DeepInfra',
             match ($this) {
                 self::MIXTRAL_22 => Cost::create(0.65),
                 self::WIZARDLM2_22 => Cost::create(0.65),

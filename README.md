@@ -111,7 +111,7 @@ https://github.com/adrienbrault/instructrice/assets/611271/da69281d-ac56-4135-b2
 | [Fireworks AI][fireworks_pricing] | `FIREWORKS_API_KEY`   | [Fireworks](src/LLM/Provider/Fireworks.php)   | [API Key Management][fireworks_apikey_create]  |
 | [Groq][groq_pricing]              | `GROQ_API_KEY`        | [Groq](src/LLM/Provider/Groq.php)             | [API Key Management][groq_apikey_create]       |
 | [Together AI][together_pricing]   | `TOGETHER_API_KEY`    | [Together](src/LLM/Provider/Together.php)     | [API Key Management][together_apikey_create]   |
-| [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`   | [Deepinfra](src/LLM/Provider/Deepinfra.php)   | [API Key Management][deepinfra_apikey_create]  |
+| [Deepinfra][deepinfra_pricing]    | `DEEPINFRA_API_KEY`   | [Deepinfra](src/LLM/Provider/DeepInfra.php)   | [API Key Management][deepinfra_apikey_create]  |
 | [Perplexity][perplexity_pricing]  | `PERPLEXITY_API_KEY`  | [Perplexity](src/LLM/Provider/Perplexity.php) | [API Key Management][perplexity_apikey_create] |
 | [Anyscale][anyscale_pricing]      | `ANYSCALE_API_KEY`    | [Anyscale](src/LLM/Provider/Anyscale.php)     | [API Key Management][anyscale_apikey_create]   |
 | [OctoAI][octoai_pricing]          | `OCTOAI_API_KEY`      | [OctoAI](src/LLM/Provider/OctoAI.php)         | [API Key Management][octoai_apikey_create]     |
@@ -174,7 +174,7 @@ Legend:
 
 #### Foundation
 
-|                           | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [Deepinfra][d_m] | [Perplexity][p_m]  | Anyscale | [OctoAI][o_m] |
+|                           | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [DeepInfra][d_m] | [Perplexity][p_m]  | Anyscale | [OctoAI][o_m] |
 |---------------------------|----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|----------|---------------|
 | [Mistral 7B][hf_m7b]      | [✅][apache2]         | 32k  |               | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  | 🧩       | 🧩            |
 | [Mixtral 8x7B][hf_mx7]    | [✅][apache2]         | 32k  |               | 🧩 44/s        | 🧩 237/s         | 📄 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! | 🧩       | 🧩            |
@@ -191,7 +191,7 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 #### Fine Tune
 
-|                          | 💼                   | ctx  | Base         | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [Deepinfra][d_m] | [OctoAI][o_m] |
+|                          | 💼                   | ctx  | Base         | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [DeepInfra][d_m] | [OctoAI][o_m] |
 |--------------------------|----------------------|------|--------------|---------------|------------------|-----------------|------------------|---------------|
 | [Hermes 2 Pro][hf_h2p]   | [✅][apache2]         |      | Mistral 7B   | 🧩            | 🧩               |                 |                  | 🧩            |
 | [FireFunction V1][hf_ff] | [✅][apache2]         |      | Mixtral 8x7B |               | 🚀               |                 |                  |               |
