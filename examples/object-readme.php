@@ -1,17 +1,17 @@
 <?php
 
 declare(strict_types=1);
-use AdrienBrault\Instructrice\Attribute\Instruction;
+use AdrienBrault\Instructrice\Attribute\Prompt;
 use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\InstructriceFactory;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 class Character
 {
-    #[Instruction('Just the first name.')]
+    #[Prompt('Just the first name.')]
     public string $name;
 
-    #[Instruction('If applicable, the military rank.')]
+    #[Prompt('If applicable, the military rank.')]
     public ?string $rank = null;
 }
 

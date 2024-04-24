@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice;
 
-use AdrienBrault\Instructrice\Attribute\Instruction;
+use AdrienBrault\Instructrice\Attribute\Prompt;
 use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\LLMChunk;
@@ -192,13 +192,13 @@ class InstructriceFactory
                     }
 
                     $reflectionProperty = $reflectionClass->getProperty($property);
-                    $attributes = $reflectionProperty->getAttributes(Instruction::class);
+                    $attributes = $reflectionProperty->getAttributes(Prompt::class);
                     foreach ($attributes as $attribute) {
-                        $instruction = $attribute->newInstance();
-                        \assert($instruction instanceof Instruction);
-                        if ($instruction->description !== null) {
+                        $prompt = $attribute->newInstance();
+                        \assert($prompt instanceof Prompt);
+                        if ($prompt->description !== null) {
                             $apiProperty = $apiProperty->withSchema([
-                                'description' => $instruction->description,
+                                'description' => $prompt->description,
                                 ...($apiProperty->getSchema() ?? []),
                             ]);
                         }

@@ -1,26 +1,26 @@
 <?php
 
 declare(strict_types=1);
-use AdrienBrault\Instructrice\Attribute\Instruction;
+use AdrienBrault\Instructrice\Attribute\Prompt;
 use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\InstructriceFactory;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 class Model
 {
-    #[Instruction('The model name like "GPT 3.5 Turbo". Omit price.')]
+    #[Prompt('The model name like "GPT 3.5 Turbo". Omit price.')]
     public string $name;
 
-    #[Instruction('The model id for the api, like gpt-3.5-turbo-1234 or meta/llama3-8b')]
+    #[Prompt('The model id for the api, like gpt-3.5-turbo-1234 or meta/llama3-8b')]
     public ?string $slug = null;
 
-    #[Instruction('The context length/window.')]
+    #[Prompt('The context length/window.')]
     public ?int $context = null;
 
-    #[Instruction('$ per million tokens')]
+    #[Prompt('$ per million tokens')]
     public ?float $promptCost = null;
 
-    #[Instruction('$ per million tokens')]
+    #[Prompt('$ per million tokens')]
     public ?float $completionCost = null;
 }
 

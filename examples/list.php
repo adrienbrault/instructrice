@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-use AdrienBrault\Instructrice\Attribute\Instruction;
+use AdrienBrault\Instructrice\Attribute\Prompt;
 use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\InstructriceFactory;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -10,7 +10,7 @@ class Interest
 {
     public ?string $name = null;
 
-    #[Instruction('A set of keywords to to learn more about this interest. Write in French.')]
+    #[Prompt('A set of keywords to to learn more about this interest. Write in French.')]
     public ?string $searchQueryToLearnMore = null;
 }
 class Person

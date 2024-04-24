@@ -36,11 +36,11 @@ $instructrice = InstructriceFactory::create(
 ### List of object
 
 ```php
-use AdrienBrault\Instructrice\Attribute\Instruction;
+use AdrienBrault\Instructrice\Attribute\Prompt;
 
 class Character
 {
-    #[Instruction('Just the first name.')]
+    #[Prompt('Just the first name.')]
     public string $name;
     public ?string $rank = null;
 }

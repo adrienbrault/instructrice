@@ -7,7 +7,7 @@ namespace AdrienBrault\Instructrice\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class Instruction
+class Prompt
 {
     public function __construct(
         public readonly ?string $description = null,
