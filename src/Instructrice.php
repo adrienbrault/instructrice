@@ -47,7 +47,7 @@ class Instructrice
     public function get(
         array|TypeInterface|string $type,
         string $context,
-        ?string $instructions = null,
+        ?string $prompt = null,
         array $options = [],
         ?callable $onChunk = null,
         LLMInterface|LLMConfig|ProviderModel|null $llm = null,
@@ -67,7 +67,7 @@ class Instructrice
             $schema,
             $context,
             $type,
-            $instructions ?? 'Extract all relevant information',
+            $prompt ?? 'Extract all relevant information',
             $options['truncate_automatically'] ?? false,
             $onChunk,
             $llm
@@ -86,7 +86,7 @@ class Instructrice
     public function list(
         string|TypeInterface $type,
         string $context,
-        ?string $instructions = null,
+        ?string $prompt = null,
         array $options = [],
         ?callable $onChunk = null,
         LLMInterface|LLMConfig|ProviderModel|null $llm = null,
@@ -119,7 +119,7 @@ class Instructrice
             $schema,
             $context,
             $type,
-            $instructions ?? 'Extract all relevant information',
+            $prompt ?? 'Extract all relevant information',
             $options['truncate_automatically'] ?? false,
             $onChunk,
             $llm,
@@ -142,7 +142,7 @@ class Instructrice
         array $schema,
         string $context,
         string|TypeInterface|array $type,
-        string $instructions,
+        string $prompt,
         bool $truncateAutomatically = false,
         ?callable $onChunk = null,
         LLMInterface|LLMConfig|ProviderModel|null $llm = null,
@@ -194,7 +194,7 @@ class Instructrice
         $data = $llm->get(
             $schema,
             $context,
-            $instructions,
+            $prompt,
             $truncateAutomatically,
             $llmOnChunk,
         );

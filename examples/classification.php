@@ -17,7 +17,7 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
             'enum' => ['positive', 'neutral', 'negative'],
         ],
         context: $context,
-        instructions: 'Sentiment analysis',
+        prompt: 'Sentiment analysis',
         onChunk: InstructriceFactory::createOnChunkDump($output->section()),
     ));
 });

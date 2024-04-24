@@ -38,11 +38,11 @@ class OpenAiLLM implements LLMInterface
     public function get(
         array $schema,
         string $context,
-        string $instructions,
+        string $prompt,
         bool $truncateAutomatically = false,
         ?callable $onChunk = null,
     ): mixed {
-        $system = $this->getSystemPrompt()($schema, $instructions);
+        $system = $this->getSystemPrompt()($schema, $prompt);
         $systemTokens = $this->tokenizer->count($system);
 
         if ($truncateAutomatically) {
@@ -293,10 +293,10 @@ class OpenAiLLM implements LLMInterface
             $systemPrompt = fn ($schema): string => 'You are a helpful assistant with access to functions.';
         }
 
-        return function (mixed $schema, string $instructions) use ($systemPrompt): string {
+        return function (mixed $schema, string $prompt) use ($systemPrompt): string {
             return $systemPrompt($schema) . "\n\n" . <<<PROMPT
                 # Instructions
-                {$instructions}
+                {$prompt}
                 PROMPT;
         };
     }

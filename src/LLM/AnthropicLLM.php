@@ -30,7 +30,7 @@ class AnthropicLLM implements LLMInterface
     public function get(
         array $schema,
         string $context,
-        string $instructions,
+        string $prompt,
         bool $truncateAutomatically = false,
         ?callable $onChunk = null
     ): mixed {
@@ -46,7 +46,7 @@ class AnthropicLLM implements LLMInterface
             'messages' => $messages,
             'max_tokens' => 4000,
             'stream' => true,
-            'system' => \call_user_func($this->config->systemPrompt, $schema, $instructions),
+            'system' => \call_user_func($this->config->systemPrompt, $schema, $prompt),
         ];
 
         // Tool and json modes do not support streaming.

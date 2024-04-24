@@ -22,7 +22,7 @@ enum Anthropic: string implements ProviderModel
 
     public function createConfig(string $apiKey): LLMConfig
     {
-        $systemPrompt = function ($schema, string $instructions): string {
+        $systemPrompt = function ($schema, string $prompt): string {
             $encodedSchema = encode($schema);
 
             return <<<PROMPT
@@ -33,7 +33,7 @@ enum Anthropic: string implements ProviderModel
                 </schema>
 
                 <instructions>
-                {$instructions}
+                {$prompt}
                 </instructions>
 
                 Reply with:

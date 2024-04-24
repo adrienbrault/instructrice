@@ -90,7 +90,7 @@ $label = $instructrice->get(
         'enum' => ['positive', 'neutral', 'negative'],
     ],
     context: 'Amazing great cool nice',
-    instructions: 'Sentiment analysis',
+    prompt: 'Sentiment analysis',
 );
 
 "positive"

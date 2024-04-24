@@ -13,7 +13,7 @@ interface LLMInterface
     public function get(
         array $schema,
         string $context,
-        string $instructions,
+        string $prompt,
         bool $truncateAutomatically = false,
         ?callable $onChunk = null,
     ): mixed;

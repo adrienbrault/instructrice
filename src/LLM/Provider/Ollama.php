@@ -89,7 +89,7 @@ enum Ollama: string implements ProviderModel
      */
     private function getCommandRSystem()
     {
-        return function ($schema, string $instructions): string {
+        return function ($schema, string $prompt): string {
             $encodedSchema = encode($schema);
 
             return <<<PROMPT
@@ -110,7 +110,7 @@ enum Ollama: string implements ProviderModel
                 Strictly follow the schema.
 
                 ## Instructions
-                {$instructions}
+                {$prompt}
                 PROMPT;
         };
     }
