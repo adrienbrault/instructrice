@@ -150,14 +150,11 @@ $instructrice->get(
 
 ## Supported models
 
-Legend:
-- 📄 Text
-- 🧩 JSON
-- 🚀 Function
-- 💼 Commercial usage
-  - ✅ Yes
-  - ⚠️ Yes, but
-  - ❌ Nope
+| Strategy         | 📄 Text | 🧩 JSON | 🚀 Function |
+|------------------|---------|---------|-------------|
+
+| Commercial usage | ✅ Yes | ⚠️ Yes, but | ❌ Nope |
+|------------------|---------|---------|-------------|
 
 ### Open Weights
 
