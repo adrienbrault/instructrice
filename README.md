@@ -287,8 +287,6 @@ instructrice get "App\Entity\Customer" "$(cat some_email_body.md)"
 Autosave all input/schema/output in sqlite db. Like [llm][llm_logging]?
 Leverage that to test examples, add few shots, evals?
 
-Use this lib to generate a table of provider/model prices by scraping!
-
 [firecrawl]: https://www.firecrawl.dev
 [liform]: https://github.com/Limenius/Liform
 [instructor-php]: https://github.com/cognesy/instructor-php/
