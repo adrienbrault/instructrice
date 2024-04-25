@@ -150,11 +150,11 @@ $instructrice->get(
 
 ## Supported models
 
-| Strategy         | 📄 Text | 🧩 JSON | 🚀 Function |
-|------------------|---------|---------|-------------|
+| Strategy | 📄 Text | 🧩 JSON | 🚀 Function |
+|----------|---------|---------|-------------|
 
 | Commercial usage | ✅ Yes | ⚠️ Yes, but | ❌ Nope |
-|------------------|---------|---------|-------------|
+|------------------|-------|-------------|--------|
 
 ### Open Weights
 
@@ -188,23 +188,23 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 ### Proprietary
 
-| Model               | ctx  |         | 
-|---------------------|------|---------|
-| Mistral Large       | 32k  | ✅ 26/s  | 
-| GPT-4 Turbo         | 128k | 🚀 24/s |  
-| GPT-3.5 Turbo       | 16k  | 🚀 72/s |  
-| Claude 3 Haiku      | 200k | 🆗 88/s |  
-| Claude 3 Sonnet     | 200k | 🆗 59/s |  
-| Claude 3 Opus       | 200k | 🆗 26/s |  
-| Sonar Small Chat    | 16k  | 📄      |  
-| Sonar Small Online  | 12k  | 📄      |  
-| Sonar Medium Chat   | 16k  | 📄      |  
-| Sonar Medium Online | 12k  | 📄      |  
+| Provider   | Model               | ctx  |         |
+|------------|---------------------|------|---------|
+| Mistral    | Large               | 32k  | ✅ 26/s  |
+| OpenAI     | GPT-4 Turbo         | 128k | 🚀 24/s |  
+| OpenAI     | GPT-3.5 Turbo       | 16k  | 🚀 72/s |  
+| Anthropic  | Claude 3 Haiku      | 200k | 🆗 88/s |  
+| Anthropic  | Claude 3 Sonnet     | 200k | 🆗 59/s |  
+| Anthropic  | Claude 3 Opus       | 200k | 🆗 26/s |  
+| Perplexity | Sonar Small Chat    | 16k  | 📄      |  
+| Perplexity | Sonar Small Online  | 12k  | 📄      |  
+| Perplexity | Sonar Medium Chat   | 16k  | 📄      |  
+| Perplexity | Sonar Medium Online | 12k  | 📄      |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 Automate updating these tables by scraping artificialanalysis.ai , along with chatboard arena elo.?
-Would be a good use case / showcase of this library/cli? 
+Would be a good use case / showcase of this library/cli?
 
 ### Custom Models
 
