@@ -64,6 +64,7 @@ use AdrienBrault\Instructrice\Attribute\Prompt;
 
 class Character
 {
+    // The prompt annotation lets you add instructions specific to a property
     #[Prompt('Just the first name.')]
     public string $name;
     public ?string $rank = null;
