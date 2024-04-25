@@ -1,0 +1,136 @@
+# This part is a regular json schema, except descriptions act like prompts.
+type: object
+properties:
+  product:
+    type: string
+    description: The product name
+  review:
+    type: string
+    description: The review summary
+  rating:
+    type: number
+    description: The rating of the product, 1 is horrible, 5 is excellent
+    minimum: 1
+    maximum: 5
+  recommended:
+    type: boolean
+  url:
+    type: string
+    description: The source url of the review
+  date:
+    type: string
+    format: date-time
+    description: The date of the review
+required:
+  - product
+  - review
+  - rating
+  - source
+
+# The prompt is the overall task
+prompt: |
+  You extract product reviews from internet content.
+  
+  Bla Bla Bla...
+
+# The following examples are used for one/few shots.
+# You can use a high quality model to generate/capture such examples.
+#
+# Not sure about using URLs as input. 
+examples:
+  - input: |
+        Title: Dune: Part Two - Movie Reviews
+
+        URL Source: https://www.rottentomatoes.com/m/dune_part_two/reviews
+        
+        Markdown Content:
+        ### Movie Reviews By Reviewer Type
+            
+            *   [All Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews)
+            *   [Top Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=top_critics)
+            *   [All Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=user)
+            *   [Verified Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=verified_audience)
+            
+            ![Image 1: a bald man in a black jacket and blue shirt](https://resizing.flixster.com/KDGfu2fVk8cMN0E3K2jj09Wu0uI=/fit-in/50x50/v2/http://resizing.flixster.com/i7mx_ISVeNK1S5LCjful1tD9S_8=/128x128/v1.YzsxMDAwMDAyNjg0O3A7MTk4OTk7MjA0ODsyOTQ7Mjk0)
+        
+        Villeneuve delivers a certain solemnity through the visual and sounding side, but the land swallows his narrative and spits out the residues in the sand. \[Full review in Spanish\] [Full Review](https://www.cinefilia.blog/2024/04/critica-duna-parte-dos.html) | Original Score: 6/10 | Apr 21, 2024
+            
+        ...
+    output:
+      product: Dune Part Two
+      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
+      rating: 5
+      recommended: true
+      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
+      date: 2023-10-20T00:00:00Z
+
+# The following examples are used to compute an overall % score.
+#
+# This score can be useful to prevent regressions, iterate on improvements, to compare different models.
+# Imagine asking instructrice to automatically run all the evals with tens of models.
+# You could compare the scores with each run's speed/cost.
+evals:
+  - input: https://www.rottentomatoes.com/m/dune_part_two/reviews
+    output:
+      product: Dune Part Two
+      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
+      rating: 5
+      recommended: true
+      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
+      date: 2023-10-20T00:00:00Z
+
+# This section should be automatically updated by default with new invocations
+#
+# If you like one, cut/paste in either examples or evals.
+logs:
+  - input: https://www.rottentomatoes.com/m/dune_part_two/reviews
+    output:
+      product: Dune Part Two
+      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
+      rating: 5
+      recommended: true
+      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
+      date: 2023-10-20T00:00:00Z
+  - input: |
+      Title: Dune: Part Two - Movie Reviews
+      
+      URL Source: https://www.rottentomatoes.com/m/dune_part_two/reviews
+      
+      Markdown Content:
+      ### Movie Reviews By Reviewer Type
+      
+          *   [All Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews)
+          *   [Top Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=top_critics)
+          *   [All Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=user)
+          *   [Verified Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=verified_audience)
+      
+          ![Image 1: a bald man in a black jacket and blue shirt](https://resizing.flixster.com/KDGfu2fVk8cMN0E3K2jj09Wu0uI=/fit-in/50x50/v2/http://resizing.flixster.com/i7mx_ISVeNK1S5LCjful1tD9S_8=/128x128/v1.YzsxMDAwMDAyNjg0O3A7MTk4OTk7MjA0ODsyOTQ7Mjk0)
+      
+      Villeneuve delivers a certain solemnity through the visual and sounding side, but the land swallows his narrative and spits out the residues in the sand. \[Full review in Spanish\] [Full Review](https://www.cinefilia.blog/2024/04/critica-duna-parte-dos.html) | Original Score: 6/10 | Apr 21, 2024
+      
+          ![Image 2: an image of a person with a white background](https://images.fandango.com/cms/assets/5b6ff500-1663-11ec-ae31-05a670d2d590--rtactordefault.png)
+      
+      Villeneuve gives us much more to appreciate in his second Dune missive: Rousing action sequences ranging from worm-riding to tense knife fights and large-scale battles, and a thorough seat-soaker of a finale which combines all of the above.
+      
+        [Full Review](https://decider.com/2024/04/16/dune-2-streaming-movie-review/) | Apr 20, 2024
+      
+          ![Image 3: a man in glasses smiling in front of a bookshelf](https://resizing.flixster.com/Ni3FhbUN1_RkSbpJgX4tGB2zD5c=/fit-in/50x50/v2/http://resizing.flixster.com/GgCOwh1Zsex7r6tUlUGFdRUwplk=/128x128/v1.YzsyNTE1O2c7MTk4NDU7MjA0ODsxNTI7MTY4)
+      
+      From self-parody to epic, "Dune, part two", by Denis Villeneuve, contains several possible versions of itself, but none truly great. \[Full review in Spanish\] [Full Review](https://letraslibres.com/cine-tv/ernesto-diezmartinez-duna-parte-dos-denis-villeneuve/) | Original Score: 2.5/4 | Apr 19, 2024
+      
+          ![Image 4: a man in a suit and tie smiles in front of a tree](https://resizing.flixster.com/pgTt7gJhi_SmO7bAVy5WzgsD8zw=/fit-in/50x50/v2/http://resizing.flixster.com/HyHAmoY66DkNIISQ6RNk27TEID4=/128x128/v1.YzsxMDAwMDAyNTkzO2o7MTk4OTk7MjA0ODs1MDA7NTAw)
+      
+      We get so many movies that use up the space Dune: Part Two does, but a very, very few manage to do so much with a canvas like this. Much like the great sequels before it, this film is essential.
+      
+        [Full Review](https://ftw.usatoday.com/lists/5-movies-1-tv-show-you-can-watch-right-now-dune-part-two) | Apr 16, 2024
+      
+          ![Image 5: an image of a person with a white background](https://images.fandango.com/cms/assets/5b6ff500-1663-11ec-ae31-05a670d2d590--rtactordefault.png)
+      
+          Villeneuve brings the epic scope, Zendaya brings the heart and humanity.
+    output:
+      product: Dune Part Two
+      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
+      rating: 5
+      recommended: true
+      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
+      date: 2023-10-20T00:00:00Z
