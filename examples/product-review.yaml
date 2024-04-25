@@ -38,7 +38,7 @@ prompt: |
 #
 # Not sure about using URLs as input. 
 examples:
-  - input: |
+  - context: |
         Title: Dune: Part Two - Movie Reviews
 
         URL Source: https://www.rottentomatoes.com/m/dune_part_two/reviews
@@ -56,7 +56,7 @@ examples:
         Villeneuve delivers a certain solemnity through the visual and sounding side, but the land swallows his narrative and spits out the residues in the sand. \[Full review in Spanish\] [Full Review](https://www.cinefilia.blog/2024/04/critica-duna-parte-dos.html) | Original Score: 6/10 | Apr 21, 2024
             
         ...
-    output:
+    result:
       product: Dune Part Two
       review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
       rating: 5
@@ -70,8 +70,8 @@ examples:
 # Imagine asking instructrice to automatically run all the evals with tens of models.
 # You could compare the scores with each run's speed/cost.
 evals:
-  - input: https://www.rottentomatoes.com/m/dune_part_two/reviews
-    output:
+  - context: https://www.rottentomatoes.com/m/dune_part_two/reviews
+    result:
       product: Dune Part Two
       review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
       rating: 5
@@ -83,15 +83,15 @@ evals:
 #
 # If you like one, cut/paste in either examples or evals.
 logs:
-  - input: https://www.rottentomatoes.com/m/dune_part_two/reviews
-    output:
+  - context: https://www.rottentomatoes.com/m/dune_part_two/reviews
+    result:
       product: Dune Part Two
       review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
       rating: 5
       recommended: true
       url: https://www.rottentomatoes.com/m/dune_part_two/reviews
       date: 2023-10-20T00:00:00Z
-  - input: |
+  - context: |
       Title: Dune: Part Two - Movie Reviews
       
       URL Source: https://www.rottentomatoes.com/m/dune_part_two/reviews
@@ -127,7 +127,7 @@ logs:
           ![Image 5: an image of a person with a white background](https://images.fandango.com/cms/assets/5b6ff500-1663-11ec-ae31-05a670d2d590--rtactordefault.png)
       
           Villeneuve brings the epic scope, Zendaya brings the heart and humanity.
-    output:
+    result:
       product: Dune Part Two
       review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
       rating: 5

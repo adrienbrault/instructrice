@@ -1,67 +1,67 @@
 fqcn: Examples\Contact
 
 examples:
-  - input: |
+  - context: |
       Adrien Brault
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
       role: Software Engineer
 
 evals:
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
       role: Software Engineer
 
 logs:
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
       role: Software Engineer
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
       role: Software Engineer
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
       role: Software Engineer
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
       role: Software Engineer
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
       role: Software Engineer
-  - input: |
+  - context: |
       Adrien Brault is a software engineer for SMAFT. 
-    output:
+    result:
       firstName: Adrien
       lastName: Brault
       company: SMAFT
