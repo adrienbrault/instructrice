@@ -19,7 +19,8 @@
         "nesbot/carbon": "^2 || ^3",
         "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.0",
-        "symfony/property-access": "^6.0 || ^7.0"
+        "symfony/property-access": "^6.0 || ^7.0",
+        "symfony/property-info": "^6.0 || ^7.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.42",
