@@ -1,0 +1,68 @@
+fqcn: Examples\Contact
+
+examples:
+  - input: |
+      Adrien Brault
+    output:
+      firstName: Adrien
+      lastName: Brault
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+
+evals:
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+
+logs:
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - input: |
+      Adrien Brault is a software engineer for SMAFT. 
+    output:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
