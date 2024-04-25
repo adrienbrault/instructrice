@@ -26,8 +26,8 @@ Features:
 - [symfony/serializer][sf_serializer] integration to deserialize LLMs outputs
 - Streaming first:
   - As a developer you can be more productive with faster feedback loops than waiting for outputs to complete. This also makes slower local models more usable.
-  - You can provide a much better UX to your users than having to wait a while for content/feedback.
-  - The incomplete/invalid JSON as it is streamed by LLM is correctly parsed and deserialized.
+  - You can provide a much better and snappier UX to your users.
+  - The headaches of parsing incomplete JSON are handled for you.
 - [A set of pre-configured LLMs](#supported-providers) with the best available settings. Set your API keys and switch between different providers and models without having to think about the model name, json mode, function calling, etc.
 
 A [Symfony Bundle][sf_bundle] is also available.
