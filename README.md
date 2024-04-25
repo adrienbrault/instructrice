@@ -275,7 +275,7 @@ Things to look into:
 - [Unstructured][unstructured_docker]
 - [Llama Parse][llama_parse]
 - [EMLs][eml]
-- [jina-ai/reader][jina_reader]
+- [jina-ai/reader][jina_reader] -> This is awesome, `$client->request('GET', 'https://r.jina.ai/' . $url)`
 - [firecrawl][firecrawl]
 
 [DSPy][dspy] is very interesting. There are great ideas to be inspired by.
