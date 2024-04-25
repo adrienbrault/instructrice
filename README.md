@@ -256,7 +256,7 @@ Both libraries essentially do the same thing:
 - Automatic deserialization/hydration
 - Maybe validation/retries later for this lib.
 
-However, this one features:
+However, instructice differs with:
 - Streaming first.
 - Preconfigured provider+llms, to not have to worry about:
   - Json mode, function calling, etc
@@ -268,6 +268,7 @@ However, this one features:
 - No messages. You just pass context, prompt.
   - I am hoping that this choice enables cool things later like supporting few-shots examples, evals, etc
 - More flexible schema options
+- Higher level abstraction. You aren't able to provide a list of messages, while it is possible with `instructor-php`.
 
 ## Notes/Ideas
 
