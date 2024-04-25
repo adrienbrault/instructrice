@@ -21,6 +21,7 @@ enum Ollama: string implements ProviderModel
     case LLAMA3_8B = 'llama3:8b-instruct-';
     case LLAMA3_70B = 'llama3:70b-instruct-';
     case LLAMA3_70B_DOLPHIN = 'dolphin-llama3:8b-v2.9-';
+    case PHI3_38_128K = 'herald/phi3-128k';
 
     public function getApiKeyEnvVar(): ?string
     {
@@ -42,6 +43,7 @@ enum Ollama: string implements ProviderModel
             self::COMMANDRPLUS => 'q2_K_M',
             self::STABLELM2_16 => 'q8_0',
             self::LLAMA3_70B => 'q4_0',
+            self::PHI3_38_128K => '',
             default => 'q4_K_M',
         };
 
@@ -60,6 +62,7 @@ enum Ollama: string implements ProviderModel
                 self::STABLELM2_16 => 4000,
                 self::COMMANDR => 128000,
                 self::COMMANDRPLUS => 128000,
+                self::PHI3_38_128K => 128000,
                 self::LLAMA3_8B, self::LLAMA3_70B_DOLPHIN, self::LLAMA3_70B => 8000,
             },
             match ($this) {
@@ -72,6 +75,7 @@ enum Ollama: string implements ProviderModel
                 self::LLAMA3_8B => 'Llama3 8B',
                 self::LLAMA3_70B => 'Llama3 70B',
                 self::LLAMA3_70B_DOLPHIN => 'Llama3 8B Dolphin 2.9',
+                self::PHI3_38_128K => 'Phi-3-Mini-128K',
             },
             'Ollama',
             Cost::create(0),

@@ -164,18 +164,19 @@ $instructrice->get(
 
 #### Foundation
 
-|                           | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [DeepInfra][d_m] | [Perplexity][p_m]  | Anyscale | [OctoAI][o_m] |
-|---------------------------|----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|----------|---------------|
-| [Mistral 7B][hf_m7b]      | [✅][apache2]         | 32k  |               | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  | 🧩       | 🧩            |
-| [Mixtral 8x7B][hf_mx7]    | [✅][apache2]         | 32k  |               | 🧩 44/s        | 🧩 237/s         | 📄 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! | 🧩       | 🧩            |
-| [Mixtral 8x22B][hf_mx22]  | [✅][apache2]         | 65k  |               | 🧩 77/s        | 🧩 77/s          |             | 📄 52/s         | 🧩 40/s          | 📄 62/s !ctx=16k!  | 🧩       | 🧩            |
-| [Llama3 8B][hf_l3_8]      | [⚠️][llama3_license] | 8k   | 📄            |                | 🧩 280/s         | 📄 800/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           | 🧩       | 🧩            |
-| [Llama3 70B][hf_l3_70]    | [⚠️][llama3_license] | 8k   | 🧩            |                | 🧩 116/s         | 📄 270/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            | 🧩       | 🧩            |
-| [Gemma 7B][hf_g7]         | ⚠️                   | 8k   |               |                |                  | 📄 800/s    | 📄 118/s        | 🧩 64/s          |                    | 🧩       |               |
-| [DBRX][hf_dbrx]           | [⚠️][databricks_oml] | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          |               |
-| [Qwen1.5 32B][hf_qw15_32] | [⚠️][qwen_l]         | 32k  |               |                |                  |             | 📄              |                  |                    |          | 🧩            |
-| [Command R][hf_cr]        | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |               |
-| [Command R+][hf_crp]      | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |               |
+|                           | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [DeepInfra][d_m] | [Perplexity][p_m]  | Anyscale | [OctoAI][oa_m] |
+|---------------------------|----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|----------|----------------|
+| [Mistral 7B][hf_m7b]      | [✅][apache2]         | 32k  |               | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  | 🧩       | 🧩             |
+| [Mixtral 8x7B][hf_mx7]    | [✅][apache2]         | 32k  |               | 🧩 44/s        | 🧩 237/s         | 📄 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! | 🧩       | 🧩             |
+| [Mixtral 8x22B][hf_mx22]  | [✅][apache2]         | 65k  |               | 🧩 77/s        | 🧩 77/s          |             | 📄 52/s         | 🧩 40/s          | 📄 62/s !ctx=16k!  | 🧩       | 🧩             |
+| [Phi-3-Mini-128K][hf_p3]  | [✅][mit]             | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Llama3 8B][hf_l3_8]      | [⚠️][llama3_license] | 8k   | 📄            |                | 🧩 280/s         | 📄 800/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           | 🧩       | 🧩             |
+| [Llama3 70B][hf_l3_70]    | [⚠️][llama3_license] | 8k   | 🧩            |                | 🧩 116/s         | 📄 270/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            | 🧩       | 🧩             |
+| [Gemma 7B][hf_g7]         | ⚠️                   | 8k   |               |                |                  | 📄 800/s    | 📄 118/s        | 🧩 64/s          |                    | 🧩       |                |
+| [DBRX][hf_dbrx]           | [⚠️][databricks_oml] | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          |                |
+| [Qwen1.5 32B][hf_qw15_32] | [⚠️][qwen_l]         | 32k  |               |                |                  |             | 📄              |                  |                    |          | 🧩             |
+| [Command R][hf_cr]        | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
+| [Command R+][hf_crp]      | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
@@ -346,10 +347,11 @@ Leverage that to test examples, add few shots, evals?
 [deepinfra_apikey_create]: https://deepinfra.com/dash/api_keys
 [octoai_pricing]: https://octo.ai/docs/getting-started/pricing-and-billing#text-gen-solution
 [octoai_apikey_create]: https://octoai.cloud/settings
-[o_m]: https://octoai.cloud/text?selectedTags=Chat
+[oa_m]: https://octoai.cloud/text?selectedTags=Chat
 [databricks_oml]: https://www.databricks.com/legal/open-model-license
 [llama3_license]: https://github.com/meta-llama/llama3/blob/main/LICENSE
 [apache2]: https://www.apache.org/licenses/LICENSE-2.0
+[mit]: https://en.wikipedia.org/wiki/MIT_License
 [cc_nc]: https://en.wikipedia.org/wiki/Creative_Commons_NonCommercial_license
 [hf_m7b]: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2
 [hf_h2p]: https://huggingface.co/NousResearch/Hermes-2-Pro-Mistral-7B
@@ -365,6 +367,7 @@ Leverage that to test examples, add few shots, evals?
 [hf_capy]: https://huggingface.co/NousResearch/Nous-Capybara-34B
 [hf_d29]: https://huggingface.co/cognitivecomputations/dolphin-2.9-llama3-8b
 [hf_qw15_32]: https://huggingface.co/Qwen/Qwen1.5-32B-Chat
+[hf_p3]: https://huggingface.co/microsoft/Phi-3-mini-128k-instruct
 [qwen_l]: https://github.com/QwenLM/Qwen/blob/main/Tongyi%20Qianwen%20LICENSE%20AGREEMENT
 [sf_bundle]: https://github.com/adrienbrault/instructrice-bundle
 [instructor_cookbook]: https://python.useinstructor.com/examples/
