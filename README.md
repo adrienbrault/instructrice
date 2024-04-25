@@ -257,7 +257,7 @@ However, this one features:
 - Preconfigured provider+llms, to not have to worry about:
   - Json mode, function calling, etc
   - The best prompt format to use
-  - How to parse the response (cf ollama + hermes2pro)
+  - Your options for local models
   - Whether streaming works. For example, groq can only do streaming without json-mode/function calling.
 - PSR-3 logging
 - Guzzle+symfony/http-client support
