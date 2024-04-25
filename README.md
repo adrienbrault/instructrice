@@ -272,6 +272,7 @@ Things to look into:
 - [Llama Parse][llama_parse]
 - [EMLs][eml]
 - [jina-ai/reader][jina_reader]
+- [firecrawl][firecrawl]
 
 [DSPy][dspy] is very interesting. There are great ideas to be inspired by.
 
@@ -288,6 +289,7 @@ Leverage that to test examples, add few shots, evals?
 
 Use this lib to generate a table of provider/model prices by scraping!
 
+[firecrawl]: https://www.firecrawl.dev
 [liform]: https://github.com/Limenius/Liform
 [instructor-php]: https://github.com/cognesy/instructor-php/
 [instructor-python]: https://python.useinstructor.com
