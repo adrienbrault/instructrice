@@ -1,5 +1,9 @@
 # adrienbrault/instructrice
 
+[![GitHub Actions][gh_actions_image]][gh_actions_link]
+[![Packagist][packagist_image]][packagist_link]
+[![License][license_image]](./LICENSE)
+
 ## Typing LLM completions
 
 Best in class LLMs are able to output JSON following a schema you provide, usually JSON-Schema.
@@ -363,3 +367,8 @@ Leverage that to test examples, add few shots, evals?
 [qwen_l]: https://github.com/QwenLM/Qwen/blob/main/Tongyi%20Qianwen%20LICENSE%20AGREEMENT
 [sf_bundle]: https://github.com/adrienbrault/instructrice-bundle
 [instructor_cookbook]: https://python.useinstructor.com/examples/
+[gh_actions_image]: https://github.com/adrienbrault/instructrice/workflows/Tests/badge.svg
+[gh_actions_link]: https://github.com/adrienbrault/instructrice/actions?query=workflow%3A%22Tests%22+branch%3Amain
+[packagist_image]: https://img.shields.io/packagist/v/adrienbrault/instructrice.svg
+[packagist_link]: https://packagist.org/packages/adrienbrault/instructrice
+[license_image]: https://img.shields.io/github/license/openai-php/client
