@@ -1,4 +1,4 @@
-# adrienbrault/instructrice
+# 👩‍🏫 adrienbrault/instructrice
 
 [![GitHub Actions][gh_actions_image]][gh_actions_link]
 [![Packagist][packagist_image]][packagist_link]
