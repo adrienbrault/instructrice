@@ -295,6 +295,18 @@ class GetCommand extends Command
             } elseif (str_ends_with($type, '.json')) {
                 $type = decode(file_get_contents($type));
             }
+
+            // handle/remove/transform custom instructrice properties like:
+            // prompt: 'The prompt to use'
+            // few shot examples: [ input -> output ]
+            // evals: [ input -> output ]
+            // logs: [ input -> output ]
+
+            // So when you run instructrice, it adds each input/output to logs
+            // Then as a user, you can cut that, put it within evals, and define exactly the output you expect for that input
+            // You can then run instructrice evals something
+            // If you end up collecting a set of good quality input/output pairs, consider moving some to the few shot examples
+            // this should improve the accuracy at the cost of more prompt tokens
         }
         $type = replace($type, '#/#i', '\\');
 
