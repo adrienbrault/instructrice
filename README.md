@@ -148,37 +148,6 @@ $instructrice->get(
 );
 ```
 
-You can also use any OpenAI compatible api by passing an [LLMConfig](src/LLM/LLMConfig.php):
-
-```php
-use AdrienBrault\Instructrice\InstructriceFactory;
-use AdrienBrault\Instructrice\LLM\LLMConfig;
-use AdrienBrault\Instructrice\LLM\Cost;
-use AdrienBrault\Instructrice\LLM\OpenAiLLM;
-use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
-use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
-use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
-use GuzzleHttp\Client;
-
-$instructrice->get(
-    ...,
-    llm: new LLMConfig(
-        uri: 'https://api.together.xyz/v1/chat/completions',
-        model: 'meta-llama/Llama-3-70b-chat-hf',
-        contextWindow: 8000,
-        label: 'Llama 3 70B',
-        provider: 'Together',
-        cost: Cost::create(0.9),
-        strategy: OpenAiJsonStrategy::JSON,
-        headers: [
-            'Authorization' => 'Bearer ' . $apiKey,
-        ]
-    ),
-);
-```
-
-You may also implement [LLMInterface](src/LLM/LLMInterface.php).
-
 ## Supported models
 
 Legend:
@@ -239,6 +208,39 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 Automate updating these tables by scraping artificialanalysis.ai , along with chatboard arena elo.?
 Would be a good use case / showcase of this library/cli? 
+
+### Custom Models
+
+You can also use any OpenAI compatible api by passing an [LLMConfig](src/LLM/LLMConfig.php):
+
+```php
+use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\Cost;
+use AdrienBrault\Instructrice\LLM\OpenAiLLM;
+use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
+use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
+use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
+use GuzzleHttp\Client;
+
+$instructrice->get(
+    ...,
+    llm: new LLMConfig(
+        uri: 'https://api.together.xyz/v1/chat/completions',
+        model: 'meta-llama/Llama-3-70b-chat-hf',
+        contextWindow: 8000,
+        label: 'Llama 3 70B',
+        provider: 'Together',
+        cost: Cost::create(0.9),
+        strategy: OpenAiJsonStrategy::JSON,
+        headers: [
+            'Authorization' => 'Bearer ' . $apiKey,
+        ]
+    ),
+);
+```
+
+You may also implement [LLMInterface](src/LLM/LLMInterface.php).
 
 ## Acknowledgements
 
