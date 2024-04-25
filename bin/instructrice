@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(__DIR__.'/../vendor/autoload.php')) {
+    require_once __DIR__.'/../vendor/autoload.php';
+}
+
+use AdrienBrault\Instructrice\Console\GetCommand;
+use AdrienBrault\Instructrice\InstructriceFactory;
+use GuzzleHttp\Client;use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\ErrorHandler\ErrorHandler;
+use Symfony\Component\VarDumper\Caster\ReflectionCaster;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+
+$input = new ArgvInput();
+$output = new ConsoleOutput();
+$logger = new ConsoleLogger($output->getErrorOutput());
+ErrorHandler::register();
+
+$propertyInfo = InstructriceFactory::createPropertyInfoExtractor();
+$serializer = InstructriceFactory::createSerializer($propertyInfo);
+$llmFactory = InstructriceFactory::createLLMFactory(logger: $logger);
+$instructrice = InstructriceFactory::create(
+    logger: $logger,
+    llmFactory: $llmFactory,
+    serializer: $serializer,
+    propertyInfo: $propertyInfo
+);
+
+$cloner = new VarCloner();
+$cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+$http = new Client();
+
+$app = new Application();
+$app->add($command = new GetCommand($instructrice, $llmFactory, $http, $cloner, $serializer))
+    ->getApplication()
+    ->setDefaultCommand($command->getName(), true)
+    ->run($input, $output)
+;

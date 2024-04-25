@@ -26,12 +26,14 @@ use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ReflectionClass;
+use Symfony\Component\Console\Helper\Dumper;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\YamlEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -220,6 +222,13 @@ class InstructriceFactory
 
     public static function createSerializer(PropertyInfoExtractor $propertyInfo): Serializer
     {
+        $encoders = [
+            new JsonEncoder(),
+        ];
+        if (class_exists(Dumper::class)) {
+            $encoders[] = new YamlEncoder();
+        }
+
         return new Serializer(
             [
                 new DateTimeNormalizer(),
@@ -235,7 +244,7 @@ class InstructriceFactory
                 ),
                 new ArrayDenormalizer(),
             ],
-            [new JsonEncoder()]
+            $encoders
         );
     }
 }
