@@ -86,7 +86,7 @@ class Instructrice
      * @return list<T>
      */
     public function list(
-        string|TypeInterface $type,
+        array|TypeInterface|string $type,
         string $context,
         ?string $prompt = null,
         array $options = [],

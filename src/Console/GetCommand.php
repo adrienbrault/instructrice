@@ -18,11 +18,14 @@ use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Serializer\Context\Encoder\YamlEncoderContextBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\Yaml\Parser;
 
+use Symfony\Component\Yaml\Yaml;
 use function Psl\Dict\filter_keys;
 use function Psl\IO\input_handle;
 use function Psl\Iter\first;
@@ -39,7 +42,7 @@ class GetCommand extends Command
         private readonly LLMFactory $llmFactory,
         private readonly Client $http,
         private readonly VarCloner $cloner,
-        private readonly SerializerInterface&DenormalizerInterface $serializer,
+        private readonly SerializerInterface&NormalizerInterface $serializer,
     ) {
         parent::__construct();
     }
@@ -79,7 +82,7 @@ class GetCommand extends Command
             )
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'Extract a list')
             ->addOption('all-required', null, InputOption::VALUE_NONE, 'Require all fields to be present in the output')
-            ->addOption('truncate-automatically', null, InputOption::VALUE_NONE, 'Truncate the output automatically')
+            ->addOption('dont-truncate-automatically', null, InputOption::VALUE_NONE, 'Dont truncate the output automatically')
         ;
     }
 
@@ -106,7 +109,7 @@ class GetCommand extends Command
         $chunkSection = $output->section();
         $options = [
             'all_required' => $input->getOption('all-required') === true,
-            'truncate_automatically' => $input->getOption('truncate-automatically') === true,
+            'truncate_automatically' => $input->getOption('dont-truncate-automatically') !== true,
         ];
 
         if ($input->getOption('list')) {
@@ -133,6 +136,11 @@ class GetCommand extends Command
         $headSection?->clear();
 
         $format = $input->getOption('format');
+        if (!posix_isatty(\STDOUT)) {
+            $format = $format ?? 'json';
+        }
+
+        $resultData = $this->serializer->normalize($result, 'json');
         if ($format === 'json') {
             $output->writeln(
                 $this->serializer->serialize($result, 'json', [
@@ -140,10 +148,37 @@ class GetCommand extends Command
                 ])
             );
         } else {
-            $context = (new YamlEncoderContextBuilder())->withInlineThreshold(1)->withIndentLevel(0)->toArray();
             $output->writeln(
-                $this->serializer->serialize($result, 'yaml', $context)
+                Yaml::dump(
+                    $resultData,
+                    inline: 10,
+                    indent: 2,
+                    flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE
+                )
             );
+        }
+
+        if (is_array($type) && is_string($type['path']) && str_ends_with($type['path'], '.yaml')) {
+            // append the result to the yaml file
+            $name = Ulid::generate();
+            $append = Yaml::dump(
+                [
+                    $name => [
+                        'model' => $llmLabel,
+                        'list' => $input->getOption('list') === true,
+                        'context' => $context,
+                        'result' => $resultData,
+                    ]
+                ],
+                inline: 10,
+                indent: 2,
+                flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE
+            );
+
+            // Works for now :troll:. I don't want to lose comments in the YAML
+            $append = preg_replace('/^/m', '  ', $append);
+
+            file_put_contents($type['path'], $append, FILE_APPEND);
         }
 
         return self::SUCCESS;
@@ -272,7 +307,8 @@ class GetCommand extends Command
             }
 
             $context = $this->http->get('https://r.jina.ai/' . $context)->getBody()->getContents();
-
+            $context = replace($context, '#[(]([^)]{0,200})[^)]*[)]#', '($1...)');
+            $context = replace($context, '#[(]data:[^)]+[)]#', '(...)');
             if ($output !== null) {
                 $output->writeln('Done.');
             }
@@ -286,14 +322,21 @@ class GetCommand extends Command
         $type = $input->getArgument('type');
 
         if (\is_string($type) && file_exists($type)) {
+            $path = null;
             if (matches($type, '#\.(yaml|yml)$#i')) {
                 if (! class_exists(Parser::class)) {
                     throw new RuntimeException('The symfony/yaml package is required to read yaml files.');
                 }
 
+                $path = $type;
                 $type = (new Parser())->parseFile($type);
             } elseif (str_ends_with($type, '.json')) {
+                $path = $type;
                 $type = decode(file_get_contents($type));
+            }
+
+            if (null !== $path) {
+                $type['path'] = $path;
             }
 
             // handle/remove/transform custom instructrice properties like:
@@ -308,7 +351,9 @@ class GetCommand extends Command
             // If you end up collecting a set of good quality input/output pairs, consider moving some to the few shot examples
             // this should improve the accuracy at the cost of more prompt tokens
         }
-        $type = replace($type, '#/#i', '\\');
+        if (is_string($type)) {
+            $type = replace($type, '#/#i', '\\');
+        }
 
         return $type;
     }

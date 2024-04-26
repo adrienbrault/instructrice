@@ -38,7 +38,7 @@ return function (callable $do, ?ProviderModel $llm = null) {
         $context = file_get_contents($context);
     }
 
-    $output = new ConsoleOutput($input->hasParameterOption('-v', true) ? ConsoleOutput::VERBOSITY_DEBUG : ConsoleOutput::VERBOSITY_NORMAL);
+    $output = new ConsoleOutput($input->hasParameterOption('-v', true) ? Consoleresult::VERBOSITY_DEBUG : Consoleresult::VERBOSITY_NORMAL);
 
     $logger = createConsoleLogger($output);
     $llmFactory = InstructriceFactory::createLLMFactory(logger: $logger);

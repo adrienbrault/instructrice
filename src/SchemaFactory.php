@@ -32,8 +32,22 @@ class SchemaFactory
      *
      * @return array<string, mixed>
      */
-    public function createSchema(TypeNode|TypeInterface|string $type, bool $makeAllRequired): array
+    public function createSchema(array|TypeNode|TypeInterface|string $type, bool $makeAllRequired): array
     {
+        if (is_array($type)) {
+            if (!array_key_exists('type', $type) || !array_key_exists('properties', $type)) {
+                throw new \InvalidArgumentException('Invalid schema: missing "type" or "properties" key');
+            }
+
+            unset($type['prompt']);
+            unset($type['examples']);
+            unset($type['evals']);
+            unset($type['logs']);
+            unset($type['path']);
+
+            return $type;
+        }
+
         if (\is_string($type)) {
             $schema = $this->schemaFactory->buildSchema($type);
 

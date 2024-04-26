@@ -7,7 +7,10 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 
 use AdrienBrault\Instructrice\Console\GetCommand;
 use AdrienBrault\Instructrice\InstructriceFactory;
-use GuzzleHttp\Client;use Symfony\Component\Console\Application;
+use GuzzleHttp\Client;
+use Monolog\Logger;
+use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -17,7 +20,9 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 $input = new ArgvInput();
 $output = new ConsoleOutput();
-$logger = new ConsoleLogger($output->getErrorOutput());
+$logger = new Logger('instructrice', [
+    new ConsoleHandler($output->getErrorOutput()),
+]);
 ErrorHandler::register();
 
 $propertyInfo = InstructriceFactory::createPropertyInfoExtractor();
@@ -32,7 +37,9 @@ $instructrice = InstructriceFactory::create(
 
 $cloner = new VarCloner();
 $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
-$http = new Client();
+$http = new Client([
+    'logger' => $logger,
+]);
 
 $app = new Application();
 $app->add($command = new GetCommand($instructrice, $llmFactory, $http, $cloner, $serializer))

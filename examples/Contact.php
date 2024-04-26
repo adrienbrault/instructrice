@@ -8,8 +8,8 @@ use AdrienBrault\Instructrice\Attribute\Prompt;
 
 class Contact
 {
-    public ?string $firstName = null;
-    public ?string $lastName = null;
+    public string $firstName;
+    public string $lastName;
     public ?string $email = null;
     public ?string $phone = null;
     public ?string $company = null;

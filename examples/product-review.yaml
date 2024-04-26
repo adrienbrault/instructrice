@@ -25,44 +25,17 @@ required:
   - product
   - review
   - rating
-  - source
+  - url
 
 # The prompt is the overall task
 prompt: |
-  You extract product reviews from internet content.
-  
-  Bla Bla Bla...
+  Extract all product reviews.
 
 # The following examples are used for one/few shots.
 # You can use a high quality model to generate/capture such examples.
 #
 # Not sure about using URLs as input. 
 examples:
-  - context: |
-        Title: Dune: Part Two - Movie Reviews
-
-        URL Source: https://www.rottentomatoes.com/m/dune_part_two/reviews
-        
-        Markdown Content:
-        ### Movie Reviews By Reviewer Type
-            
-            *   [All Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews)
-            *   [Top Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=top_critics)
-            *   [All Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=user)
-            *   [Verified Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=verified_audience)
-            
-            ![Image 1: a bald man in a black jacket and blue shirt](https://resizing.flixster.com/KDGfu2fVk8cMN0E3K2jj09Wu0uI=/fit-in/50x50/v2/http://resizing.flixster.com/i7mx_ISVeNK1S5LCjful1tD9S_8=/128x128/v1.YzsxMDAwMDAyNjg0O3A7MTk4OTk7MjA0ODsyOTQ7Mjk0)
-        
-        Villeneuve delivers a certain solemnity through the visual and sounding side, but the land swallows his narrative and spits out the residues in the sand. \[Full review in Spanish\] [Full Review](https://www.cinefilia.blog/2024/04/critica-duna-parte-dos.html) | Original Score: 6/10 | Apr 21, 2024
-            
-        ...
-    result:
-      product: Dune Part Two
-      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
-      rating: 5
-      recommended: true
-      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
-      date: 2023-10-20T00:00:00Z
 
 # The following examples are used to compute an overall % score.
 #
@@ -70,67 +43,1434 @@ examples:
 # Imagine asking instructrice to automatically run all the evals with tens of models.
 # You could compare the scores with each run's speed/cost.
 evals:
-  - context: https://www.rottentomatoes.com/m/dune_part_two/reviews
-    result:
-      product: Dune Part Two
-      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
-      rating: 5
-      recommended: true
-      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
-      date: 2023-10-20T00:00:00Z
 
 # This section should be automatically updated by default with new invocations
 #
 # If you like one, cut/paste in either examples or evals.
 logs:
-  - context: https://www.rottentomatoes.com/m/dune_part_two/reviews
-    result:
-      product: Dune Part Two
-      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
-      rating: 5
-      recommended: true
-      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
-      date: 2023-10-20T00:00:00Z
-  - context: |
-      Title: Dune: Part Two - Movie Reviews
-      
-      URL Source: https://www.rottentomatoes.com/m/dune_part_two/reviews
-      
+  01HWE7EHHPHHNC5B08AMH5KD0T:
+    model: 'OpenAI - GPT-4 Turbo'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
       Markdown Content:
-      ### Movie Reviews By Reviewer Type
-      
-          *   [All Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews)
-          *   [Top Critics](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=top_critics)
-          *   [All Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=user)
-          *   [Verified Audience](https://www.rottentomatoes.com/m/dune_part_two/reviews?type=verified_audience)
-      
-          ![Image 1: a bald man in a black jacket and blue shirt](https://resizing.flixster.com/KDGfu2fVk8cMN0E3K2jj09Wu0uI=/fit-in/50x50/v2/http://resizing.flixster.com/i7mx_ISVeNK1S5LCjful1tD9S_8=/128x128/v1.YzsxMDAwMDAyNjg0O3A7MTk4OTk7MjA0ODsyOTQ7Mjk0)
-      
-      Villeneuve delivers a certain solemnity through the visual and sounding side, but the land swallows his narrative and spits out the residues in the sand. \[Full review in Spanish\] [Full Review](https://www.cinefilia.blog/2024/04/critica-duna-parte-dos.html) | Original Score: 6/10 | Apr 21, 2024
-      
-          ![Image 2: an image of a person with a white background](https://images.fandango.com/cms/assets/5b6ff500-1663-11ec-ae31-05a670d2d590--rtactordefault.png)
-      
-      Villeneuve gives us much more to appreciate in his second Dune missive: Rousing action sequences ranging from worm-riding to tense knife fights and large-scale battles, and a thorough seat-soaker of a finale which combines all of the above.
-      
-        [Full Review](https://decider.com/2024/04/16/dune-2-streaming-movie-review/) | Apr 20, 2024
-      
-          ![Image 3: a man in glasses smiling in front of a bookshelf](https://resizing.flixster.com/Ni3FhbUN1_RkSbpJgX4tGB2zD5c=/fit-in/50x50/v2/http://resizing.flixster.com/GgCOwh1Zsex7r6tUlUGFdRUwplk=/128x128/v1.YzsyNTE1O2c7MTk4NDU7MjA0ODsxNTI7MTY4)
-      
-      From self-parody to epic, "Dune, part two", by Denis Villeneuve, contains several possible versions of itself, but none truly great. \[Full review in Spanish\] [Full Review](https://letraslibres.com/cine-tv/ernesto-diezmartinez-duna-parte-dos-denis-villeneuve/) | Original Score: 2.5/4 | Apr 19, 2024
-      
-          ![Image 4: a man in a suit and tie smiles in front of a tree](https://resizing.flixster.com/pgTt7gJhi_SmO7bAVy5WzgsD8zw=/fit-in/50x50/v2/http://resizing.flixster.com/HyHAmoY66DkNIISQ6RNk27TEID4=/128x128/v1.YzsxMDAwMDAyNTkzO2o7MTk4OTk7MjA0ODs1MDA7NTAw)
-      
-      We get so many movies that use up the space Dune: Part Two does, but a very, very few manage to do so much with a canvas like this. Much like the great sequels before it, this film is essential.
-      
-        [Full Review](https://ftw.usatoday.com/lists/5-movies-1-tv-show-you-can-watch-right-now-dune-part-two) | Apr 16, 2024
-      
-          ![Image 5: an image of a person with a white background](https://images.fandango.com/cms/assets/5b6ff500-1663-11ec-ae31-05a670d2d590--rtactordefault.png)
-      
-          Villeneuve brings the epic scope, Zendaya brings the heart and humanity.
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
     result:
-      product: Dune Part Two
-      review: "A visually stunning and emotionally resonant sci-fi epic that delivers a satisfying conclusion to the story."
-      rating: 5
-      recommended: true
-      url: https://www.rottentomatoes.com/m/dune_part_two/reviews
-      date: 2023-10-20T00:00:00Z
+      -
+        product: Dune
+        review: 'Rotten Tomatoes - 83% critic rating, 91% audience rating'
+        rating: 4.4
+        recommended: true
+        url: 'https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating'
+      -
+        product: Dune
+        review: 'Metacritic - 75/100 critic score, 8.2/10 user score'
+        rating: 4.1
+        recommended: true
+        url: 'https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score'
+      -
+        product: Dune
+        review: 'IMDb - 8.3/10 user rating'
+        rating: 4.2
+        recommended: true
+        url: 'https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating'
+      -
+        product: Dune
+        review: 'The Guardian - 4/5 stars'
+        rating: 4.0
+        recommended: true
+        url: 'https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars'
+      -
+        product: Dune
+        review: 'The New York Times - positive review'
+        rating: 4.0
+        recommended: true
+        url: 'https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review'
+  01HWE7HNH210VZTRWKCJJ09N37:
+    model: 'Anthropic - Claude 3 Haiku'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result:
+      -
+        product: Dune
+        review: 'Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve'
+        rating: 4.5
+        recommended: true
+        url: 'https://www.bing.com/search?q=dune+reviews'
+        date: '2021-10-01T00:00:00Z'
+  01HWE7JJ8Z6F0ZKY5CF390E0PJ:
+    model: 'Anthropic - Claude 3 Haiku'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result:
+      -
+        product: Dune
+        review: 'A visually stunning and ambitious adaptation of the classic sci-fi novel, though it may lose some viewers with its deliberate pacing.'
+        rating: 4
+        recommended: true
+        url: 'https://www.bing.com/search?q=dune+reviews'
+        date: '2021-10-22T00:00:00Z'
+  01HWE7JYQGFGVM28915XFKRSB1:
+    model: 'Fireworks - Llama3 70B'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result: []
+  01HWE7K3TKMYQR0F43413TZEVF:
+    model: 'Fireworks - Llama3 70B'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result: []
+  01HWE7KM0K8DEH8J4FNRMBGPFE:
+    model: 'Fireworks - Llama3 70B'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result:
+      -
+        product: Dune
+        review: 'A 2021 American epic science fiction film directed and co-produced by Denis Villeneuve'
+        rating: 5
+        recommended: true
+        url: 'https://www.bing.com/search?q=dune+reviews'
+        date: '2021-01-01T00:00:00'
+  01HWE7M5K8AK5AWEQ19AVN96ER:
+    model: 'Fireworks - Llama3 70B'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result: []
+  01HWE7M9DKG9V910C352WZ43HA:
+    model: 'Fireworks - Llama3 70B'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result:
+      -
+        product: Dune
+        review: 'This 2021 American epic science fiction film directed and co-produced by Denis Villeneuve is an adaptation of the 1965 novel of the same name by Frank Herbert.'
+        rating: 4
+        recommended: true
+        url: 'https://www.bing.com/search?q=dune+reviews'
+        date: '2021-01-01T00:00:00'
+  01HWE7N0EZX92QB7FDP30V2HP3:
+    model: 'Groq - Llama3 70B'
+    list: true
+    context: |
+      Title: dune reviews - Bing
+  
+      URL Source: https://www.bing.com/search?q=dune+reviews
+  
+      Markdown Content:
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of t…
+  
+      Dune is a 2021 American epic science fiction film directed and co-produced by Denis Villeneuve, who co-wrote the screenplay with Jon Spaihts, and Eric Roth. It is the first of a two-part adaptation of the 1965 novel of the same name by Frank Herbert. Set in the distant future, the film follows Paul Atreides as his family, the noble House Atreides, is thrust into a war for the deadly and inhospitable desert planet Arrakis. The ensemble cast includes Timothée Chalamet, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, Stephen McKinley Henderson, Zendaya, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, Jason Momoa, and Javier Bardem.
+  
+      [Wikipedia](https://en.wikipedia.org/wiki/Dune_(2021_film...))
+  
+      *   [![Image 1: Timothée Chalamet](https://th.bing.com/th?id=OSK.b879b49e0068a7a3292274214cdd357a&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Timothée Chalamet
+  
+      Paul Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Timoth%c3%a9e+Chalamet&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%2284e33bee-226a-4db0-845a-b41b3d4e9bf1%22+fccat:%22...)
+      *   [![Image 2: Rebecca Ferguson](https://th.bing.com/th?id=OSK.b7435cce256dfeb4ed494a5e88d129ea&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Rebecca Ferguson
+  
+      Lady Jessica Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rebecca+Ferguson&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22fc66ae21-533f-11c1-bb22-0f1780f662d9%22+fccat:%222%22...)
+      *   [![Image 3: Zendaya](https://th.bing.com/th?id=OSK.4c81a0b4e94f967a234247a798a46036&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Zendaya&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%221e791211-142d-3f6c-8608-da94d68d90b4%22+fccat:%222%22...)
+      *   [![Image 4: Oscar Isaac](https://th.bing.com/th?id=OSK.xzb6hFA1iLpsYuscXJ2b7LB267Ws-22X3yM2huhsAQ0&w=80&h=80&c=12&o=6&pid=SANGAM...)
+  
+      Oscar Isaac
+  
+      Duke Leto Atreides
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Oscar+Isaac&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%22e857e6dd-eea1-dbb9-4905-cfed63ffd953%22+fccat:%222%22...)
+      *   [![Image 5: Jason Momoa](https://th.bing.com/th?id=OSK.NCq5PvfZ35KY50b0rmi6hqJ2xVsGazDQMMMo6-73ZXA&w=80&h=80&c=12&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=Jason+Momoa&filters=fcid:%22movie.cast%22+pivot:%22f8ee4ece-aaa2-44a0-4173-5c90f8b9fb6c%22+sid:%223effe44f-7137-7917-d8b0-e050ff97401b%22+fccat:%222%22...)
+  
+      ### Compare
+  
+      *   **Setting**
+  
+      *   **Main Protagonist**
+  
+      *   **Cult Status**
+  
+      ### Watch
+  
+      *   [![Image 6: Hulu](https://th.bing.com/th?id=OSK.7e167429429b3f0d9ae2a9c67d7680d8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 7: Amazon](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 8: Max](https://th.bing.com/th?id=OSK.2bca715d3dd331647f071824246011c8&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 9: Apple TV](https://th.bing.com/th?id=OSK.0bc7de9a0aa24c6b0f208b2eecd5ff85&w=32&h=32&o=6&pid=SANGAM...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 10: Google Play](https://r.bing.com/rp/nNwTqwfY2tqCInzF0uVlfu1U5dc.png...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+      *   [![Image 11: Vudu](...)](https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnR...)
+  
+  
+      Ratings
+  
+      How would you rate this movie?
+  
+      [![Image 12: More info on gettyimages.com](https://th.bing.com/th?id=OSK.9F1AE7893B3AF342E66E0843B8BA26AD9FE4271C38078019C0D42717274A095F&w=71&h=49&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/denis-villeneuve-attends-the-24th-annual-art-directors-news-photo/1203515768"Moreinfoongettyimages.com"...)
+  
+      [![Image 13: More info on gettyimages.com](https://th.bing.com/th?id=OSK.BC18C886EB538B54B9EB03CD06A62132B57304E098F82D3ADE31BC5CCFA43CD2&w=88&h=60&o=6&pid=SANGAM...)](https://www.gettyimages.com/detail/news-photo/author-frank-herbert-and-wife-theresa-shackelford-attend-news-photo/451639526"Moreinfoongettyimages.com"...)
+  
+      Rotten Tomatoes is a popular website that aggregates reviews from critics and audiences and assigns a percentage score based on the proportion of positive reviews
+  
+      *   [![Image 14: Rotten Tomatoes - 83% critic rating, 91% audience rating](https://th.bing.com/th?id=OSK.631584cc3e453ef36854736d08fe38b8&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Rotten Tomatoes - 83% critic rating, 91% audience rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Rotten+Tomatoes+-+83%25+critic+rating%2c+91%25+audience+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22c7f530fc-56c3-bc3b-0da9-eb...)
+  
+      Metacritic is another website that aggregates reviews from critics and audiences and assigns a numerical score based on the weighted average of the reviews
+  
+      *   [![Image 15: Metacritic - 75/100 critic score, 8.2/10 user score](https://th.bing.com/th?id=OSK.a222809a112b6adf272275ec71c5f588&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      Metacritic - 75/100 critic score, 8.2/10 user score
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=Metacritic+-+75%2f100+critic+score%2c+8.2%2f10+user+score&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22ef354582-74f7-6dac-c170-b14ee30...)
+  
+      IMDb is a database and website that provides information and ratings for films, television shows, and other media, based on the votes of registered users
+  
+      *   [![Image 16: IMDb - 8.3/10 user rating](https://th.bing.com/th?id=OSK.c2d990970a3817bd15f1b80d615d6a3b&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      IMDb - 8.3/10 user rating
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=IMDb+-+8.3%2f10+user+rating&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%228de6218c-bb50-c877-59ca-5af3ea4f6be9%22...)
+  
+      The Guardian is a British newspaper and website that publishes reviews and news on various topics, including culture and entertainment
+  
+      *   [![Image 17: The Guardian - 4/5 stars](https://th.bing.com/th?id=OSK.vLUMjdjSl1gHYYkxeAXyP-yTT4zLO_vItlzftlnOrxU&w=80&h=80&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=SNAPST&q=The+Guardian+-+4%2f5+stars&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%224d894000-07b9-c018-7eda-124ce00e0228%22...)
+  
+      The New York Times is a American newspaper and website that publishes reviews and news on various topics, including arts and entertainment
+  
+      *   [![Image 18: The New York Times - positive review](https://th.bing.com/th?id=OSK.v_xp7_ESW_M3K-QjC6rWyh4dtF0H7ZkCnjgowx97UwU&w=80&h=80&c=7&o=6&pid=SANGAM...)
+  
+      The New York Times - positive review
+  
+  
+  
+      ](https://www.bing.com/search?FORM=SNAPST&q=The+New+York+Times+-+positive+review&filters=fcid%3a%220-73c84b1a-cf37-57d6-c027-6a00249d7a26%22+sid%3a%22614b60a2-4ccd-3ecb-15dc-6e2fba54ed28%22...)
+  
+      2001: A Space Odyssey is a science fiction film that is based on a novel by Arthur C. Clarke, who is considered one of the most influential and visionary science fiction authors of all time
+  
+      *   [![Image 19: 2001: A Space Odyssey](https://th.bing.com/th?id=OSK.725e4b05b04bea9694839e97c691ca1e&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=2001%3a+a+space+odyssey&filters=sid:%22c011fc2b-156f-e8bb-86de-0013377017cf%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Hitchhiker's Guide to the Galaxy is a science fiction comedy film that is based on a novel by Douglas Adams, who is known for his humorous and witty style of writing and his creation of a fictional universe that spans various media
+  
+      *   [![Image 20: The Hitchhiker's Guide to the Galaxy](https://th.bing.com/th?id=OSK.8b24c54427662bb707663d6fe5045787&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Hitchhiker's Guide to the Galaxy
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+hitchhiker%27s+guide+to+galaxy&filters=sid:%22bab01acc-1fd5-a5a0-5f9f-478816d44f9e%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Lord of the Rings is a fantasy film series that is based on a novel by J.R.R. Tolkien, who is widely regarded as the father of modern fantasy literature and the creator of a rich and complex mythology
+  
+      *   [![Image 21: The Lord of the Rings](https://th.bing.com/th?id=OSK.8c41e0622aac1c7716f88f5dd2b640b4&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=the+lord+of+rings&filters=sid:%2214e05ec2-edce-7b74-9725-4d99b75243b7%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      Jurassic Park is a science fiction film series that is based on a novel by Michael Crichton, who is known for his best-selling and scientifically plausible thrillers that often explore the consequences of technological advancements
+  
+      *   [![Image 22: Jurassic Park](https://th.bing.com/th?id=OSK.66cb581e4c576564bd1d2fb1f7a6be26&w=80&h=118&c=7&o=6&pid=SANGAM...)](https://www.bing.com/search?FORM=KCEXPL&q=jurassic+park&filters=sid:%22e0f34feb-4b6f-4e19-83a8-d2be04dec539%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+  
+      The Girl with the Dragon Tattoo is a crime thriller film that is based on a novel by Stieg Larsson, who is one of the most popular and acclaimed Nordic noir authors of the 21st century
+  
+      *   [![Image 23: The Girl with the Dragon Tattoo](https://th.bing.com/th?id=OSK.64ac98357733726e5e2de9f7b45b083e&w=80&h=118&c=7&o=6&pid=SANGAM...)
+  
+      The Girl with the Dragon Tattoo
+  
+  
+  
+      ](https://www.bing.com/search?FORM=KCEXPL&q=the+girl+with+dragon+tattoo&filters=sid:%22c37e2697-a12d-2c5d-99b6-fa335c276ec2%22+fcid%3a%220-725d4547-660b-6ccb-ae2c-5871ac4d48db%22...)
+    result: []

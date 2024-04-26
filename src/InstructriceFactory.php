@@ -89,7 +89,10 @@ class InstructriceFactory
         LoggerInterface $logger = new NullLogger(),
         array $apiKeys = [],
     ): LLMFactory {
-        $httpClient ??= new GuzzleStreamingClient(new Client(), $logger);
+        $httpClient ??= new GuzzleStreamingClient(
+            new Client(['logger' => $logger]),
+            $logger
+        );
 
         return new LLMFactory($httpClient, $logger, $apiKeys);
     }
