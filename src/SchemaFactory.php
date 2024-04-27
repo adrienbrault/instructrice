@@ -15,6 +15,8 @@ use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 use Psl\Type\TypeInterface;
 
+use function Psl\Dict\filter_keys;
+use function Psl\Iter\contains;
 use function Psl\Regex\replace;
 use function Psl\Vec\filter;
 
@@ -38,12 +40,6 @@ class SchemaFactory
             if (!array_key_exists('type', $type) || !array_key_exists('properties', $type)) {
                 throw new \InvalidArgumentException('Invalid schema: missing "type" or "properties" key');
             }
-
-            unset($type['prompt']);
-            unset($type['examples']);
-            unset($type['evals']);
-            unset($type['logs']);
-            unset($type['path']);
 
             return $type;
         }
