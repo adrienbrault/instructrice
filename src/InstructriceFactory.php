@@ -90,7 +90,9 @@ class InstructriceFactory
         array $apiKeys = [],
     ): LLMFactory {
         $httpClient ??= new GuzzleStreamingClient(
-            new Client(['logger' => $logger]),
+            new Client([
+                'logger' => $logger,
+            ]),
             $logger
         );
 

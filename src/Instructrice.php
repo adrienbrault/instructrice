@@ -79,9 +79,9 @@ class Instructrice
     /**
      * @template T
      *
-     * @param class-string<T>|TypeInterface<T>        $type
-     * @param callable(array<T>|null, LLMChunk): void $onChunk
-     * @param InstructriceOptions                     $options
+     * @param array<string, mixed>|class-string<T>|TypeInterface<T> $type
+     * @param callable(array<T>|null, LLMChunk): void               $onChunk
+     * @param InstructriceOptions                                   $options
      *
      * @return list<T>
      */

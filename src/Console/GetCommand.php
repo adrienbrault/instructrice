@@ -10,23 +10,21 @@ use AdrienBrault\Instructrice\LLM\LLMFactory;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
 use RuntimeException;
-use Swaggest\JsonDiff\JsonDiff;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Serializer\Context\Encoder\YamlEncoderContextBuilder;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\Yaml\Parser;
-
 use Symfony\Component\Yaml\Yaml;
+
 use function Psl\Dict\filter_keys;
 use function Psl\IO\input_handle;
 use function Psl\Iter\contains;
@@ -92,7 +90,7 @@ class GetCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $headSection = null;
-        if (posix_isatty(\STDOUT)) {
+        if (posix_isatty(\STDOUT) && $output instanceof ConsoleOutput) {
             $headSection = $output->section();
         }
 
@@ -101,7 +99,7 @@ class GetCommand extends Command
         $schema = null;
 
         // remove non whitelist properties, that arent standard json schema properties valid at the root
-        if (is_array($type)) {
+        if (\is_array($type)) {
             $schema = $type;
             $type = filter_keys(
                 $type,
@@ -112,12 +110,12 @@ class GetCommand extends Command
         $evalOption = $input->getOption('eval');
         $eval = null;
         if (\is_string($evalOption)) {
-            if (!is_array($schema)) {
+            if (! \is_array($schema)) {
                 throw new InvalidArgumentException('You must provide a schema to run an eval.');
             }
 
             $eval = $schema['evals'][$evalOption] ?? null;
-            if (null === $eval) {
+            if ($eval === null) {
                 throw new InvalidArgumentException(sprintf('The eval "%s" does not exist.', $evalOption));
             }
 
@@ -128,15 +126,21 @@ class GetCommand extends Command
 
         $prompt = $input->getOption('prompt');
 
-        $headSection?->writeln('Using LLM: ' . $llmLabel);
-        if ($headSection?->isVerbose()) {
-            $headSection?->writeln('Type: ' . encode($type));
-            $headSection?->writeln('Prompt: ' . $prompt);
-            $headSection?->writeln('Context: ' . $context);
-        }
-        $headSection?->writeln('');
+        $chunkSection = null;
+        if ($headSection !== null) {
+            $headSection->writeln('Using LLM: ' . $llmLabel);
+            if ($headSection->isVerbose()) {
+                $headSection->writeln('Type: ' . encode($type));
+                $headSection->writeln('Prompt: ' . $prompt);
+                $headSection->writeln('Context: ' . $context);
+            }
+            $headSection->writeln('');
 
-        $chunkSection = $output->section();
+            if ($output instanceof ConsoleOutput) {
+                $chunkSection = $output->section();
+            }
+        }
+
         $options = [
             'all_required' => $input->getOption('all-required') === true,
             'truncate_automatically' => $input->getOption('dont-truncate-automatically') !== true,
@@ -149,7 +153,7 @@ class GetCommand extends Command
                 prompt: $prompt,
                 llm: $llm,
                 options: $options,
-                onChunk: $this->getOnChunk($input, $chunkSection)
+                onChunk: $this->getOnChunk($input, $chunkSection, $eval)
             );
         } else {
             $result = $this->instructrice->get(
@@ -165,13 +169,13 @@ class GetCommand extends Command
         $chunkSection->clear();
         $headSection?->clear();
 
-        if (null !== $eval) {
+        if ($eval !== null) {
             $this->runEval($eval['result'], $result);
         }
 
         $format = $input->getOption('format');
-        if (!posix_isatty(\STDOUT)) {
-            $format = $format ?? 'json';
+        if (! posix_isatty(\STDOUT)) {
+            $format ??= 'json';
         }
 
         $resultData = $this->serializer->normalize($result, 'json');
@@ -192,7 +196,7 @@ class GetCommand extends Command
             );
         }
 
-        if (is_array($type) && is_string($schema['path']) && str_ends_with($schema['path'], '.yaml')) {
+        if (\is_array($type) && \is_string($schema['path']) && str_ends_with($schema['path'], '.yaml')) {
             // append the result to the yaml file
             $name = Ulid::generate();
             $append = Yaml::dump(
@@ -202,7 +206,7 @@ class GetCommand extends Command
                         'list' => $input->getOption('list') === true,
                         'context' => $context,
                         'result' => $resultData,
-                    ]
+                    ],
                 ],
                 inline: 10,
                 indent: 2,
@@ -212,7 +216,7 @@ class GetCommand extends Command
             // Works for now :troll:. I don't want to lose comments in the YAML
             $append = preg_replace('/^/m', '  ', $append);
 
-            file_put_contents($schema['path'], $append, FILE_APPEND);
+            file_put_contents($schema['path'], $append, \FILE_APPEND);
         }
 
         return self::SUCCESS;
@@ -308,8 +312,8 @@ class GetCommand extends Command
                 $chunk->getFormattedCost()
             ));
 
-            if (null !== $eval) {
-                $similarity =  $this->gpt4MadeUpSimilarity($eval['result'], $data);
+            if ($eval !== null) {
+                $similarity = $this->gpt4MadeUpSimilarity($eval['result'], $data);
 
                 $display(
                     sprintf('Eval similarity score: %.1f%%', $similarity * 100)
@@ -378,7 +382,7 @@ class GetCommand extends Command
                 $type = decode(file_get_contents($type));
             }
 
-            if (null !== $path) {
+            if ($path !== null) {
                 $type['path'] = $path;
             }
 
@@ -394,42 +398,46 @@ class GetCommand extends Command
             // If you end up collecting a set of good quality input/output pairs, consider moving some to the few shot examples
             // this should improve the accuracy at the cost of more prompt tokens
         }
-        if (is_string($type)) {
+        if (\is_string($type)) {
             $type = replace($type, '#/#i', '\\');
         }
 
         return $type;
     }
 
-
     private function runEval(mixed $expected, mixed $result): void
     {
         // look into https://github.com/Geo3ngel/JSON-Similarity-comparitor/tree/master
         // Normalize the eval result and extracted result to JSON
-        $similarity =  $this->gpt4MadeUpSimilarity($expected, $result);
+        $similarity = $this->gpt4MadeUpSimilarity($expected, $result);
 
         dump(
             sprintf('Eval similarity score: %.1f%%', $similarity * 100)
         );
     }
-    function recursiveKsort(&$array) {
-        if (!is_array($array)) {
+
+    public function recursiveKsort(&$array)
+    {
+        if (! \is_array($array)) {
             return;
         }
         foreach ($array as &$value) {
-            if (is_array($value)) $this->recursiveKsort($value);
+            if (\is_array($value)) {
+                $this->recursiveKsort($value);
+            }
         }
         ksort($array);
     }
 
-// Flatten the arrays to strings to compare them
-    function arrayFlatten($array) {
-        if (!is_array($array)) {
+    // Flatten the arrays to strings to compare them
+    public function arrayFlatten($array)
+    {
+        if (! \is_array($array)) {
             return [$array];
         }
         $result = [];
         foreach ($array as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $subArray = $this->arrayFlatten($value);
                 foreach ($subArray as $subKey => $subValue) {
                     $result[$key . '.' . $subKey] = $subValue;
@@ -438,10 +446,12 @@ class GetCommand extends Command
                 $result[$key] = $value;
             }
         }
+
         return $result;
     }
 
-    function gpt4MadeUpSimilarity(mixed $input1, mixed $input2): float {
+    public function gpt4MadeUpSimilarity(mixed $input1, mixed $input2): float
+    {
         // Normalize arrays by sorting by keys
         $this->recursiveKsort($input1);
         $this->recursiveKsort($input2);
@@ -449,21 +459,24 @@ class GetCommand extends Command
         $flat1 = $this->arrayFlatten($input1);
         $flat2 = $this->arrayFlatten($input2);
 
-        if ((null === $flat1 && null !== $flat2) || (null !== $flat1 && null === $flat2)) {
+        if (($flat1 === null && $flat2 !== null) || ($flat1 !== null && $flat2 === null)) {
             return 0;
         }
 
         // Calculate similarity score
         $allKeys = array_unique(array_merge(array_keys($flat1), array_keys($flat2)));
         $totalSimilarity = 0;
-        $totalPossible = count($allKeys);
+        $totalPossible = \count($allKeys);
 
         foreach ($allKeys as $key) {
-            if (array_key_exists($key, $flat1) && array_key_exists($key, $flat2)) {
+            if (\array_key_exists($key, $flat1) && \array_key_exists($key, $flat2)) {
                 if ($flat1[$key] === $flat2[$key]) {
-                    $totalSimilarity += 1; // Full point for exact match
-                } elseif (is_string($flat1[$key]) && is_string($flat2[$key])) {
+                    ++$totalSimilarity; // Full point for exact match
+                } elseif (\is_string($flat1[$key]) && \is_string($flat2[$key])) {
                     $similarityPercent = 0;
+
+                    // todo maybe consider embedding distance/cosine thing?
+
                     similar_text($flat1[$key], $flat2[$key], $similarityPercent);
                     $totalSimilarity += $similarityPercent / 100; // Add fractional similarity for strings
                 }

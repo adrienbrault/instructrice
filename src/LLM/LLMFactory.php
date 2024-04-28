@@ -69,7 +69,7 @@ class LLMFactory
     }
 
     /**
-     * @return list<string, ProviderModel>
+     * @return array<string, ProviderModel>
      */
     public function getAvailableProviderModels(): array
     {
