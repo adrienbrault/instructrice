@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\Console;
 
+use AdrienBrault\Instructrice\Eval\GenericComparator;
 use AdrienBrault\Instructrice\Instructrice;
 use AdrienBrault\Instructrice\LLM\LLMChunk;
 use AdrienBrault\Instructrice\LLM\LLMFactory;
@@ -43,6 +44,7 @@ class GetCommand extends Command
         private readonly Client $http,
         private readonly VarCloner $cloner,
         private readonly SerializerInterface&NormalizerInterface $serializer,
+        private readonly GenericComparator $comparator = new GenericComparator(),
     ) {
         parent::__construct();
     }
@@ -170,7 +172,9 @@ class GetCommand extends Command
         $headSection?->clear();
 
         if ($eval !== null) {
-            $this->runEval($eval['result'], $result);
+            dump(
+                $this->getEvalResultLabel($eval['result'], $result)
+            );
         }
 
         $format = $input->getOption('format');
@@ -313,10 +317,8 @@ class GetCommand extends Command
             ));
 
             if ($eval !== null) {
-                $similarity = $this->gpt4MadeUpSimilarity($eval['result'], $data);
-
                 $display(
-                    sprintf('Eval similarity score: %.1f%%', $similarity * 100)
+                    $this->getEvalResultLabel($eval['result'], $data)
                 );
             }
         };
@@ -405,87 +407,11 @@ class GetCommand extends Command
         return $type;
     }
 
-    private function runEval(mixed $expected, mixed $result): void
+    private function getEvalResultLabel(mixed $expected, mixed $result): string
     {
-        // look into https://github.com/Geo3ngel/JSON-Similarity-comparitor/tree/master
         // Normalize the eval result and extracted result to JSON
-        $similarity = $this->gpt4MadeUpSimilarity($expected, $result);
+        $similarity = $this->comparator->scoreSimilarity($expected, $result);
 
-        dump(
-            sprintf('Eval similarity score: %.1f%%', $similarity * 100)
-        );
-    }
-
-    public function recursiveKsort(&$array)
-    {
-        if (! \is_array($array)) {
-            return;
-        }
-        foreach ($array as &$value) {
-            if (\is_array($value)) {
-                $this->recursiveKsort($value);
-            }
-        }
-        ksort($array);
-    }
-
-    // Flatten the arrays to strings to compare them
-    public function arrayFlatten($array)
-    {
-        if (! \is_array($array)) {
-            return [$array];
-        }
-        $result = [];
-        foreach ($array as $key => $value) {
-            if (\is_array($value)) {
-                $subArray = $this->arrayFlatten($value);
-                foreach ($subArray as $subKey => $subValue) {
-                    $result[$key . '.' . $subKey] = $subValue;
-                }
-            } else {
-                $result[$key] = $value;
-            }
-        }
-
-        return $result;
-    }
-
-    public function gpt4MadeUpSimilarity(mixed $input1, mixed $input2): float
-    {
-        // Normalize arrays by sorting by keys
-        $this->recursiveKsort($input1);
-        $this->recursiveKsort($input2);
-
-        $flat1 = $this->arrayFlatten($input1);
-        $flat2 = $this->arrayFlatten($input2);
-
-        if (($flat1 === null && $flat2 !== null) || ($flat1 !== null && $flat2 === null)) {
-            return 0;
-        }
-
-        // Calculate similarity score
-        $allKeys = array_unique(array_merge(array_keys($flat1), array_keys($flat2)));
-        $totalSimilarity = 0;
-        $totalPossible = \count($allKeys);
-
-        foreach ($allKeys as $key) {
-            if (\array_key_exists($key, $flat1) && \array_key_exists($key, $flat2)) {
-                if ($flat1[$key] === $flat2[$key]) {
-                    ++$totalSimilarity; // Full point for exact match
-                } elseif (\is_string($flat1[$key]) && \is_string($flat2[$key])) {
-                    $similarityPercent = 0;
-
-                    // todo maybe consider embedding distance/cosine thing?
-
-                    similar_text($flat1[$key], $flat2[$key], $similarityPercent);
-                    $totalSimilarity += $similarityPercent / 100; // Add fractional similarity for strings
-                }
-            }
-        }
-
-        // Calculate score
-        $score = $totalPossible > 0 ? $totalSimilarity / $totalPossible : 0;
-
-        return $score;
+        return sprintf('Eval similarity score: %.1f%%', $similarity * 100);
     }
 }
