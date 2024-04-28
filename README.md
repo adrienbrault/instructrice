@@ -306,7 +306,7 @@ Leverage that to test examples, add few shots, evals?
 [dspy]: https://github.com/stanfordnlp/dspy
 [jina_reader]: https://github.com/jina-ai/reader
 [psl]: https://github.com/azjezz/psl
-[psl_type]: https://github.com/azjezz/psl/blob/next/docs/component/type.md
+[psl_type]: https://github.com/azjezz/psl/blob/next/src/Psl/Type/README.md
 [api_platform_json_schema]: https://github.com/api-platform/json-schema
 [llm_logging]: https://llm.datasette.io/en/stable/logging.html
 [openai_pricing]: https://openai.com/pricing
