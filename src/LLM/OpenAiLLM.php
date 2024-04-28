@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM;
 
+use AdrienBrault\Instructrice\Exception\LLMException;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
@@ -11,9 +12,16 @@ use DateTimeImmutable;
 use Exception;
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
 use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
+use GuzzleHttp\Exception\RequestException;
+use JsonException;
+use Psl\Json\Exception\DecodeException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\HttpClient\Exception\ClientException;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Throwable;
 
+use function Psl\Json\decode;
 use function Psl\Json\encode;
 use function Psl\Json\typed;
 use function Psl\Regex\matches;
@@ -93,35 +101,39 @@ class OpenAiLLM implements LLMInterface
 
         $this->logger->debug('OpenAI Request', $request);
 
-        $requestedAt = new DateTimeImmutable();
-        $updatesIterator = $this->client->request(
-            'POST',
-            $this->config->uri,
-            $request,
-            $this->config->headers,
-        );
+        try {
+            $requestedAt = new DateTimeImmutable();
+            $updatesIterator = $this->client->request(
+                'POST',
+                $this->config->uri,
+                $request,
+                $this->config->headers,
+            );
 
-        $content = '';
-        foreach ($this->getFullContentUpdates($updatesIterator) as $contentUpdate) {
-            $content = $contentUpdate;
+            $content = '';
+            foreach ($this->getFullContentUpdates($updatesIterator) as $contentUpdate) {
+                $content = $contentUpdate;
 
-            $firstTokenReceivedAt ??= new DateTimeImmutable();
+                $firstTokenReceivedAt ??= new DateTimeImmutable();
 
-            if ($onChunk !== null) {
-                $completionTokensEstimate = $this->tokenizer->count($content);
+                if ($onChunk !== null) {
+                    $completionTokensEstimate = $this->tokenizer->count($content);
 
-                $chunk = new LLMChunk(
-                    $content,
-                    $this->parser->parse($content),
-                    $promptTokensEstimate,
-                    $completionTokensEstimate,
-                    $this->config->cost,
-                    $requestedAt,
-                    $firstTokenReceivedAt
-                );
+                    $chunk = new LLMChunk(
+                        $content,
+                        $this->parser->parse($content),
+                        $promptTokensEstimate,
+                        $completionTokensEstimate,
+                        $this->config->cost,
+                        $requestedAt,
+                        $firstTokenReceivedAt
+                    );
 
-                $onChunk($chunk->data, $chunk);
+                    $onChunk($chunk->data, $chunk);
+                }
             }
+        } catch (RequestException|HttpExceptionInterface $exception) {
+            throw $this->getExceptionToThrow($exception);
         }
 
         $this->logger->debug('OpenAI Response message content', [
@@ -299,5 +311,36 @@ class OpenAiLLM implements LLMInterface
                 {$prompt}
                 PROMPT;
         };
+    }
+
+    private function getExceptionToThrow(HttpExceptionInterface|RequestException|Exception $exception): Throwable
+    {
+        $responseBody = null;
+        if ($exception instanceof RequestException) {
+            $responseBody = $exception->getResponse()?->getBody()->getContents();
+        } elseif ($exception instanceof ClientException) {
+            $responseBody = $exception->getResponse()->getContent(false);
+        }
+
+        $response = null;
+        if ($responseBody !== null) {
+            try {
+                $response = decode($responseBody);
+            } catch (DecodeException|JsonException) {
+                // ignore
+            }
+        }
+
+        $openAiErrorShape = shape([
+            'error' => shape([
+                'message' => string(),
+            ], true),
+        ], true);
+
+        if (! $openAiErrorShape->matches($response)) {
+            return $exception;
+        }
+
+        return new LLMException($response['error']['message'], 0, $exception);
     }
 }

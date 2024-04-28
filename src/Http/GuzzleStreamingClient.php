@@ -35,7 +35,6 @@ class GuzzleStreamingClient implements StreamingClientInterface
         } catch (RequestException $e) {
             $this->logger->error('OpenAI Request error', [
                 'error' => $e->getMessage(),
-                'response' => $e->getResponse()?->getBody()->getContents(),
             ]);
 
             throw $e;
