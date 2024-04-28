@@ -215,7 +215,7 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
-Automate updating these tables by scraping artificialanalysis.ai , along with chatboard arena elo.?
+Automate updating these tables by scraping https://artificialanalysis.ai , along with chatboard arena elo.?
 Would be a good use case / showcase of this library/cli?
 
 ### Custom Models
