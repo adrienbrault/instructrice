@@ -75,16 +75,18 @@ $characters = $instructrice->getList(
     'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
 );
 
+/*
+dump($characters);
 array:3 [
-  0 => Character^ {#225
+  0 => Character^ {
     +name: "Jack"
     +rank: "Colonel"
   }
-  1 => Character^ {#298
+  1 => Character^ {
     +name: "Samanta"
     +rank: "Major"
   }
-  2 => Character^ {#296
+  2 => Character^ {
     +name: "Teal'c"
     +rank: null
   }
@@ -99,7 +101,9 @@ $character = $instructrice->get(
     context: 'Colonel Jack O\'Neil.',
 );
 
-Character^ {#294
+/*
+dump($character);
+Character^ {
   +name: "Jack"
   +rank: "Colonel"
 }
@@ -117,6 +121,8 @@ $label = $instructrice->get(
     prompt: 'Sentiment analysis',
 );
 
+/*
+dump($label);
 "positive"
 ```
 
