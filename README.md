@@ -91,6 +91,7 @@ array:3 [
     +rank: null
   }
 ]
+*/
 ```
 
 ### Object
@@ -107,6 +108,7 @@ Character^ {
   +name: "Jack"
   +rank: "Colonel"
 }
+*/
 ```
 
 ### Dynamic Schema
@@ -124,6 +126,7 @@ $label = $instructrice->get(
 /*
 dump($label);
 "positive"
+*/
 ```
 
 You can also use third party json schema libraries like [goldspecdigital/oooas][oooas] to generate the schema:
