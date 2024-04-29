@@ -75,20 +75,23 @@ $characters = $instructrice->getList(
     'Colonel Jack O\'Neil walks into a bar and meets Major Samanta Carter. They call Teal\'c to join them.',
 );
 
+/*
+dump($characters);
 array:3 [
-  0 => Character^ {#225
+  0 => Character^ {
     +name: "Jack"
     +rank: "Colonel"
   }
-  1 => Character^ {#298
+  1 => Character^ {
     +name: "Samanta"
     +rank: "Major"
   }
-  2 => Character^ {#296
+  2 => Character^ {
     +name: "Teal'c"
     +rank: null
   }
 ]
+*/
 ```
 
 ### Object
@@ -99,10 +102,13 @@ $character = $instructrice->get(
     context: 'Colonel Jack O\'Neil.',
 );
 
-Character^ {#294
+/*
+dump($character);
+Character^ {
   +name: "Jack"
   +rank: "Colonel"
 }
+*/
 ```
 
 ### Dynamic Schema
@@ -117,7 +123,10 @@ $label = $instructrice->get(
     prompt: 'Sentiment analysis',
 );
 
+/*
+dump($label);
 "positive"
+*/
 ```
 
 You can also use third party json schema libraries like [goldspecdigital/oooas][oooas] to generate the schema:
@@ -209,7 +218,7 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
-Automate updating these tables by scraping artificialanalysis.ai , along with chatboard arena elo.?
+Automate updating these tables by scraping https://artificialanalysis.ai , along with chatboard arena elo.?
 Would be a good use case / showcase of this library/cli?
 
 ### Custom Models
