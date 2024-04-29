@@ -158,8 +158,8 @@ $instructrice->get(
 | Strategy | 📄 Text | 🧩 JSON | 🚀 Function |
 |----------|---------|---------|-------------|
 
-| Commercial usage | ✅ Yes | ⚠️ Yes, but | ❌ Nope |
-|------------------|-------|-------------|--------|
+| Commercial usage 💼 | ✅ Yes | ⚠️ Yes, but | ❌ Nope |
+|---------------------|-------|-------------|--------|
 
 ### Open Weights
 
@@ -199,9 +199,9 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 | Mistral    | Large               | 32k  | ✅ 26/s  |
 | OpenAI     | GPT-4 Turbo         | 128k | 🚀 24/s |  
 | OpenAI     | GPT-3.5 Turbo       | 16k  | 🚀 72/s |  
-| Anthropic  | Claude 3 Haiku      | 200k | 🆗 88/s |  
-| Anthropic  | Claude 3 Sonnet     | 200k | 🆗 59/s |  
-| Anthropic  | Claude 3 Opus       | 200k | 🆗 26/s |  
+| Anthropic  | Claude 3 Haiku      | 200k | 📄 88/s |  
+| Anthropic  | Claude 3 Sonnet     | 200k | 📄 59/s |  
+| Anthropic  | Claude 3 Opus       | 200k | 📄 26/s |  
 | Perplexity | Sonar Small Chat    | 16k  | 📄      |  
 | Perplexity | Sonar Small Online  | 12k  | 📄      |  
 | Perplexity | Sonar Medium Chat   | 16k  | 📄      |  
