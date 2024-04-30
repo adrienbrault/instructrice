@@ -31,6 +31,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
@@ -59,7 +60,7 @@ class InstructriceFactory
         ?LLMFactory $llmFactory = null,
         array $directories = [],
         array $apiKeys = [],
-        ?PropertyInfoExtractor $propertyInfo = null,
+        ?PropertyInfoExtractorInterface $propertyInfo = null,
         $serializer = null,
     ): Instructrice {
         $propertyInfo ??= self::createPropertyInfoExtractor();
@@ -163,7 +164,7 @@ class InstructriceFactory
     /**
      * @param list<string> $directories
      */
-    public static function createApiPlatformSchemaFactory(PropertyInfoExtractor $propertyInfo, array $directories): ApiPlatformSchemaFactory
+    public static function createApiPlatformSchemaFactory(PropertyInfoExtractorInterface $propertyInfo, array $directories): ApiPlatformSchemaFactory
     {
         $resourceClassResolver = new ResourceClassResolver(
             new AttributesResourceNameCollectionFactory($directories)
@@ -218,7 +219,7 @@ class InstructriceFactory
         );
     }
 
-    public static function createSerializer(PropertyInfoExtractor $propertyInfo): Serializer
+    public static function createSerializer(PropertyInfoExtractorInterface $propertyInfo): Serializer
     {
         return new Serializer(
             [
