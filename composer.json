@@ -50,8 +50,7 @@
     },
     "config": {
         "allow-plugins": {
-            "ergebnis/composer-normalize": true,
-            "php-http/discovery": true
+            "ergebnis/composer-normalize": true
         }
     }
 }
