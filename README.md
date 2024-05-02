@@ -49,7 +49,7 @@ use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
 use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
 
 $instructrice = InstructriceFactory::create(
-    defaultLlm: Ollama::HERMES2PRO,
+    defaultLlm: Ollama::HERMES2PRO_MISTRAL_7B,
     apiKeys: [ // Unless you inject keys here, api keys will be fetched from environment variables
         OpenAi::class => $openAiApiKey,
         Anthropic::class => $anthropicApiKey,
@@ -192,14 +192,15 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 #### Fine Tune
 
-|                          | 💼                   | ctx  | Base         | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [DeepInfra][d_m] | [OctoAI][o_m] |
-|--------------------------|----------------------|------|--------------|---------------|------------------|-----------------|------------------|---------------|
-| [Hermes 2 Pro][hf_h2p]   | [✅][apache2]         |      | Mistral 7B   | 🧩            | 🧩               |                 |                  | 🧩            |
-| [FireFunction V1][hf_ff] | [✅][apache2]         |      | Mixtral 8x7B |               | 🚀               |                 |                  |               |
-| WizardLM 2 7B            | [✅][apache2]         |      | Mistral 7B   |               |                  |                 | 🧩               |               |
-| WizardLM 2 8x22B         | [✅][apache2]         |      | Mixtral 8x7B |               |                  | 📄              | 🧩               | 🧩            |
-| [Capybara 34B][hf_capy]  | [✅][apache2]         | 200k | Yi 34B       |               | 🧩               |                 |                  |               |
-| [Dolphin 2.9][hf_d29]    | [⚠️][llama3_license] | 8k   | Llama3 8B    | 🧩            |                  | 📄              | 🧩               |               |
+|                                       | 💼                   | ctx  | Base         | [Ollama][o_m] | [Fireworks][f_m] | [Together][t_m] | [DeepInfra][d_m] | [OctoAI][o_m] |
+|---------------------------------------|----------------------|------|--------------|---------------|------------------|-----------------|------------------|---------------|
+| [Hermes 2 Pro Mistral 7B][hf_h2p]     | [✅][apache2]         |      | Mistral 7B   | 🧩            | 🧩               |                 |                  | 🧩            |
+| [FireFunction V1][hf_ff]              | [✅][apache2]         |      | Mixtral 8x7B |               | 🚀               |                 |                  |               |
+| WizardLM 2 7B                         | [✅][apache2]         |      | Mistral 7B   |               |                  |                 | 🧩               |               |
+| WizardLM 2 8x22B                      | [✅][apache2]         |      | Mixtral 8x7B |               |                  | 📄              | 🧩               | 🧩            |
+| [Capybara 34B][hf_capy]               | [✅][apache2]         | 200k | Yi 34B       |               | 🧩               |                 |                  |               |
+| [Hermes 2 Pro Llama3 8B][hf_h2p_l38b] | [⚠️][llama3_license] |      | Llama3 8B    | 📄            |                  |                 |                  |               |
+| [Dolphin 2.9][hf_d29]                 | [⚠️][llama3_license] | 8k   | Llama3 8B    | 🧩            |                  | 📄              | 🧩               |               |
 
 ### Proprietary
 
@@ -365,6 +366,7 @@ Leverage that to test examples, add few shots, evals?
 [cc_nc]: https://en.wikipedia.org/wiki/Creative_Commons_NonCommercial_license
 [hf_m7b]: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2
 [hf_h2p]: https://huggingface.co/NousResearch/Hermes-2-Pro-Mistral-7B
+[hf_h2p_l38b]: https://huggingface.co/NousResearch/Hermes-2-Pro-Llama-3-8B
 [hf_ff]: https://huggingface.co/fireworks-ai/firefunction-v1
 [hf_mx22]: https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1
 [hf_mx7]: https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1

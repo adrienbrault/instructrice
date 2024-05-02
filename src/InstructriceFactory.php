@@ -72,7 +72,7 @@ class InstructriceFactory
         );
 
         return new Instructrice(
-            $defaultLlm ?? Ollama::HERMES2PRO,
+            $defaultLlm ?? Ollama::HERMES2PRO_MISTRAL_7B,
             $llmFactory,
             $logger,
             $schemaFactory,
