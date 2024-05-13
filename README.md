@@ -207,6 +207,7 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 | Provider   | Model               | ctx  |         |
 |------------|---------------------|------|---------|
 | Mistral    | Large               | 32k  | ✅ 26/s  |
+| OpenAI     | GPT-4o              | 128k | 🚀      |  
 | OpenAI     | GPT-4 Turbo         | 128k | 🚀 24/s |  
 | OpenAI     | GPT-3.5 Turbo       | 16k  | 🚀 72/s |  
 | Anthropic  | Claude 3 Haiku      | 200k | 📄 88/s |  
@@ -320,6 +321,7 @@ Leverage that to test examples, add few shots, evals?
 [api_platform_json_schema]: https://github.com/api-platform/json-schema
 [llm_logging]: https://llm.datasette.io/en/stable/logging.html
 [openai_pricing]: https://openai.com/pricing
+[openai_gpt4o]: https://platform.openai.com/docs/models/gpt-4o
 [openai_gpt4t]: https://platform.openai.com/docs/models/gpt-4-turbo-and-gpt-4
 [openai_gpt35t]: https://platform.openai.com/docs/models/gpt-3-5-turbo
 [openai_apikey_create]: https://platform.openai.com/api-keys
