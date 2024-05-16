@@ -14,6 +14,7 @@ enum Ollama: string implements ProviderModel
 {
     case HERMES2PRO_MISTRAL_7B = 'adrienbrault/nous-hermes2pro:';
     case HERMES2PRO_LLAMA3_8B = 'adrienbrault/nous-hermes2pro-llama3-8b:';
+    case HERMES2THETA_LLAMA3_8B = 'adrienbrault/nous-hermes2theta-llama3-8b:';
     case DOLPHINCODER7 = 'dolphincoder:7b-starcoder2-';
     case DOLPHINCODER15 = 'dolphincoder:15b-starcoder2-';
     case STABLELM2_16 = 'stablelm2:1.6b-chat-';
@@ -33,7 +34,7 @@ enum Ollama: string implements ProviderModel
     {
         $strategy = match ($this) {
             self::COMMANDR, self::COMMANDRPLUS => null,
-            self::HERMES2PRO_LLAMA3_8B => null, // does not work with json mode
+            self::HERMES2PRO_LLAMA3_8B, self::HERMES2THETA_LLAMA3_8B => null, // does not work with json mode
             self::LLAMA3_8B => null, // json mode makes it slower
             default => OpenAiJsonStrategy::JSON,
         };
@@ -59,7 +60,7 @@ enum Ollama: string implements ProviderModel
             $this->value . $defaultVersion,
             match ($this) {
                 self::HERMES2PRO_MISTRAL_7B => 8000,
-                self::HERMES2PRO_LLAMA3_8B => 8000,
+                self::HERMES2PRO_LLAMA3_8B, self::HERMES2THETA_LLAMA3_8B => 8000,
                 self::DOLPHINCODER7 => 4000,
                 self::DOLPHINCODER15 => 4000,
                 self::STABLELM2_16 => 4000,
@@ -71,6 +72,7 @@ enum Ollama: string implements ProviderModel
             match ($this) {
                 self::HERMES2PRO_MISTRAL_7B => 'Nous Hermes 2 Pro Mistral 7B',
                 self::HERMES2PRO_LLAMA3_8B => 'Nous Hermes 2 Pro Llama3 8B',
+                self::HERMES2THETA_LLAMA3_8B => 'Nous Hermes 2 Theta Llama3 8B',
                 self::DOLPHINCODER7 => 'DolphinCoder 7B',
                 self::DOLPHINCODER15 => 'DolphinCoder 15B',
                 self::STABLELM2_16 => 'StableLM2 1.6B',
