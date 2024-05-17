@@ -7,8 +7,6 @@ namespace AdrienBrault\Instructrice\LLM\Provider;
 use AdrienBrault\Instructrice\LLM\Cost;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 
-use function Psl\Json\encode;
-
 enum Anthropic: string implements ProviderModel
 {
     case CLAUDE3_HAIKU = 'claude-3-haiku-20240307';
@@ -23,24 +21,7 @@ enum Anthropic: string implements ProviderModel
     public function createConfig(string $apiKey): LLMConfig
     {
         $systemPrompt = function ($schema, string $prompt): string {
-            $encodedSchema = encode($schema);
-
-            return <<<PROMPT
-                You are a helpful assistant that answers ONLY in JSON.
-
-                <schema>
-                {$encodedSchema}
-                </schema>
-
-                <instructions>
-                {$prompt}
-                </instructions>
-
-                Reply with:
-                ```json
-                {"...
-                ```
-                PROMPT;
+            return $prompt;
         };
 
         return new LLMConfig(
