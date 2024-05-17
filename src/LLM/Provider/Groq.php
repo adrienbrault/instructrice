@@ -6,6 +6,7 @@ namespace AdrienBrault\Instructrice\LLM\Provider;
 
 use AdrienBrault\Instructrice\LLM\Cost;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\OpenAiToolStrategy;
 
 enum Groq: string implements ProviderModel
 {
@@ -41,6 +42,10 @@ enum Groq: string implements ProviderModel
                 self::LLAMA3_8B => 0.1,
                 self::LLAMA3_70B => 0.8,
             }),
+            strategy: match ($this) {
+                self::GEMMA_7B => null,
+                default => OpenAiToolStrategy::FUNCTION,
+            },
             headers: [
                 'Authorization' => 'Bearer ' . $apiKey,
             ],
