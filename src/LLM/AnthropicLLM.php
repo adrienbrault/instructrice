@@ -16,6 +16,7 @@ use function Psl\Type\literal_scalar;
 use function Psl\Type\optional;
 use function Psl\Type\shape;
 use function Psl\Type\string;
+use function Psl\Type\union;
 
 class AnthropicLLM implements LLMInterface
 {
@@ -47,6 +48,17 @@ class AnthropicLLM implements LLMInterface
             'max_tokens' => 4000,
             'stream' => true,
             'system' => \call_user_func($this->config->systemPrompt, $schema, $prompt),
+            'tools' => [
+                [
+                    'name' => 'extract',
+                    'description' => 'Extract the relevant information',
+                    'input_schema' => $schema,
+                ],
+            ],
+            'tool_choice' => [
+                'type' => 'tool',
+                'name' => 'extract',
+            ],
         ];
 
         // Tool and json modes do not support streaming.
@@ -61,7 +73,7 @@ class AnthropicLLM implements LLMInterface
             [
                 ...$this->config->headers,
                 'anthropic-version' => '2023-06-01',
-                'anthropic-beta' => 'tools-2024-04-04',
+                'anthropic-beta' => 'tools-2024-05-16',
             ],
         );
 
@@ -82,9 +94,16 @@ class AnthropicLLM implements LLMInterface
         $contentBlockDeltaType = shape([
             'type' => literal_scalar('content_block_delta'),
             'delta' => optional(
-                shape([
-                    'text' => optional(string()),
-                ], true)
+                union(
+                    shape([
+                        'type' => literal_scalar('text_delta'),
+                        'text' => string(),
+                    ], true),
+                    shape([
+                        'type' => literal_scalar('input_json_delta'),
+                        'partial_json' => string(),
+                    ], true),
+                )
             ),
             'usage' => optional(
                 shape([
@@ -118,7 +137,7 @@ class AnthropicLLM implements LLMInterface
             $promptTokens = $data['usage']['input_tokens'] ?? $promptTokens;
             $completionTokens = $data['usage']['output_tokens'] ?? $completionTokens;
 
-            $content .= $data['delta']['text'] ?? '';
+            $content .= $data['delta']['partial_json'] ?? '';
 
             if ($content === $lastContent) {
                 // If the content hasn't changed, we stop
