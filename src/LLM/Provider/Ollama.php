@@ -18,6 +18,12 @@ enum Ollama: string implements ProviderModel
     case HERMES2PRO_MISTRAL_7B = 'adrienbrault/nous-hermes2pro:';
     case HERMES2PRO_LLAMA3_8B = 'adrienbrault/nous-hermes2pro-llama3-8b:';
     case HERMES2THETA_LLAMA3_8B = 'adrienbrault/nous-hermes2theta-llama3-8b:';
+    case PHI3_MINI_4K = 'phi3:3.8b-mini-4k-instruct-';
+    case PHI3_MINI_128K = 'phi3:3.8b-mini-128k-instruct-';
+    case PHI3_MEDIUM_4K = 'phi3:14b-medium-4k-instruct-';
+    case PHI3_MEDIUM_128K = 'phi3:14b-medium-128k-instruct-';
+    case MISTRAL_7B = 'mistral:7b-instruct-v0.3-';
+    case MIXTRAL_8x7B = 'mixtral:8x7b-instruct-v0.1-';
     case DOLPHINCODER7 = 'dolphincoder:7b-starcoder2-';
     case DOLPHINCODER15 = 'dolphincoder:15b-starcoder2-';
     case STABLELM2_16 = 'stablelm2:1.6b-chat-';
@@ -76,6 +82,8 @@ enum Ollama: string implements ProviderModel
         $defaultVersion = match ($this) {
             self::COMMANDRPLUS => 'q2_K_M',
             self::STABLELM2_16 => 'q8_0',
+            self::PHI3_MINI_4K, self::PHI3_MINI_128K => 'q5_K_M',
+            self::PHI3_MEDIUM_4K, self::PHI3_MEDIUM_128K => 'q5_K_M',
             default => 'q4_K_M',
         };
 
@@ -87,12 +95,22 @@ enum Ollama: string implements ProviderModel
             self::STABLELM2_16 => 4000,
             self::COMMANDR => 128000,
             self::COMMANDRPLUS => 128000,
+            self::PHI3_MINI_4K, self::PHI3_MEDIUM_4K => 4000,
+            self::PHI3_MINI_128K, self::PHI3_MEDIUM_128K => 128000,
+            self::MISTRAL_7B => 32000,
+            self::MIXTRAL_8x7B => 32000,
             self::LLAMA3_8B, self::LLAMA3_70B_DOLPHIN, self::LLAMA3_70B => 8000,
         };
         $label = match ($this) {
             self::HERMES2PRO_MISTRAL_7B => 'Nous Hermes 2 Pro Mistral 7B',
             self::HERMES2PRO_LLAMA3_8B => 'Nous Hermes 2 Pro Llama3 8B',
             self::HERMES2THETA_LLAMA3_8B => 'Nous Hermes 2 Theta Llama3 8B',
+            self::PHI3_MINI_4K => 'Phi-3 Mini 4K',
+            self::PHI3_MINI_128K => 'Phi-3 Mini 128K',
+            self::PHI3_MEDIUM_4K => 'Phi-3 Medium 4K',
+            self::PHI3_MEDIUM_128K => 'Phi-3 Medium 128K',
+            self::MISTRAL_7B => 'Mistral 7B',
+            self::MIXTRAL_8x7B => 'Mixtral 8x7B',
             self::DOLPHINCODER7 => 'DolphinCoder 7B',
             self::DOLPHINCODER15 => 'DolphinCoder 15B',
             self::STABLELM2_16 => 'StableLM2 1.6B',
