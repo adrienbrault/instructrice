@@ -208,19 +208,21 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
 ### Proprietary
 
-| Provider   | Model               | ctx  |         |
-|------------|---------------------|------|---------|
-| Mistral    | Large               | 32k  | ✅ 26/s  |
-| OpenAI     | GPT-4o              | 128k | 🚀      |  
-| OpenAI     | GPT-4 Turbo         | 128k | 🚀 24/s |  
-| OpenAI     | GPT-3.5 Turbo       | 16k  | 🚀 72/s |  
-| Anthropic  | Claude 3 Haiku      | 200k | 📄 88/s |  
-| Anthropic  | Claude 3 Sonnet     | 200k | 📄 59/s |  
-| Anthropic  | Claude 3 Opus       | 200k | 📄 26/s |  
-| Perplexity | Sonar Small Chat    | 16k  | 📄      |  
-| Perplexity | Sonar Small Online  | 12k  | 📄      |  
-| Perplexity | Sonar Medium Chat   | 16k  | 📄      |  
-| Perplexity | Sonar Medium Online | 12k  | 📄      |
+| Provider   | Model               | ctx   |          |
+|------------|---------------------|-------|----------|
+| Mistral    | Large               | 32k   | ✅ 26/s   |
+| OpenAI     | GPT-4o              | 128k  | 🚀       |  
+| OpenAI     | GPT-4 Turbo         | 128k  | 🚀 24/s  |  
+| OpenAI     | GPT-3.5 Turbo       | 16k   | 🚀 72/s  |  
+| Anthropic  | Claude 3 Haiku      | 200k  | 📄 88/s  |  
+| Anthropic  | Claude 3 Sonnet     | 200k  | 📄 59/s  |  
+| Anthropic  | Claude 3 Opus       | 200k  | 📄 26/s  |  
+| Google     | Gemini 1.5 Flash    | 1000k | 📄 136/s |  
+| Google     | Gemini 1.5 Pro      | 1000k | 📄 57/s  |  
+| Perplexity | Sonar Small Chat    | 16k   | 📄       |  
+| Perplexity | Sonar Small Online  | 12k   | 📄       |  
+| Perplexity | Sonar Medium Chat   | 16k   | 📄       |  
+| Perplexity | Sonar Medium Online | 12k   | 📄       |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 

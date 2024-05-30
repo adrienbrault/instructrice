@@ -16,5 +16,6 @@ interface StreamingClientInterface
         string $url,
         mixed $jsonBody,
         array $headers = [],
+        bool $serverSentEvents = true
     ): iterable;
 }

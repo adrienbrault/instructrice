@@ -18,12 +18,20 @@ class SymfonyStreamingClient implements StreamingClientInterface
     ) {
     }
 
-    public function request(string $method, string $url, mixed $jsonBody, array $headers = []): iterable
-    {
-        $eventSourceHttpClient = new EventSourceHttpClient($this->client);
+    public function request(
+        string $method,
+        string $url,
+        mixed $jsonBody,
+        array $headers = [],
+        bool $serverSentEvents = true
+    ): iterable {
+        $client = $this->client;
+        if ($serverSentEvents) {
+            $client = new EventSourceHttpClient($this->client);
+        }
 
         try {
-            $response = $eventSourceHttpClient->request(
+            $response = $client->request(
                 $method,
                 $url,
                 [
@@ -40,12 +48,16 @@ class SymfonyStreamingClient implements StreamingClientInterface
             throw $e;
         }
 
-        foreach ($eventSourceHttpClient->stream([$response]) as $r => $chunk) {
+        foreach ($client->stream([$response]) as $r => $chunk) {
             if ($chunk->isTimeout()) {
                 continue;
             }
 
             if (! $chunk instanceof ServerSentEvent) {
+                if (! $serverSentEvents) {
+                    yield $chunk->getContent();
+                }
+
                 continue;
             }
 

@@ -6,6 +6,7 @@ namespace AdrienBrault\Instructrice\LLM;
 
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\Client\AnthropicLLM;
+use AdrienBrault\Instructrice\LLM\Client\GoogleLLM;
 use AdrienBrault\Instructrice\LLM\Client\OpenAiLLM;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
@@ -13,6 +14,7 @@ use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
 use AdrienBrault\Instructrice\LLM\Provider\Anyscale;
 use AdrienBrault\Instructrice\LLM\Provider\DeepInfra;
 use AdrienBrault\Instructrice\LLM\Provider\Fireworks;
+use AdrienBrault\Instructrice\LLM\Provider\Google;
 use AdrienBrault\Instructrice\LLM\Provider\Groq;
 use AdrienBrault\Instructrice\LLM\Provider\Mistral;
 use AdrienBrault\Instructrice\LLM\Provider\OctoAI;
@@ -60,6 +62,16 @@ class LLMFactory
             );
         }
 
+        if (str_contains($config->uri, 'googleapis.com')) {
+            return new GoogleLLM(
+                $config,
+                $this->client,
+                $this->logger,
+                $this->tokenizer,
+                $this->parser,
+            );
+        }
+
         return new OpenAiLLM(
             $config,
             $this->client,
@@ -78,6 +90,7 @@ class LLMFactory
             ...OpenAi::cases(),
             ...Ollama::cases(),
             ...Anthropic::cases(),
+            ...Google::cases(),
             ...Mistral::cases(),
             ...Groq::cases(),
             ...Fireworks::cases(),

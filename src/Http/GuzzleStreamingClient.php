@@ -20,8 +20,13 @@ class GuzzleStreamingClient implements StreamingClientInterface
     ) {
     }
 
-    public function request(string $method, string $url, mixed $jsonBody, array $headers = []): iterable
-    {
+    public function request(
+        string $method,
+        string $url,
+        mixed $jsonBody,
+        array $headers = [],
+        bool $serverSentEvents = true
+    ): iterable {
         try {
             $response = $this->client->request(
                 $method,
@@ -42,6 +47,11 @@ class GuzzleStreamingClient implements StreamingClientInterface
 
         while (! $response->getBody()->eof()) {
             $line = self::readLine($response->getBody());
+
+            if (! $serverSentEvents) {
+                yield $line;
+                continue;
+            }
 
             if (! str_starts_with($line, 'data:')) {
                 continue;
