@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM\Provider;
 
-use AdrienBrault\Instructrice\LLM\Cost;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
 
 use function Psl\Json\encode;
+use function Psl\Regex\first_match;
+use function Psl\Type\int;
+use function Psl\Type\shape;
+use function Psl\Type\string;
 
 enum Ollama: string implements ProviderModel
 {
@@ -23,11 +26,39 @@ enum Ollama: string implements ProviderModel
     case LLAMA3_8B = 'llama3:8b-instruct-';
     case LLAMA3_70B = 'llama3:70b-instruct-';
     case LLAMA3_70B_DOLPHIN = 'dolphin-llama3:8b-v2.9-';
-    case PHI3_38_128K = 'herald/phi3-128k';
 
     public function getApiKeyEnvVar(): ?string
     {
         return null; // always enable
+    }
+
+    /**
+     * If you need to customize something that is not part of the arguments, instantiate the LLMConfig yourself!
+     */
+    public static function create(
+        string $model,
+        ?int $contextLength = null,
+        ?string $label = null,
+        ?OpenAiJsonStrategy $strategy = OpenAiJsonStrategy::JSON,
+    ): LLMConfig {
+        if ($contextLength === null) {
+            $matchType = shape([
+                0 => string(),
+                'digits' => int(),
+            ]);
+            $kDigits = first_match($model, '/\D(?P<digits>\d{1,3})k/', $matchType)['digits'] ?? 8;
+
+            $contextLength = $kDigits * 1000;
+        }
+
+        return new LLMConfig(
+            self::getURI(),
+            $model,
+            $contextLength,
+            $label ?? $model,
+            'Ollama',
+            strategy: $strategy,
+        );
     }
 
     public function createConfig(string $apiKey): LLMConfig
@@ -45,52 +76,46 @@ enum Ollama: string implements ProviderModel
         $defaultVersion = match ($this) {
             self::COMMANDRPLUS => 'q2_K_M',
             self::STABLELM2_16 => 'q8_0',
-            self::LLAMA3_70B => 'q4_0',
-            self::PHI3_38_128K => '',
             default => 'q4_K_M',
         };
 
-        $ollamaHost = getenv('OLLAMA_HOST') ?: 'http://localhost:11434';
-        if (! str_starts_with($ollamaHost, 'http')) {
-            $ollamaHost = 'http://' . $ollamaHost;
-        }
+        $contextLength = match ($this) {
+            self::HERMES2PRO_MISTRAL_7B => 8000,
+            self::HERMES2PRO_LLAMA3_8B, self::HERMES2THETA_LLAMA3_8B => 8000,
+            self::DOLPHINCODER7 => 4000,
+            self::DOLPHINCODER15 => 4000,
+            self::STABLELM2_16 => 4000,
+            self::COMMANDR => 128000,
+            self::COMMANDRPLUS => 128000,
+            self::LLAMA3_8B, self::LLAMA3_70B_DOLPHIN, self::LLAMA3_70B => 8000,
+        };
+        $label = match ($this) {
+            self::HERMES2PRO_MISTRAL_7B => 'Nous Hermes 2 Pro Mistral 7B',
+            self::HERMES2PRO_LLAMA3_8B => 'Nous Hermes 2 Pro Llama3 8B',
+            self::HERMES2THETA_LLAMA3_8B => 'Nous Hermes 2 Theta Llama3 8B',
+            self::DOLPHINCODER7 => 'DolphinCoder 7B',
+            self::DOLPHINCODER15 => 'DolphinCoder 15B',
+            self::STABLELM2_16 => 'StableLM2 1.6B',
+            self::COMMANDR => 'CommandR 35B',
+            self::COMMANDRPLUS => 'CommandR+ 104B',
+            self::LLAMA3_8B => 'Llama3 8B',
+            self::LLAMA3_70B => 'Llama3 70B',
+            self::LLAMA3_70B_DOLPHIN => 'Llama3 8B Dolphin 2.9',
+        };
+        $stopTokens = match ($this) {
+            self::LLAMA3_8B, self::LLAMA3_70B => ["```\n\n", '<|im_end|>', '<|eot_id|>', "\t\n\t\n"],
+            default => null,
+        };
 
         return new LLMConfig(
-            $ollamaHost . '/v1/chat/completions',
+            self::getURI(),
             $this->value . $defaultVersion,
-            match ($this) {
-                self::HERMES2PRO_MISTRAL_7B => 8000,
-                self::HERMES2PRO_LLAMA3_8B, self::HERMES2THETA_LLAMA3_8B => 8000,
-                self::DOLPHINCODER7 => 4000,
-                self::DOLPHINCODER15 => 4000,
-                self::STABLELM2_16 => 4000,
-                self::COMMANDR => 128000,
-                self::COMMANDRPLUS => 128000,
-                self::PHI3_38_128K => 128000,
-                self::LLAMA3_8B, self::LLAMA3_70B_DOLPHIN, self::LLAMA3_70B => 8000,
-            },
-            match ($this) {
-                self::HERMES2PRO_MISTRAL_7B => 'Nous Hermes 2 Pro Mistral 7B',
-                self::HERMES2PRO_LLAMA3_8B => 'Nous Hermes 2 Pro Llama3 8B',
-                self::HERMES2THETA_LLAMA3_8B => 'Nous Hermes 2 Theta Llama3 8B',
-                self::DOLPHINCODER7 => 'DolphinCoder 7B',
-                self::DOLPHINCODER15 => 'DolphinCoder 15B',
-                self::STABLELM2_16 => 'StableLM2 1.6B',
-                self::COMMANDR => 'CommandR 35B',
-                self::COMMANDRPLUS => 'CommandR+ 104B',
-                self::LLAMA3_8B => 'Llama3 8B',
-                self::LLAMA3_70B => 'Llama3 70B',
-                self::LLAMA3_70B_DOLPHIN => 'Llama3 8B Dolphin 2.9',
-                self::PHI3_38_128K => 'Phi-3-Mini-128K',
-            },
+            $contextLength,
+            $label,
             'Ollama',
-            Cost::create(0),
-            $strategy,
-            $systemPrompt,
-            stopTokens: match ($this) {
-                self::LLAMA3_8B, self::LLAMA3_70B => ["```\n\n", '<|im_end|>', '<|eot_id|>', "\t\n\t\n"],
-                default => null,
-            }
+            strategy: $strategy,
+            systemPrompt: $systemPrompt,
+            stopTokens: $stopTokens
         );
     }
 
@@ -123,5 +148,16 @@ enum Ollama: string implements ProviderModel
                 {$prompt}
                 PROMPT;
         };
+    }
+
+    public static function getURI(?string $host = null): string
+    {
+        $host ??= getenv('OLLAMA_HOST') ?: 'http://localhost:11434';
+
+        if (! str_starts_with($host, 'http')) {
+            $host = 'http://' . $host;
+        }
+
+        return $host . '/v1/chat/completions';
     }
 }

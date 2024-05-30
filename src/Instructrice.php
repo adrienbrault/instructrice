@@ -27,7 +27,7 @@ use function Psl\Type\vec;
 class Instructrice
 {
     public function __construct(
-        private readonly ProviderModel $defaultLlm,
+        private readonly ProviderModel|LLMConfig $defaultLlm,
         private readonly LLMFactory $llmFactory,
         private readonly LoggerInterface $logger,
         private readonly SchemaFactory $schemaFactory,

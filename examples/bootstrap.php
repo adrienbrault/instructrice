@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 use AdrienBrault\Instructrice\InstructriceFactory;
+use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\Provider\Ollama;
 use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -44,9 +46,20 @@ return function (callable $do, ?ProviderModel $llm = null) {
     $llmFactory = InstructriceFactory::createLLMFactory(logger: $logger);
 
     if ($llm === null) {
+        $models = $llmFactory->getAvailableProviderModels();
+        $models[] = Ollama::create(
+            'codestral:22b-v0.1-q5_K_M',
+            32000,
+        );
         $providerModels = reindex(
-            $llmFactory->getAvailableProviderModels(),
-            fn (ProviderModel $providerModel) => $providerModel->createConfig('123')->getLabel(),
+            $models,
+            function (ProviderModel|LLMConfig $providerModel) {
+                if ($providerModel instanceof LLMConfig) {
+                    return $providerModel->getLabel();
+                }
+
+                return $providerModel->createConfig('123')->getLabel();
+            },
         );
 
         $questionSection = $output->section();
@@ -58,10 +71,11 @@ return function (callable $do, ?ProviderModel $llm = null) {
         ));
         $questionSection->clear();
         $llm = $providerModels[$llmToUse];
-        assert($llm instanceof ProviderModel);
     }
 
-    $output->writeln(sprintf('Using LLM: <info>%s</info>', $llm->createConfig('123')->getLabel()));
+    $llmConfig = $llm instanceof ProviderModel ? $llm->createConfig('123') : $llm;
+
+    $output->writeln(sprintf('Using LLM: <info>%s</info>', $llmConfig->getLabel()));
     $output->writeln('');
 
     $instructrice = InstructriceFactory::create(

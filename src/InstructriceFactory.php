@@ -8,6 +8,7 @@ use AdrienBrault\Instructrice\Attribute\Prompt;
 use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
 use AdrienBrault\Instructrice\LLM\LLMChunk;
+use AdrienBrault\Instructrice\LLM\LLMConfig;
 use AdrienBrault\Instructrice\LLM\LLMFactory;
 use AdrienBrault\Instructrice\LLM\Provider\Ollama;
 use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
@@ -55,7 +56,7 @@ class InstructriceFactory
      * @param (SerializerInterface&DenormalizerInterface)|null $serializer
      */
     public static function create(
-        ProviderModel|null $defaultLlm = null,
+        ProviderModel|LLMConfig|null $defaultLlm = null,
         LoggerInterface $logger = new NullLogger(),
         ?LLMFactory $llmFactory = null,
         array $directories = [],

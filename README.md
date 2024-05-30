@@ -226,17 +226,33 @@ Would be a good use case / showcase of this library/cli?
 
 ### Custom Models
 
+#### Ollama
+
+If you want to use an Ollama model that is not available in the enum, you can use the `Ollama::create` static method:
+
+```php
+use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\Cost;
+use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
+use AdrienBrault\Instructrice\LLM\Provider\Ollama;
+
+$instructrice->get(
+    ...,
+    llm: Ollama::create(
+        'codestral:22b-v0.1-q5_K_M', // check its license first!
+        32000,
+    ),
+);
+```
+
+#### OpenAI
+
 You can also use any OpenAI compatible api by passing an [LLMConfig](src/LLM/LLMConfig.php):
 
 ```php
-use AdrienBrault\Instructrice\InstructriceFactory;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 use AdrienBrault\Instructrice\LLM\Cost;
-use AdrienBrault\Instructrice\LLM\OpenAiLLM;
 use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
-use AdrienBrault\Instructrice\LLM\Provider\ProviderModel;
-use AdrienBrault\Instructrice\Http\GuzzleStreamingClient;
-use GuzzleHttp\Client;
 
 $instructrice->get(
     ...,
