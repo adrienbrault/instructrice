@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AdrienBrault\Instructrice\LLM;
 
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
+use AdrienBrault\Instructrice\LLM\Client\AnthropicLLM;
+use AdrienBrault\Instructrice\LLM\Client\OpenAiLLM;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use AdrienBrault\Instructrice\LLM\Provider\Anthropic;

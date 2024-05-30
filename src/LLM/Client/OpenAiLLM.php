@@ -2,10 +2,15 @@
 
 declare(strict_types=1);
 
-namespace AdrienBrault\Instructrice\LLM;
+namespace AdrienBrault\Instructrice\LLM\Client;
 
 use AdrienBrault\Instructrice\Exception\LLMException;
 use AdrienBrault\Instructrice\Http\StreamingClientInterface;
+use AdrienBrault\Instructrice\LLM\LLMChunk;
+use AdrienBrault\Instructrice\LLM\LLMConfig;
+use AdrienBrault\Instructrice\LLM\LLMInterface;
+use AdrienBrault\Instructrice\LLM\OpenAiJsonStrategy;
+use AdrienBrault\Instructrice\LLM\OpenAiToolStrategy;
 use AdrienBrault\Instructrice\LLM\Parser\JsonParser;
 use AdrienBrault\Instructrice\LLM\Parser\ParserInterface;
 use DateTimeImmutable;
