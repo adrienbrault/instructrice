@@ -8,40 +8,26 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 class Model
 {
-    #[Prompt('The model name like "GPT 3.5 Turbo". Omit price.')]
+    #[Prompt('The provider/software to run the LLM.')]
+    public string $provider;
+
+    #[Prompt('The model name like "GPT 3.5 Turbo".')]
     public string $name;
 
-    #[Prompt('The model id for the api, like gpt-3.5-turbo-1234 or meta/llama3-8b')]
-    public ?string $slug = null;
-
-    #[Prompt('The context length/window.')]
+    #[Prompt('The context length/window, if 32k use 32000.')]
     public ?int $context = null;
 
-    #[Prompt('$ per million tokens')]
-    public ?float $promptCost = null;
-
-    #[Prompt('$ per million tokens')]
-    public ?float $completionCost = null;
+    #[Prompt('One of text, json, function.')]
+    public ?string $extractionStrategy = null;
 }
 
-/*
-php examples/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
-php examples/list-models.php <(curl -s https://r.jina.ai/https://deepinfra.com/models/text-generation)
-php examples/list-models.php <(curl -s https://r.jina.ai/https://fireworks.ai/models)
-php examples/list-models.php <(curl -s https://r.jina.ai/https://docs.mistral.ai/getting-started/models/)
-php examples/list-models.php <(curl -s https://r.jina.ai/https://docs.together.ai/docs/inference-models)
-*/
 
 $demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInterface $output) {
-    if ($context === null) {
-        throw new InvalidArgumentException('Missing context');
-    }
-
     $instructrice->list(
         Model::class,
-        $context,
-        'Extract information present in the context about ALL the language models. Omit values you arent sure about.',
+        $context ?? file_get_contents(__DIR__ . '/../README.md'),
+        'Extract language models supported by instructrice.',
         [
             'truncate_automatically' => true,
             'all_required' => true,
@@ -51,50 +37,5 @@ $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInter
 });
 
 /*
-php examples/list-models.php <(curl -s https://r.jina.ai/https://openrouter.ai/docs)
-
-array:6 [
-  0 => Model^ {#260
-    +name: "Lynn: Llama 3 Soliloquy 8B"
-    +slug: "lynn/soliloquy-l3"
-    +context: 24576
-    +promptCost: 0.0
-    +completionCost: 0.0
-  }
-  1 => Model^ {#263
-    +name: "Nous: Capybara 7B (free)"
-    +slug: "nousresearch/nous-capybara-7b:free"
-    +context: 4096
-    +promptCost: 0.0
-    +completionCost: 0.0
-  }
-  2 => Model^ {#293
-    +name: "Mistral 7B Instruct (free)"
-    +slug: "mistralai/mistral-7b-instruct:free"
-    +context: 32768
-    +promptCost: 0.0
-    +completionCost: 0.0
-  }
-  3 => Model^ {#241
-    +name: "OpenChat 3.5 (free)"
-    +slug: "openchat/openchat-7b:free"
-    +context: 8192
-    +promptCost: 0.0
-    +completionCost: 0.0
-  }
-  4 => Model^ {#244
-    +name: "MythoMist 7B (free)"
-    +slug: "gryphe/mythomist-7b:free"
-    +context: 32768
-    +promptCost: 0.0
-    +completionCost: 0.0
-  }
-  5 => Model^ {#304
-    +name: "Toppy M 7B (free)"
-    +slug: null
-    +context: null
-    +promptCost: null
-    +completionCost: null
-  }
-]
+php examples/list-models.php
 */
