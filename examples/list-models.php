@@ -21,12 +21,16 @@ class Model
     public ?string $extractionStrategy = null;
 }
 
-
 $demo = require __DIR__ . '/bootstrap.php';
 $demo(function (Instructrice $instructrice, ?string $context, ConsoleOutputInterface $output) {
+    if ($context === null) {
+        $context = file_get_contents(__DIR__ . '/../README.md');
+        assert($context !== false);
+    }
+
     $instructrice->list(
         Model::class,
-        $context ?? file_get_contents(__DIR__ . '/../README.md'),
+        $context,
         'Extract language models supported by instructrice.',
         [
             'truncate_automatically' => true,

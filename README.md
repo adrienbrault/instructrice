@@ -49,7 +49,7 @@ use AdrienBrault\Instructrice\LLM\Provider\OpenAi;
 use AdrienBrault\Instructrice\LLM\Provider\Anthropic;
 
 $instructrice = InstructriceFactory::create(
-    defaultLlm: Ollama::HERMES2PRO_MISTRAL_7B,
+    defaultLlm: Ollama::HERMES2THETA_LLAMA3_8B,
     apiKeys: [ // Unless you inject keys here, api keys will be fetched from environment variables
         OpenAi::class => $openAiApiKey,
         Anthropic::class => $anthropicApiKey,
