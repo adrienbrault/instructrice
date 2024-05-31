@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM\Provider;
 
+use AdrienBrault\Instructrice\LLM\Client\AnthropicLLM;
 use AdrienBrault\Instructrice\LLM\Cost;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 
@@ -63,7 +64,8 @@ enum Anthropic: string implements ProviderModel
             headers: [
                 'x-api-key' => $apiKey,
             ],
-            docUrl: 'https://docs.anthropic.com/claude/docs/models-overview'
+            docUrl: 'https://docs.anthropic.com/claude/docs/models-overview',
+            llmClass: AnthropicLLM::class,
         );
     }
 }

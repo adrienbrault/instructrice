@@ -15,6 +15,7 @@ class LLMConfig
      * @param callable(mixed, string): string $systemPrompt
      * @param array<string, mixed>            $headers
      * @param list<string>                    $stopTokens
+     * @param class-string<LLMInterface>      $llmClass
      */
     public function __construct(
         public readonly string $uri,
@@ -29,6 +30,7 @@ class LLMConfig
         public readonly ?int $maxTokens = null,
         public readonly ?string $docUrl = null,
         array|false|null $stopTokens = null,
+        public readonly ?string $llmClass = null,
     ) {
         if ($stopTokens !== false) {
             $this->stopTokens = $stopTokens ?? ["```\n\n", '<|im_end|>', "\n\n\n", "\t\n\t\n"];

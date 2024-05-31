@@ -7,8 +7,8 @@ namespace AdrienBrault\Instructrice\LLM;
 class Cost
 {
     public function __construct(
-        public readonly float $millionPromptTokensPrice,
-        public readonly float $millionCompletionTokensPrice,
+        public readonly float $millionPromptTokensPrice = 0,
+        public readonly float $millionCompletionTokensPrice = 0,
     ) {
     }
 

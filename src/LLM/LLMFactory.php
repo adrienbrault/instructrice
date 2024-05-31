@@ -42,18 +42,23 @@ class LLMFactory
         private readonly array $apiKeys = [],
         private readonly Gpt3Tokenizer $tokenizer = new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
         private readonly ParserInterface $parser = new JsonParser(),
+        private readonly DSNParser $dsnParser = new DSNParser(),
     ) {
     }
 
-    public function create(LLMConfig|ProviderModel $config): LLMInterface
+    public function create(LLMConfig|ProviderModel|string $config): LLMInterface
     {
+        if (\is_string($config)) {
+            $config = $this->dsnParser->parse($config);
+        }
+
         if ($config instanceof ProviderModel) {
             $apiKey = $this->apiKeys[$config::class] ?? null;
             $apiKey ??= self::getProviderModelApiKey($config, true) ?? 'sk-xxx';
             $config = $config->createConfig($apiKey);
         }
 
-        if (str_contains($config->uri, 'api.anthropic.com')) {
+        if ($config->llmClass === AnthropicLLM::class) {
             return new AnthropicLLM(
                 $this->client,
                 $this->logger,
@@ -62,7 +67,7 @@ class LLMFactory
             );
         }
 
-        if (str_contains($config->uri, 'googleapis.com')) {
+        if ($config->llmClass === GoogleLLM::class) {
             return new GoogleLLM(
                 $config,
                 $this->client,
@@ -70,6 +75,10 @@ class LLMFactory
                 $this->tokenizer,
                 $this->parser,
             );
+        }
+
+        if ($config->llmClass !== OpenAiLLM::class && $config->llmClass !== null) {
+            throw new InvalidArgumentException(sprintf('Unknown LLM class %s', $config->llmClass));
         }
 
         return new OpenAiLLM(

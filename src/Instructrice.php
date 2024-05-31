@@ -27,7 +27,7 @@ use function Psl\Type\vec;
 class Instructrice
 {
     public function __construct(
-        private readonly ProviderModel|LLMConfig $defaultLlm,
+        private readonly ProviderModel|LLMConfig|string $defaultLlm,
         private readonly LLMFactory $llmFactory,
         private readonly LoggerInterface $logger,
         private readonly SchemaFactory $schemaFactory,
@@ -50,7 +50,7 @@ class Instructrice
         ?string $prompt = null,
         array $options = [],
         ?callable $onChunk = null,
-        LLMInterface|LLMConfig|ProviderModel|null $llm = null,
+        LLMInterface|LLMConfig|ProviderModel|string|null $llm = null,
     ) {
         $denormalize = fn (mixed $data) => $data;
         $schema = $type;
@@ -89,7 +89,7 @@ class Instructrice
         ?string $prompt = null,
         array $options = [],
         ?callable $onChunk = null,
-        LLMInterface|LLMConfig|ProviderModel|null $llm = null,
+        LLMInterface|LLMConfig|ProviderModel|string|null $llm = null,
     ): array {
         $wrappedWithProperty = 'list';
         $schema = [
@@ -145,7 +145,7 @@ class Instructrice
         string $prompt,
         bool $truncateAutomatically = false,
         ?callable $onChunk = null,
-        LLMInterface|LLMConfig|ProviderModel|null $llm = null,
+        LLMInterface|LLMConfig|ProviderModel|string|null $llm = null,
     ): mixed {
         if (($schema['type'] ?? null) !== 'object') {
             $wrappedWithProperty = 'inner';

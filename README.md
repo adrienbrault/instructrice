@@ -276,6 +276,53 @@ $instructrice->get(
 );
 ```
 
+#### DSN
+
+You may configure the LLM using a DSN:
+- the scheme is the provider: `openai`, `openai-http`, `anthropic`, `google`
+- the password is the api key
+- the host, port and path are the api endpoints without the scheme
+- the query string:
+  - `model` is the model name
+  - `context` is the context window
+  - `strategy` is the strategy to use:
+    - `json` for json mode with the schema in the prompt only
+    - `json_with_schema` for json mode with probably the completion perfectly constrained to the schema
+    - `tool_any`
+    - `tool_auto`
+    - `tool_function`
+
+Examples:
+```php
+use AdrienBrault\Instructrice\InstructriceFactory;
+
+$instructrice = InstructriceFactory::create(
+    defaultLlm: 'openai://:api_key@api.openai.com/v1/chat/completions?model=gpt-3.5-turbo&strategy=tool_auto&context=16000'
+);
+
+$instructrice->get(
+    ...,
+    llm: 'openai-http://localhost:11434?model=adrienbrault/nous-hermes2theta-llama3-8b&strategy=json&context=8000'
+);
+
+$instructrice->get(
+    ...,
+    llm: 'openai://:api_key@api.fireworks.ai/inference/v1/chat/completions?model=accounts/fireworks/models/llama-v3-70b-instruct&context=8000&strategy=json_with_schema'
+);
+
+$instructrice->get(
+    ...,
+    llm: 'google://:api_key@generativelanguage.googleapis.com/v1beta/models?model=gemini-1.5-flash&context=1000000'
+);
+
+$instructrice->get(
+    ...,
+    llm: 'anthropic://:api_key@api.anthropic.com?model=claude-3-haiku-20240307&context=200000'
+);
+```
+
+#### LLMInterface
+
 You may also implement [LLMInterface](src/LLM/LLMInterface.php).
 
 ## Acknowledgements

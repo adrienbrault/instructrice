@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AdrienBrault\Instructrice\LLM\Provider;
 
+use AdrienBrault\Instructrice\LLM\Client\GoogleLLM;
 use AdrienBrault\Instructrice\LLM\Cost;
 use AdrienBrault\Instructrice\LLM\LLMConfig;
 
@@ -36,7 +37,8 @@ enum Google: string implements ProviderModel
             headers: [
                 'x-api-key' => $apiKey,
             ],
-            docUrl: 'https://ai.google.dev/gemini-api/docs/models/gemini'
+            docUrl: 'https://ai.google.dev/gemini-api/docs/models/gemini',
+            llmClass: GoogleLLM::class,
         );
     }
 }
