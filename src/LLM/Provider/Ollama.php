@@ -32,6 +32,10 @@ enum Ollama: string implements ProviderModel
     case LLAMA3_8B = 'llama3:8b-instruct-';
     case LLAMA3_70B = 'llama3:70b-instruct-';
     case LLAMA3_70B_DOLPHIN = 'dolphin-llama3:8b-v2.9-';
+    case QWEN2_05B = 'qwen2:0.5b-instruct-';
+    case QWEN2_15B = 'qwen2:1.5b-instruct-';
+    case QWEN2_7B = 'qwen2:7b-instruct-';
+    case QWEN2_72B = 'qwen2:72b-instruct-';
 
     public function getApiKeyEnvVar(): ?string
     {
@@ -84,6 +88,7 @@ enum Ollama: string implements ProviderModel
             self::STABLELM2_16 => 'q8_0',
             self::PHI3_MINI_4K, self::PHI3_MINI_128K => 'q5_K_M',
             self::PHI3_MEDIUM_4K, self::PHI3_MEDIUM_128K => 'q5_K_M',
+            self::QWEN2_72B => 'q4_K_S',
             default => 'q4_K_M',
         };
 
@@ -100,6 +105,8 @@ enum Ollama: string implements ProviderModel
             self::MISTRAL_7B => 32000,
             self::MIXTRAL_8x7B => 32000,
             self::LLAMA3_8B, self::LLAMA3_70B_DOLPHIN, self::LLAMA3_70B => 8000,
+            self::QWEN2_7B, self::QWEN2_72B => 128000,
+            self::QWEN2_05B, self::QWEN2_15B => 32000,
         };
         $label = match ($this) {
             self::HERMES2PRO_MISTRAL_7B => 'Nous Hermes 2 Pro Mistral 7B',
@@ -119,6 +126,10 @@ enum Ollama: string implements ProviderModel
             self::LLAMA3_8B => 'Llama3 8B',
             self::LLAMA3_70B => 'Llama3 70B',
             self::LLAMA3_70B_DOLPHIN => 'Llama3 8B Dolphin 2.9',
+            self::QWEN2_05B => 'Qwen2 0.5B',
+            self::QWEN2_15B => 'Qwen2 1.5B',
+            self::QWEN2_7B => 'Qwen2 7B',
+            self::QWEN2_72B => 'Qwen2 72B',
         };
         $stopTokens = match ($this) {
             self::LLAMA3_8B, self::LLAMA3_70B => ["```\n\n", '<|im_end|>', '<|eot_id|>', "\t\n\t\n"],

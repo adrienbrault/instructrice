@@ -183,10 +183,14 @@ $instructrice->get(
 | [Phi-3-Mini-128K][hf_p3_mini_128k]     | [✅][mit]             | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
 | [Phi-3-Medium-4K][hf_p3_medium_4k]     | [✅][mit]             | 4k   | 🧩            |                |                  |             |                 |                  |                    |          |                |
 | [Phi-3-Medium-128K][hf_p3_medium_128k] | [✅][mit]             | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Qwen2 0.5B][hf_qw2_05]                | [✅][apache2]         | 32k  | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Qwen2 1.5B][hf_qw2_15]                | [✅][apache2]         | 32k  | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Qwen2 7B][hf_qw2_7]                   | [✅][apache2]         | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
 | [Llama3 8B][hf_l3_8]                   | [⚠️][llama3_license] | 8k   | 📄            |                | 🧩 280/s         | 🚀 800/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           | 🧩       | 🧩             |
 | [Llama3 70B][hf_l3_70]                 | [⚠️][llama3_license] | 8k   | 🧩            |                | 🧩 116/s         | 🚀 270/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            | 🧩       | 🧩             |
 | [Gemma 7B][hf_g7]                      | ⚠️                   | 8k   |               |                |                  | 🚀 800/s    | 📄 118/s        | 🧩 64/s          |                    | 🧩       |                |
 | [DBRX][hf_dbrx]                        | [⚠️][databricks_oml] | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          |                |
+| [Qwen2 72B][hf_qw2_72]                 | [⚠️][qwen_l]         | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
 | [Qwen1.5 32B][hf_qw15_32]              | [⚠️][qwen_l]         | 32k  |               |                |                  |             | 📄              |                  |                    |          | 🧩             |
 | [Command R][hf_cr]                     | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
 | [Command R+][hf_crp]                   | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
@@ -451,6 +455,10 @@ Leverage that to test examples, add few shots, evals?
 [hf_capy]: https://huggingface.co/NousResearch/Nous-Capybara-34B
 [hf_d29]: https://huggingface.co/cognitivecomputations/dolphin-2.9-llama3-8b
 [hf_qw15_32]: https://huggingface.co/Qwen/Qwen1.5-32B-Chat
+[hf_qw2_05]: https://huggingface.co/Qwen/Qwen2-0.5B-Instruct
+[hf_qw2_15]: https://huggingface.co/Qwen/Qwen2-1.5B-Instruct
+[hf_qw2_7]: https://huggingface.co/Qwen/Qwen2-7B-Instruct
+[hf_qw2_72]: https://huggingface.co/Qwen/Qwen2-72B-Instruct
 [hf_p3_mini_4k]: https://huggingface.co/microsoft/Phi-3-mini-4k-instruct
 [hf_p3_mini_128k]: https://huggingface.co/microsoft/Phi-3-mini-128k-instruct
 [hf_p3_medium_4k]: https://huggingface.co/microsoft/Phi-3-medium-4k-instruct
