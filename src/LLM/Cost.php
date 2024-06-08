@@ -19,9 +19,16 @@ class Cost
 
     public function calculate(int $promptTokens, int $completionTokens): float
     {
-        return (
-            $promptTokens * $this->millionPromptTokensPrice
-            + $completionTokens * $this->millionCompletionTokensPrice
-        ) / 1_000_000;
+        return $this->calculatePromptTokens($promptTokens) + $this->calculateCompletionTokens($completionTokens);
+    }
+
+    public function calculatePromptTokens(int $promptTokens): float
+    {
+        return $promptTokens * $this->millionPromptTokensPrice / 1_000_000;
+    }
+
+    public function calculateCompletionTokens(int $completionTokens): float
+    {
+        return $completionTokens * $this->millionCompletionTokensPrice / 1_000_000;
     }
 }
