@@ -15,6 +15,7 @@ enum Anthropic: string implements ProviderModel
     case CLAUDE3_HAIKU = 'claude-3-haiku-20240307';
     case CLAUDE3_SONNET = 'claude-3-sonnet-20240229';
     case CLAUDE3_OPUS = 'claude-3-opus-20240229';
+    case CLAUDE35_SONNET = 'claude-3-5-sonnet-20240620';
 
     public function getApiKeyEnvVar(): ?string
     {
@@ -52,12 +53,14 @@ enum Anthropic: string implements ProviderModel
                 self::CLAUDE3_HAIKU => 'Claude 3 Haiku',
                 self::CLAUDE3_SONNET => 'Claude 3 Sonnet',
                 self::CLAUDE3_OPUS => 'Claude 3 Opus',
+                self::CLAUDE35_SONNET => 'Claude 3.5 Sonnet',
             },
             'Anthropic',
             match ($this) {
                 self::CLAUDE3_HAIKU => new Cost(0.25, 1.25),
                 self::CLAUDE3_SONNET => new Cost(3, 15),
                 self::CLAUDE3_OPUS => new Cost(15, 75),
+                self::CLAUDE35_SONNET => new Cost(3, 15),
             },
             maxTokens: 4096,
             systemPrompt: $systemPrompt,
