@@ -1,0 +1,65 @@
+type: object
+properties:
+  firstName:
+    type: string
+  mood:
+    type: string
+    enum: [happy, sad]
+required:
+  - firstName
+  - mood
+    
+# The prompt is the overall task
+prompt: |
+  Extract all product reviews.
+
+# The following examples are used for one/few shots.
+# You can use a high quality model to generate/capture such examples.
+#
+# Not sure about using URLs as input. 
+examples:
+
+# The following examples are used to compute an overall % score.
+#
+# This score can be useful to prevent regressions, iterate on improvements, to compare different models.
+# Imagine asking instructrice to automatically run all the evals with tens of models.
+# You could compare the scores with each run's speed/cost.
+evals:
+
+# This section should be automatically updated by default with new invocations
+#
+# If you like one, cut/paste in either examples or evals.
+logs:
+  01HWE7THDKWPAJ1ZFE76K05RXQ:
+    model: 'OpenAI - GPT-4 Turbo'
+    list: true
+    context: 'Adrien is having a blast while Allan could be having more fun'
+    result:
+      -
+        firstName: Adrien
+        mood: happy
+      -
+        firstName: Allan
+        mood: sad
+  01HWE7TSQMF1G2T5YTND5NNAQ2:
+    model: 'Anthropic - Claude 3 Haiku'
+    list: true
+    context: 'Adrien is having a blast while Allan could be having more fun'
+    result:
+      -
+        firstName: Adrien
+        mood: happy
+      -
+        firstName: Allan
+        mood: sad
+  01HWE7XH457TRJJTHXZRV5334H:
+    model: 'Ollama - Nous Hermes 2 Pro'
+    list: true
+    context: 'Adrien is having a blast while Allan could be having more fun'
+    result:
+      -
+        firstName: Adrien
+        mood: happy
+      -
+        firstName: Allan
+        mood: sad

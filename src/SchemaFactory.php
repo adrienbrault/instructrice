@@ -7,6 +7,7 @@ namespace AdrienBrault\Instructrice;
 use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\JsonSchema\SchemaFactoryInterface;
 use ArrayObject;
+use InvalidArgumentException;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
@@ -28,12 +29,20 @@ class SchemaFactory
     /**
      * @template T
      *
-     * @param TypeNode|TypeInterface<T>|class-string<T> $type
+     * @param array<string, mixed>|TypeNode|TypeInterface<T>|class-string<T> $type
      *
      * @return array<string, mixed>
      */
-    public function createSchema(TypeNode|TypeInterface|string $type, bool $makeAllRequired): array
+    public function createSchema(array|TypeNode|TypeInterface|string $type, bool $makeAllRequired): array
     {
+        if (\is_array($type)) {
+            if (! \array_key_exists('type', $type) || ! \array_key_exists('properties', $type)) {
+                throw new InvalidArgumentException('Invalid schema: missing "type" or "properties" key');
+            }
+
+            return $type;
+        }
+
         if (\is_string($type)) {
             $schema = $this->schemaFactory->buildSchema($type);
 

@@ -26,6 +26,8 @@ use function Psl\Type\vec;
  */
 class Instructrice
 {
+    public const DEFAULT_PROMPT = 'Extract all relevant information';
+
     public function __construct(
         private readonly ProviderModel|LLMConfig|string $defaultLlm,
         private readonly LLMFactory $llmFactory,
@@ -67,7 +69,7 @@ class Instructrice
             $schema,
             $context,
             $type,
-            $prompt ?? 'Extract all relevant information',
+            $prompt ?? self::DEFAULT_PROMPT,
             $options['truncate_automatically'] ?? false,
             $onChunk,
             $llm
@@ -77,14 +79,14 @@ class Instructrice
     /**
      * @template T
      *
-     * @param class-string<T>|TypeInterface<T>        $type
-     * @param callable(array<T>|null, LLMChunk): void $onChunk
-     * @param InstructriceOptions                     $options
+     * @param array<string, mixed>|class-string<T>|TypeInterface<T> $type
+     * @param callable(array<T>|null, LLMChunk): void               $onChunk
+     * @param InstructriceOptions                                   $options
      *
      * @return list<T>
      */
     public function list(
-        string|TypeInterface $type,
+        array|TypeInterface|string $type,
         string $context,
         ?string $prompt = null,
         array $options = [],
@@ -119,7 +121,7 @@ class Instructrice
             $schema,
             $context,
             $type,
-            $prompt ?? 'Extract all relevant information',
+            $prompt ?? self::DEFAULT_PROMPT,
             $options['truncate_automatically'] ?? false,
             $onChunk,
             $llm,

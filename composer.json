@@ -19,6 +19,7 @@
         "nesbot/carbon": "^2 || ^3",
         "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.0",
+        "symfony/error-handler": "^6.0 || ^7.0",
         "symfony/property-access": "^6.0 || ^7.0",
         "symfony/property-info": "^6.0 || ^7.0"
     },
@@ -35,6 +36,7 @@
         "symfony/http-client": "^6.0 || ^7.0",
         "symfony/monolog-bridge": "^6.0 || ^7.0",
         "symfony/var-dumper": "^6.0 || ^7.0",
+        "symfony/yaml": "^6.0 || ^7.0",
         "symplify/easy-coding-standard": "*"
     },
     "autoload": {
@@ -48,6 +50,9 @@
             "Examples\\": "examples/"
         }
     },
+    "bin": [
+        "bin/instructrice"
+    ],
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true
