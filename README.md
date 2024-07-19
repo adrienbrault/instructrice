@@ -215,8 +215,9 @@ Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 | Provider   | Model               | ctx   |          |
 |------------|---------------------|-------|----------|
 | Mistral    | Large               | 32k   | ✅ 26/s   |
-| OpenAI     | GPT-4o              | 128k  | 🚀       |  
-| OpenAI     | GPT-4 Turbo         | 128k  | 🚀 24/s  |  
+| OpenAI     | GPT-4o              | 128k  | 🚀 83/s  |  
+| OpenAI     | GPT-4o mini         | 128k  | 🚀 140/s |  
+| OpenAI     | GPT-4 Turbo         | 128k  | 🚀 28/s  |  
 | OpenAI     | GPT-3.5 Turbo       | 16k   | 🚀 72/s  |  
 | Anthropic  | Claude 3 Haiku      | 200k  | 📄 88/s  |  
 | Anthropic  | Claude 3 Sonnet     | 200k  | 📄 59/s  |  
