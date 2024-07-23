@@ -25,6 +25,9 @@ enum Together: string implements ProviderModel
     case GEMMA_2B = 'google/gemma-2b-it';
     case LLAMA3_8B = 'meta-llama/Llama-3-8b-chat-hf';
     case LLAMA3_70B = 'meta-llama/Llama-3-70b-chat-hf';
+    case LLAMA31_8B = 'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo';
+    case LLAMA31_70B = 'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo';
+    case LLAMA31_405B = 'meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo';
 
     public function getApiKeyEnvVar(): ?string
     {
@@ -47,6 +50,7 @@ enum Together: string implements ProviderModel
                 self::WIZARDLM2_8x22B => 65000,
                 self::CODE_LLAMA_34B => 16000,
                 self::LLAMA3_8B, self::LLAMA3_70B, self::GEMMA_7B, self::GEMMA_2B => 8000,
+                self::LLAMA31_8B, self::LLAMA31_70B, self::LLAMA31_405B => 32000,
                 default => 32000,
             },
             match ($this) {
@@ -65,6 +69,9 @@ enum Together: string implements ProviderModel
                 self::GEMMA_7B => 'Gemma 7B',
                 self::LLAMA3_8B => 'Llama 3 8B',
                 self::LLAMA3_70B => 'Llama 3 70B',
+                self::LLAMA31_8B => 'Llama 3.1 8B',
+                self::LLAMA31_70B => 'Llama 3.1 70B',
+                self::LLAMA31_405B => 'Llama 3.1 405B',
             },
             'Together',
             match ($this) {
@@ -82,6 +89,9 @@ enum Together: string implements ProviderModel
                 self::GEMMA_7B, self::GEMMA_2B => Cost::create(0.2),
                 self::LLAMA3_8B => Cost::create(0.2),
                 self::LLAMA3_70B => Cost::create(0.9),
+                self::LLAMA31_8B => Cost::create(0.18),
+                self::LLAMA31_70B => Cost::create(0.88),
+                self::LLAMA31_405B => new Cost(5, 15),
             },
             $strategy,
             headers: [

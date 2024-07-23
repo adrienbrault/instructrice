@@ -32,6 +32,9 @@ enum Ollama: string implements ProviderModel
     case LLAMA3_8B = 'llama3:8b-instruct-';
     case LLAMA3_70B = 'llama3:70b-instruct-';
     case LLAMA3_70B_DOLPHIN = 'dolphin-llama3:8b-v2.9-';
+    case LLAMA31_8B = 'llama3.1:8b-instruct-';
+    case LLAMA31_70B = 'llama3.1:70b-instruct-';
+    case LLAMA31_405B = 'llama3.1:405b-instruct-';
     case QWEN2_05B = 'qwen2:0.5b-instruct-';
     case QWEN2_15B = 'qwen2:1.5b-instruct-';
     case QWEN2_7B = 'qwen2:7b-instruct-';
@@ -105,6 +108,7 @@ enum Ollama: string implements ProviderModel
             self::MISTRAL_7B => 32000,
             self::MIXTRAL_8x7B => 32000,
             self::LLAMA3_8B, self::LLAMA3_70B_DOLPHIN, self::LLAMA3_70B => 8000,
+            self::LLAMA31_8B, self::LLAMA31_70B, self::LLAMA31_405B => 128000,
             self::QWEN2_7B, self::QWEN2_72B => 128000,
             self::QWEN2_05B, self::QWEN2_15B => 32000,
         };
@@ -126,6 +130,9 @@ enum Ollama: string implements ProviderModel
             self::LLAMA3_8B => 'Llama3 8B',
             self::LLAMA3_70B => 'Llama3 70B',
             self::LLAMA3_70B_DOLPHIN => 'Llama3 8B Dolphin 2.9',
+            self::LLAMA31_8B => 'Llama 3.1 8B',
+            self::LLAMA31_70B => 'Llama 3.1 70B',
+            self::LLAMA31_405B => 'Llama 3.1 405B',
             self::QWEN2_05B => 'Qwen2 0.5B',
             self::QWEN2_15B => 'Qwen2 1.5B',
             self::QWEN2_7B => 'Qwen2 7B',

@@ -174,26 +174,29 @@ $instructrice->get(
 
 #### Foundation
 
-|                                        | 💼                   | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [DeepInfra][d_m] | [Perplexity][p_m]  | Anyscale | [OctoAI][oa_m] |
-|----------------------------------------|----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|----------|----------------|
-| [Mistral 7B][hf_m7b]                   | [✅][apache2]         | 32k  | 🧩            | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  | 🧩       | 🧩             |
-| [Mixtral 8x7B][hf_mx7]                 | [✅][apache2]         | 32k  | 🧩            | 🧩 44/s        | 🧩 237/s         | 🚀 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! | 🧩       | 🧩             |
-| [Mixtral 8x22B][hf_mx22]               | [✅][apache2]         | 65k  | 🧩            | 🧩 77/s        | 🧩 77/s          |             | 📄 52/s         | 🧩 40/s          | 📄 62/s !ctx=16k!  | 🧩       | 🧩             |
-| [Phi-3-Mini-4K][hf_p3_mini_4k]         | [✅][mit]             | 4k   | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Phi-3-Mini-128K][hf_p3_mini_128k]     | [✅][mit]             | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Phi-3-Medium-4K][hf_p3_medium_4k]     | [✅][mit]             | 4k   | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Phi-3-Medium-128K][hf_p3_medium_128k] | [✅][mit]             | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Qwen2 0.5B][hf_qw2_05]                | [✅][apache2]         | 32k  | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Qwen2 1.5B][hf_qw2_15]                | [✅][apache2]         | 32k  | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Qwen2 7B][hf_qw2_7]                   | [✅][apache2]         | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Llama3 8B][hf_l3_8]                   | [⚠️][llama3_license] | 8k   | 📄            |                | 🧩 280/s         | 🚀 800/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           | 🧩       | 🧩             |
-| [Llama3 70B][hf_l3_70]                 | [⚠️][llama3_license] | 8k   | 🧩            |                | 🧩 116/s         | 🚀 270/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            | 🧩       | 🧩             |
-| [Gemma 7B][hf_g7]                      | ⚠️                   | 8k   |               |                |                  | 🚀 800/s    | 📄 118/s        | 🧩 64/s          |                    | 🧩       |                |
-| [DBRX][hf_dbrx]                        | [⚠️][databricks_oml] | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          |                |
-| [Qwen2 72B][hf_qw2_72]                 | [⚠️][qwen_l]         | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
-| [Qwen1.5 32B][hf_qw15_32]              | [⚠️][qwen_l]         | 32k  |               |                |                  |             | 📄              |                  |                    |          | 🧩             |
-| [Command R][hf_cr]                     | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
-| [Command R+][hf_crp]                   | [❌][cc_nc]           | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
+|                                        | 💼                    | ctx  | [Ollama][o_m] | [Mistral][m_m] | [Fireworks][f_m] | [Groq][g_m] | [Together][t_m] | [DeepInfra][d_m] | [Perplexity][p_m]  | Anyscale | [OctoAI][oa_m] |
+|----------------------------------------|-----------------------|------|---------------|----------------|------------------|-------------|-----------------|------------------|--------------------|----------|----------------|
+| [Mistral 7B][hf_m7b]                   | [✅][apache2]          | 32k  | 🧩            | 🧩 68/s        |                  |             | 📄 98/s         |                  | 📄 88/s !ctx=16k!  | 🧩       | 🧩             |
+| [Mixtral 8x7B][hf_mx7]                 | [✅][apache2]          | 32k  | 🧩            | 🧩 44/s        | 🧩 237/s         | 🚀 560/s    | 🚀 99/s         |                  | 📄 119/s !ctx=16k! | 🧩       | 🧩             |
+| [Mixtral 8x22B][hf_mx22]               | [✅][apache2]          | 65k  | 🧩            | 🧩 77/s        | 🧩 77/s          |             | 📄 52/s         | 🧩 40/s          | 📄 62/s !ctx=16k!  | 🧩       | 🧩             |
+| [Phi-3-Mini-4K][hf_p3_mini_4k]         | [✅][mit]              | 4k   | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Phi-3-Mini-128K][hf_p3_mini_128k]     | [✅][mit]              | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Phi-3-Medium-4K][hf_p3_medium_4k]     | [✅][mit]              | 4k   | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Phi-3-Medium-128K][hf_p3_medium_128k] | [✅][mit]              | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Qwen2 0.5B][hf_qw2_05]                | [✅][apache2]          | 32k  | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Qwen2 1.5B][hf_qw2_15]                | [✅][apache2]          | 32k  | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Qwen2 7B][hf_qw2_7]                   | [✅][apache2]          | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Llama3 8B][hf_l3_8]                   | [⚠️][llama3_license]  | 8k   | 📄            |                | 🧩 280/s         | 🚀 800/s    | 📄 194/s        | 🧩 133/s         | 📄 121/s           | 🧩       | 🧩             |
+| [Llama3 70B][hf_l3_70]                 | [⚠️][llama3_license]  | 8k   | 🧩            |                | 🧩 116/s         | 🚀 270/s    | 📄 105/s        | 🧩 26/s          | 📄 42/s            | 🧩       | 🧩             |
+| [Llama 3.1 8B][hf_l31_8]               | [⚠️][llama31_license] | 128k | 🧩            |                | 🧩               | 📄          | 📄               | 🧩               |                    |          | 📄             |
+| [Llama 3.1 70B][hf_l31_70]             | [⚠️][llama31_license] | 128k | 🧩            |                | 🧩               | 📄          | 📄               | 🧩               |                    |          | 📄             |
+| [Llama 3.1 405B][hf_l31_405]           | [⚠️][llama31_license] | 128k | 🧩            |                | 🧩               | 📄          | 📄               |                  |                    |          | 📄             |
+| [Gemma 7B][hf_g7]                      | ⚠️                    | 8k   |               |                |                  | 🚀 800/s    | 📄 118/s        | 🧩 64/s          |                    | 🧩       |                |
+| [DBRX][hf_dbrx]                        | [⚠️][databricks_oml]  | 32k  |               |                | 🧩 50/s          |             | 📄 72/s         | 🧩               |                    |          |                |
+| [Qwen2 72B][hf_qw2_72]                 | [⚠️][qwen_l]          | 128k | 🧩            |                |                  |             |                 |                  |                    |          |                |
+| [Qwen1.5 32B][hf_qw15_32]              | [⚠️][qwen_l]          | 32k  |               |                |                  |             | 📄              |                  |                    |          | 🧩             |
+| [Command R][hf_cr]                     | [❌][cc_nc]            | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
+| [Command R+][hf_crp]                   | [❌][cc_nc]            | 128k | 📄            |                |                  |             |                 |                  |                    |          |                |
 
 Throughputs from https://artificialanalysis.ai/leaderboards/providers .
 
@@ -449,6 +452,9 @@ Leverage that to test examples, add few shots, evals?
 [hf_mx7]: https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1
 [hf_l3_8]: https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct
 [hf_l3_70]: https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct
+[hf_l31_8]: https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct
+[hf_l31_70]: https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct
+[hf_l31_405]: https://huggingface.co/meta-llama/Meta-Llama-3.1-405B-Instruct
 [hf_g7]: https://huggingface.co/google/gemma-7b-it
 [hf_dbrx]: https://huggingface.co/databricks/dbrx-instruct
 [hf_crp]: https://huggingface.co/CohereForAI/c4ai-command-r-plus
