@@ -33,6 +33,7 @@ indent_size = 4
 
 [*.{yaml,yml}]
 trim_trailing_whitespace = false
+indent_size = 2
 
 [.github/workflows/*.yml]
 indent_size = 2

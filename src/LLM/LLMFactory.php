@@ -29,6 +29,7 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+use function Psl\Dict\reindex;
 use function Psl\Vec\filter;
 
 class LLMFactory
@@ -91,7 +92,7 @@ class LLMFactory
     }
 
     /**
-     * @return list<ProviderModel>
+     * @return array<string, ProviderModel>
      */
     public function getAvailableProviderModels(): array
     {
@@ -110,9 +111,14 @@ class LLMFactory
             ...OctoAI::cases(),
         ];
 
-        return filter(
+        $providerModels = filter(
             $providerModels,
             self::isAvailable(...)
+        );
+
+        return reindex(
+            $providerModels,
+            fn (ProviderModel $providerModel) => $providerModel->createConfig('123')->getLabel()
         );
     }
 

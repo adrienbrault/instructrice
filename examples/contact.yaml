@@ -1,0 +1,68 @@
+fqcn: Examples\Contact
+
+examples:
+  - context: |
+      Adrien Brault
+    result:
+      firstName: Adrien
+      lastName: Brault
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+
+evals:
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+
+logs:
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer
+  - context: |
+      Adrien Brault is a software engineer for SMAFT. 
+    result:
+      firstName: Adrien
+      lastName: Brault
+      company: SMAFT
+      role: Software Engineer

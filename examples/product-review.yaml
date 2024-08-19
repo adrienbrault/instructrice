@@ -1,0 +1,1015 @@
+# This part is a regular json schema, except descriptions act like prompts.
+type: array
+items:
+  type: object
+  properties:
+    product:
+      type: string
+      description: The product name
+    review:
+      type: string
+      description: The review summary
+    rating:
+      type: number
+      description: The rating of the product, 1 is horrible, 5 is excellent
+      minimum: 1
+      maximum: 5
+    recommended:
+      type: boolean
+    url:
+      type: string
+      description: The source url of the review. Omit tracking query params.
+    date:
+      type: string
+      format: date-time
+      description: The date of the review
+  required:
+    - product
+    - review
+    - rating
+    - url
+
+# The prompt is the overall task
+prompt: |
+  Extract all product reviews.
+
+# The following examples are used for one/few shots.
+# You can use a high quality model to generate/capture such examples.
+#
+# Not sure about using URLs as input. 
+examples:
+
+# The following examples are used to compute an overall % score.
+#
+# This score can be useful to prevent regressions, iterate on improvements, to compare different models.
+# Imagine asking instructrice to automatically run all the evals with tens of models.
+# You could compare the scores with each run's speed/cost.
+evals:
+  eval_1:
+    model: 'OpenAI - GPT-4 Turbo'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+      
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+      
+      Markdown Content:
+      About 946,000 results
+      
+      Any time Results near Mountain View, California ·
+      
+      *   **$84.98**$124.00
+      
+      Pottery Barn Teen
+      
+      **$69.98**$99.00
+      
+      Pottery Barn Teen
+      
+      
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+      
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+      
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+      
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+      
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+      
+      
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+      
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+      
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+      
+      Peak Design Everyday Backpack Review: Digital Photograph…
+      
+      
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+      
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+      
+      *   4.5/5
+      
+      *   **Estimated Reading Time:** 13 mins
+      
+      
+      *   **Brand:** Peak Design
+      
+      
+      Explore further
+      ---------------
+      
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+      
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+      
+      *   4.5/5
+      
+      *   **Occupation:** Managing Editor (APAC...)
+      
+      
+      *   **Email:** sharmishta.sarkar@futurenet.com
+      
+      
+      Explore further
+      ---------------
+      
+      
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+      
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'A versatile tech and camera bag that offers a lot of customization. Struggles with larger, taller tech items like multiple laptops, tablets, or keyboards, but excellent for smaller tech items thanks to the FlexFold dividers and pockets.'
+        rating: 3.5
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A great looking bag for any occasion. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city. Versatile and functional enough to carry your things regardless of the occasion.'
+        rating: 5
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+      -
+        product: 'Peak Design Everyday Backpack 20L'
+        review: 'An effort to create a backpack with a modular interior that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.'
+        rating: 4.5
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A sleek and versatile camera backpack with smart and adjustable internal dividers, plentiful pockets, and useful extras.'
+        rating: 4.5
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A detailed review of the updated version of the popular camera backpack by Peak Design. Learn about the new features, pros.'
+        rating: 4.5
+        url: 'https://shotkit.com/peak-design-everyday-backpack-v2-review'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A premium camera bag with magnetic appeal.'
+        rating: 4.5
+        url: 'https://www.techradar.com/reviews/peak-design-everyday-backpack-v2'
+  
+# This section should be automatically updated by default with new invocations
+#
+# If you like one, cut/paste in either examples or evals.
+logs:
+  01HWEDF1534XYSXNQE8RCQWNH7:
+    model: 'OpenAI - GPT-4 Turbo'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+  
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+  
+      Markdown Content:
+      About 946,000 results
+  
+      Any time Results near Mountain View, California ·
+  
+      *   **$84.98**$124.00
+  
+      Pottery Barn Teen
+  
+      **$69.98**$99.00
+  
+      Pottery Barn Teen
+  
+  
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+  
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+  
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+  
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+  
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+  
+  
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+  
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+  
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+  
+      Peak Design Everyday Backpack Review: Digital Photograph…
+  
+  
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+  
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+  
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+  
+      *   4.5/5
+  
+      *   **Estimated Reading Time:** 13 mins
+  
+  
+      *   **Brand:** Peak Design
+  
+  
+      Explore further
+      ---------------
+  
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+  
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+  
+      *   4.5/5
+  
+      *   **Occupation:** Managing Editor (APAC...)
+  
+  
+      *   **Email:** sharmishta.sarkar@futurenet.com
+  
+  
+      Explore further
+      ---------------
+  
+  
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+  
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: "Peak Design's Everyday Backpack"
+        review: "A versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout."
+        rating: 4
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+        date: '2023-11-01'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A sleek and versatile camera backpack with smart and adjustable internal dividers, plentiful pockets, and useful extras.'
+        rating: 4.5
+        url: 'https://shotkit.com/peak-design-everyday-backpack-v2-review/'
+        date: '2024-01-24'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A premium camera bag with magnetic appeal.'
+        rating: 4.5
+        url: 'https://www.techradar.com/reviews/peak-design-everyday-backpack-v2'
+        date: '2021-11-04'
+  01HWEDGC4HV25X2N8GVWA7X8FQ:
+    model: 'Anthropic - Claude 3 Haiku'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+  
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+  
+      Markdown Content:
+      About 946,000 results
+  
+      Any time Results near Mountain View, California ·
+  
+      *   **$84.98**$124.00
+  
+      Pottery Barn Teen
+  
+      **$69.98**$99.00
+  
+      Pottery Barn Teen
+  
+  
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+  
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+  
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+  
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+  
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+  
+  
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+  
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+  
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+  
+      Peak Design Everyday Backpack Review: Digital Photograph…
+  
+  
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+  
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+  
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+  
+      *   4.5/5
+  
+      *   **Estimated Reading Time:** 13 mins
+  
+  
+      *   **Brand:** Peak Design
+  
+  
+      Explore further
+      ---------------
+  
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+  
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+  
+      *   4.5/5
+  
+      *   **Occupation:** Managing Editor (APAC...)
+  
+  
+      *   **Email:** sharmishta.sarkar@futurenet.com
+  
+  
+      Explore further
+      ---------------
+  
+  
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+  
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: "Peak Design's Everyday Backpack"
+        review: "a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout."
+        rating: null
+        recommended: true
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+        date: null
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: "a great looking bag for any occasion. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that's stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion."
+        rating: null
+        recommended: true
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+        date: null
+      -
+        product: 'Peak Design Everyday Backpack 20L'
+        review: 'an effort to create a backpack with a modular interior that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.'
+        rating: null
+        recommended: true
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+        date: null
+      -
+        product: 'Peak Design Everyday Backpack v2'
+        review: 'A sleek and versatile camera backpack with smart and adjustable internal dividers, plentiful pockets, and useful extras.'
+        rating: null
+        recommended: true
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review'
+        date: '2023-11-01'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A detailed review of the updated version of the popular camera backpack by Peak Design. Learn about the new features, pros and cons.'
+        rating: 4.5
+        recommended: true
+        url: 'https://shotkit.com/peak-design-everyday-backpack-v2-review/'
+        date: '2024-01-24'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A premium camera bag with magnetic appeal.'
+        rating: 4.5
+        recommended: true
+        url: 'https://www.techradar.com/reviews/peak-design-everyday-backpack-v2'
+        date: '2021-11-04'
+  01HWEDJ0ZYTEJH3ZYTCFXKCD1E:
+    model: 'Anthropic - Claude 3 Haiku'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+  
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+  
+      Markdown Content:
+      About 946,000 results
+  
+      Any time Results near Mountain View, California ·
+  
+      *   **$84.98**$124.00
+  
+      Pottery Barn Teen
+  
+      **$69.98**$99.00
+  
+      Pottery Barn Teen
+  
+  
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+  
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+  
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+  
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+  
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+  
+  
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+  
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+  
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+  
+      Peak Design Everyday Backpack Review: Digital Photograph…
+  
+  
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+  
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+  
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+  
+      *   4.5/5
+  
+      *   **Estimated Reading Time:** 13 mins
+  
+  
+      *   **Brand:** Peak Design
+  
+  
+      Explore further
+      ---------------
+  
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+  
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+  
+      *   4.5/5
+  
+      *   **Occupation:** Managing Editor (APAC...)
+  
+  
+      *   **Email:** sharmishta.sarkar@futurenet.com
+  
+  
+      Explore further
+      ---------------
+  
+  
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+  
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: "Peak Design's Everyday Backpack"
+        review: "The Everyday Backpack V2 is a great looking bag for any occasion. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that's stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion."
+        rating: 4.5
+        recommended: true
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review'
+        date: '2023-11-01T00:00:00Z'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'A sleek and versatile camera backpack with smart and adjustable internal dividers, plentiful pockets, and useful extras.'
+        rating: 4.5
+        recommended: true
+        url: 'https://shotkit.com/peak-design-everyday-backpack-v2-review/'
+        date: '2024-01-24T00:00:00Z'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A premium camera bag with magnetic appeal.'
+        rating: 4.5
+        recommended: true
+        url: 'https://www.techradar.com/reviews/peak-design-everyday-backpack-v2'
+        date: '2021-11-04T00:00:00Z'
+  01HWEDJE4YKVVYBXVZN5WN9CN3:
+    model: 'OpenAI - GPT-3.5 Turbo'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+  
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+  
+      Markdown Content:
+      About 946,000 results
+  
+      Any time Results near Mountain View, California ·
+  
+      *   **$84.98**$124.00
+  
+      Pottery Barn Teen
+  
+      **$69.98**$99.00
+  
+      Pottery Barn Teen
+  
+  
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+  
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+  
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+  
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+  
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+  
+  
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+  
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+  
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+  
+      Peak Design Everyday Backpack Review: Digital Photograph…
+  
+  
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+  
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+  
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+  
+      *   4.5/5
+  
+      *   **Estimated Reading Time:** 13 mins
+  
+  
+      *   **Brand:** Peak Design
+  
+  
+      Explore further
+      ---------------
+  
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+  
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+  
+      *   4.5/5
+  
+      *   **Occupation:** Managing Editor (APAC...)
+  
+  
+      *   **Email:** sharmishta.sarkar@futurenet.com
+  
+  
+      Explore further
+      ---------------
+  
+  
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+  
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: "Peak Design's Everyday Backpack is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout."
+        rating: 4.5
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'The Everyday Backpack V2 is a great looking bag for any occasion. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.'
+        rating: null
+        url: 'https://www.shotkit.com/peak-design-everyday-backpack-v2-review/'
+        date: '2024-01-24'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.'
+        rating: null
+        url: 'https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...'
+  01HWEDJPBPYHT97PQW163ZQTPS:
+    model: 'OpenAI - GPT-3.5 Turbo'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+  
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+  
+      Markdown Content:
+      About 946,000 results
+  
+      Any time Results near Mountain View, California ·
+  
+      *   **$84.98**$124.00
+  
+      Pottery Barn Teen
+  
+      **$69.98**$99.00
+  
+      Pottery Barn Teen
+  
+  
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+  
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+  
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+  
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+  
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+  
+  
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+  
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+  
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+  
+      Peak Design Everyday Backpack Review: Digital Photograph…
+  
+  
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+  
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+  
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+  
+      *   4.5/5
+  
+      *   **Estimated Reading Time:** 13 mins
+  
+  
+      *   **Brand:** Peak Design
+  
+  
+      Explore further
+      ---------------
+  
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+  
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+  
+      *   4.5/5
+  
+      *   **Occupation:** Managing Editor (APAC...)
+  
+  
+      *   **Email:** sharmishta.sarkar@futurenet.com
+  
+  
+      Explore further
+      ---------------
+  
+  
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+  
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: "Peak Design's Everyday Backpack is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout."
+        rating: 4.5
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'The Everyday Backpack V2 is a great looking bag for any occasion. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.'
+        rating: 5
+        url: 'https://shotkit.com/peak-design-everyday-backpack-v2-review/'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.'
+        rating: 4.5
+        url: 'https://www.techradar.com/reviews/peak-design-everyday-backpack-v2'
+  01HWEDK6HYPBHFZ7EMX19PDTX4:
+    model: 'Fireworks - Llama3 70B'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+  
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+  
+      Markdown Content:
+      About 946,000 results
+  
+      Any time Results near Mountain View, California ·
+  
+      *   **$84.98**$124.00
+  
+      Pottery Barn Teen
+  
+      **$69.98**$99.00
+  
+      Pottery Barn Teen
+  
+  
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+  
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+  
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+  
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+  
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+  
+  
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+  
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+  
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+  
+      Peak Design Everyday Backpack Review: Digital Photograph…
+  
+  
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+  
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+  
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+  
+      *   4.5/5
+  
+      *   **Estimated Reading Time:** 13 mins
+  
+  
+      *   **Brand:** Peak Design
+  
+  
+      Explore further
+      ---------------
+  
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+  
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+  
+      *   4.5/5
+  
+      *   **Occupation:** Managing Editor (APAC...)
+  
+  
+      *   **Email:** sharmishta.sarkar@futurenet.com
+  
+  
+      Explore further
+      ---------------
+  
+  
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+  
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: "Peak Design's Everyday Backpack"
+        review: 'A versatile tech and camera bag that offers a lot of customization.'
+        rating: 5
+        recommended: true
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+        date: '2023-11-01T00:00:00.000Z'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A great looking bag for any occasion.'
+        rating: 5
+        recommended: true
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...'
+        date: '2023-11-01T00:00:00.000Z'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'A sleek and versatile camera backpack with smart and adjustable internal dividers, plentiful pockets, and useful extras.'
+        rating: 5
+        recommended: true
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...'
+        date: '2023-11-01T00:00:00.000Z'
+      -
+        product: 'Peak Design Everyday Backpack Review'
+        review: 'Digital Photograph.'
+        rating: 5
+        recommended: true
+        url: 'https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...'
+        date: '2023-11-01T00:00:00.000Z'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A detailed review of the updated version of the popular camera backpack by Peak Design.'
+        rating: 4.5
+        recommended: true
+        url: 'https://shotkit.com/peak-design-everyday-backpack-v2-review/'
+        date: '2024-01-24T00:00:00.000Z'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A premium camera bag with magnetic appeal.'
+        rating: 4.5
+        recommended: true
+        url: 'https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...'
+        date: '2021-11-04T00:00:00.000Z'
+  01HWEDKBSNARBD09EE98TM1XRG:
+    model: 'Fireworks - Llama3 70B'
+    list: false
+    context: |
+      Title: peak design everyday backpack review - Bing
+  
+      URL Source: https://www.bing.com/search?q=peak+design+everyday+backpack+review
+  
+      Markdown Content:
+      About 946,000 results
+  
+      Any time Results near Mountain View, California ·
+  
+      *   **$84.98**$124.00
+  
+      Pottery Barn Teen
+  
+      **$69.98**$99.00
+  
+      Pottery Barn Teen
+  
+  
+      1.  **Peak Design's Everyday Backpack** is a versatile tech and camera bag that offers a lot of customization. It struggles with larger and taller tech items, like multiple laptops, tablets, or keyboards. However, it's excellent for smaller tech items thanks to the FlexFold dividers and pockets throughout.
+  
+      2.  The Everyday Backpack V2 is a **great looking bag for any occasion**. The Peak Design Everyday Backpack V2 is an iconic award-winning backpack that’s stylish enough to roam around the city, versatile enough to be taken with you anywhere, and functional enough to carry your things regardless of the occasion.
+  
+      Peak Design is a relatively new brand in the camera bag scene. But they have made a splash! Their industry-leading stance on using sustainable materials boosted their reputation. And the Everyday Backpack is made from 100% recycled post-consumer materials. This camera backpack is very popular among the online photography community.
+  
+      Peak Design’s Everyday Backpack wins on design and versatility – every aspect of the bag has been well thought out. There’s different ways you can organize your camera gear, and access them all from either side, plus the minimalist exterior makes quite a statement while hiding a whole load of functionality.
+  
+      Cue the Peak Design Everyday Backpack 20L, **an effort to create a backpack with a modular interior** that can be used just as easily for various photography needs and for tech gear as it can be for commuting, a day out, a shopping trip or even as a gym bag.
+  
+  
+      5.  [![Image 1: Global web icon](https://th.bing.com/th?id=ODLS.efffc639-7eed-435b-8dd3-54796451630d&w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2...)](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+  
+      [Peak Design Everyday Backpack v2 review: A backpack you'll …](https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...)
+      ----------------------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 1, 2023 · A sleek and versatile camera **backpack** with smart and adjustable internal dividers, plentiful pockets, and useful extras. Read the full **review** to learn about its …
+  
+      *   ### [Peak Design Everyday Back…](https://www.dpreview.com/articles/7414315278/peak-design-everyday-backpack-review...)
+  
+      Peak Design Everyday Backpack Review: Digital Photograph…
+  
+  
+      [See results only from dpreview.com](https://www.bing.com/search?q=site:dpreview.com+peak+design+everyday+backpack+review&form=DLINKR...)
+      6.  [![Image 2: Global web icon](https://th.bing.com/th?id=ODLS.31068b55-412a-4afe-ae8d-75bb3357657c&w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2...)](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+  
+      [Peak Design Everyday Backpack Review (2024 …](https://shotkit.com/peak-design-everyday-backpack-v2-review/...)
+      ------------------------------------------------------------------------------------------------------------
+  
+      WebJan 24, 2024 · A detailed **review** of **the** updated version **of the** popular camera **backpack** by **Peak Design.** Learn about **the** new features, pros …
+  
+      *   4.5/5
+  
+      *   **Estimated Reading Time:** 13 mins
+  
+  
+      *   **Brand:** Peak Design
+  
+  
+      Explore further
+      ---------------
+  
+      7.  [![Image 3: Global web icon](https://th.bing.com/th?id=ODLS.031894aa-f652-4ada-85cb-ae6243e957a1&w=32&h=32&qlt=92&pcl=fffffa&o=6&pid=1.2...)](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+  
+      [Peak Design Everyday Backpack V2 review | TechRadar](https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...)
+      -------------------------------------------------------------------------------------------------------------------------
+  
+      WebNov 4, 2021 · **Peak Design Everyday Backpack** V2 **review**. A premium camera bag with magnetic appeal. **Reviews**. By Sharmishta Sarkar. …
+  
+      *   4.5/5
+  
+      *   **Occupation:** Managing Editor (APAC...)
+  
+  
+      *   **Email:** sharmishta.sarkar@futurenet.com
+  
+  
+      Explore further
+      ---------------
+  
+  
+      10.  [Some results have been removed](http://go.microsoft.com/fwlink/?LinkID=617350...)
+      11.  #### Pagination
+  
+      *   1
+      *   [2](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PERE...)
+      *   [3](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=14&FORM=PERE1...)
+      *   [4](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=24&FORM=PERE2...)
+      *   [5](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=34&FORM=PERE3...)
+      *   [Next](https://www.bing.com/search?q=peak+design+everyday+backpack+review&FPIG=C5DCF7CC419A43C59A7BBE53D3D41926&first=4&FORM=PORE"Nextpage"...)
+    result:
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'A versatile tech and camera bag that offers a lot of customization.'
+        rating: 5
+        recommended: true
+        url: 'https://www.bing.com/search?q=peak+design+everyday+backpack+review'
+        date: '2023-11-01T00:00:00'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'An iconic award-winning backpack that’s stylish enough to roam around the city.'
+        rating: 5
+        recommended: true
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...'
+        date: '2023-11-01T00:00:00'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'A sleek and versatile camera backpack with smart and adjustable internal dividers.'
+        rating: 5
+        recommended: true
+        url: 'https://www.dpreview.com/reviews/peak-design-everyday-backpack-v2-review...'
+        date: '2023-11-01T00:00:00'
+      -
+        product: 'Peak Design Everyday Backpack'
+        review: 'A detailed review of the updated version of the popular camera backpack.'
+        rating: 4.5
+        recommended: true
+        url: 'https://shotkit.com/peak-design-everyday-backpack-v2-review/'
+        date: '2024-01-24T00:00:00'
+      -
+        product: 'Peak Design Everyday Backpack V2'
+        review: 'A premium camera bag with magnetic appeal.'
+        rating: 4.5
+        recommended: true
+        url: 'https://www.techradar.com/reviews/peak-design-everyday-backpack-v2...'
+        date: '2021-11-04T00:00:00'
